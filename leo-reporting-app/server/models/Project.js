@@ -98,6 +98,15 @@ const Project = sequelize.define('Project', {
         allowNull: true,
         defaultValue: { income: [], expenses: [] }
     },
+    pdfTheme: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        defaultValue: {
+            headerColor: '#2980b9',
+            textColor: '#000000',
+            backgroundColor: '#ffffff'
+        }
+    },
 
     // File Uploads (JSON array of URLs)
     projectImages: {

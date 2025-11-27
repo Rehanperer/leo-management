@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { financial } from '../services/api';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 function FinancialForm() {
     const { id } = useParams();
@@ -75,148 +75,153 @@ function FinancialForm() {
     };
 
     const generatePDF = () => {
-        const doc = new jsPDF();
-        const { totalIncome, totalExpense, balance } = calculateTotals();
-        const monthName = new Date(report.year, report.month - 1).toLocaleString('default', { month: 'long' });
+        try {
+            const doc = new jsPDF();
+            const { totalIncome, totalExpense, balance } = calculateTotals();
+            const monthName = new Date(report.year, report.month - 1).toLocaleString('default', { month: 'long' });
 
-        // Header
-        doc.setFontSize(20);
-        doc.setFont('helvetica', 'bold');
-        doc.text('MONTHLY FINANCIAL REPORT', 105, 20, { align: 'center' });
+            // Header
+            doc.setFontSize(20);
+            doc.setFont('helvetica', 'bold');
+            doc.text('MONTHLY FINANCIAL REPORT', 105, 20, { align: 'center' });
 
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'normal');
-        doc.text(`${monthName} ${report.year}`, 105, 30, { align: 'center' });
-
-        doc.setFontSize(10);
-        doc.text(`Generated: ${new Date().toLocaleDateString()}`, 105, 38, { align: 'center' });
-
-        let yPos = 50;
-
-        // Income Table
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Income', 14, yPos);
-        yPos += 2;
-
-        const incomeRows = report.incomeEntries.length > 0
-            ? report.incomeEntries.map(entry => [
-                entry.description || 'N/A',
-                `$${parseFloat(entry.amount || 0).toFixed(2)}`
-            ])
-            : [['No income entries', '-']];
-
-        doc.autoTable({
-            startY: yPos,
-            head: [['Description', 'Amount']],
-            body: incomeRows,
-            foot: [['TOTAL INCOME', `$${totalIncome.toFixed(2)}`]],
-            theme: 'striped',
-            headStyles: {
-                fillColor: [39, 174, 96],
-                fontStyle: 'bold',
-                fontSize: 11
-            },
-            footStyles: {
-                fillColor: [39, 174, 96],
-                fontStyle: 'bold',
-                fontSize: 11,
-                halign: 'right'
-            },
-            styles: { fontSize: 10 },
-            columnStyles: {
-                0: { cellWidth: 130 },
-                1: { halign: 'right', cellWidth: 60 }
-            }
-        });
-
-        yPos = doc.lastAutoTable.finalY + 15;
-
-        // Expenses Table
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Expenses', 14, yPos);
-        yPos += 2;
-
-        const expenseRows = report.expenseEntries.length > 0
-            ? report.expenseEntries.map(entry => [
-                entry.description || 'N/A',
-                `$${parseFloat(entry.amount || 0).toFixed(2)}`
-            ])
-            : [['No expense entries', '-']];
-
-        doc.autoTable({
-            startY: yPos,
-            head: [['Description', 'Amount']],
-            body: expenseRows,
-            foot: [['TOTAL EXPENSES', `$${totalExpense.toFixed(2)}`]],
-            theme: 'striped',
-            headStyles: {
-                fillColor: [231, 76, 60],
-                fontStyle: 'bold',
-                fontSize: 11
-            },
-            footStyles: {
-                fillColor: [231, 76, 60],
-                fontStyle: 'bold',
-                fontSize: 11,
-                halign: 'right'
-            },
-            styles: { fontSize: 10 },
-            columnStyles: {
-                0: { cellWidth: 130 },
-                1: { halign: 'right', cellWidth: 60 }
-            }
-        });
-
-        yPos = doc.lastAutoTable.finalY + 15;
-
-        // Summary Table
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Financial Summary', 14, yPos);
-        yPos += 2;
-
-        const balanceColor = balance >= 0 ? [46, 204, 113] : [231, 76, 60];
-        const balanceStatus = balance >= 0 ? 'SURPLUS' : 'DEFICIT';
-
-        doc.autoTable({
-            startY: yPos,
-            body: [
-                ['Total Income', `$${totalIncome.toFixed(2)}`],
-                ['Total Expenses', `$${totalExpense.toFixed(2)}`],
-                [{
-                    content: `Net Balance (${balanceStatus})`,
-                    styles: { fontStyle: 'bold', fontSize: 12 }
-                }, {
-                    content: `$${Math.abs(balance).toFixed(2)}`,
-                    styles: {
-                        fontStyle: 'bold',
-                        fontSize: 12,
-                        textColor: balanceColor
-                    }
-                }]
-            ],
-            theme: 'grid',
-            styles: { fontSize: 11 },
-            columnStyles: {
-                0: { cellWidth: 130, fontStyle: 'bold' },
-                1: { halign: 'right', cellWidth: 60, fontStyle: 'bold' }
-            }
-        });
-
-        // Footer
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-            doc.setPage(i);
-            doc.setFontSize(8);
+            doc.setFontSize(14);
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(128, 128, 128);
-            doc.text(`Page ${i} of ${pageCount}`, 105, 285, { align: 'center' });
-            doc.text(`Financial Report - ${monthName} ${report.year}`, 14, 285);
-        }
+            doc.text(`${monthName} ${report.year}`, 105, 30, { align: 'center' });
 
-        doc.save(`Financial_Report_${monthName}_${report.year}.pdf`);
+            doc.setFontSize(10);
+            doc.text(`Generated: ${new Date().toLocaleDateString()}`, 105, 38, { align: 'center' });
+
+            let yPos = 50;
+
+            // Income Table
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Income', 14, yPos);
+            yPos += 2;
+
+            const incomeRows = report.incomeEntries.length > 0
+                ? report.incomeEntries.map(entry => [
+                    entry.description || 'N/A',
+                    `$${parseFloat(entry.amount || 0).toFixed(2)}`
+                ])
+                : [['No income entries', '-']];
+
+            autoTable(doc, {
+                startY: yPos,
+                head: [['Description', 'Amount']],
+                body: incomeRows,
+                foot: [['TOTAL INCOME', `$${totalIncome.toFixed(2)}`]],
+                theme: 'striped',
+                headStyles: {
+                    fillColor: [39, 174, 96],
+                    fontStyle: 'bold',
+                    fontSize: 11
+                },
+                footStyles: {
+                    fillColor: [39, 174, 96],
+                    fontStyle: 'bold',
+                    fontSize: 11,
+                    halign: 'right'
+                },
+                styles: { fontSize: 10 },
+                columnStyles: {
+                    0: { cellWidth: 130 },
+                    1: { halign: 'right', cellWidth: 60 }
+                }
+            });
+
+            yPos = doc.lastAutoTable.finalY + 15;
+
+            // Expenses Table
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Expenses', 14, yPos);
+            yPos += 2;
+
+            const expenseRows = report.expenseEntries.length > 0
+                ? report.expenseEntries.map(entry => [
+                    entry.description || 'N/A',
+                    `$${parseFloat(entry.amount || 0).toFixed(2)}`
+                ])
+                : [['No expense entries', '-']];
+
+            autoTable(doc, {
+                startY: yPos,
+                head: [['Description', 'Amount']],
+                body: expenseRows,
+                foot: [['TOTAL EXPENSES', `$${totalExpense.toFixed(2)}`]],
+                theme: 'striped',
+                headStyles: {
+                    fillColor: [231, 76, 60],
+                    fontStyle: 'bold',
+                    fontSize: 11
+                },
+                footStyles: {
+                    fillColor: [231, 76, 60],
+                    fontStyle: 'bold',
+                    fontSize: 11,
+                    halign: 'right'
+                },
+                styles: { fontSize: 10 },
+                columnStyles: {
+                    0: { cellWidth: 130 },
+                    1: { halign: 'right', cellWidth: 60 }
+                }
+            });
+
+            yPos = doc.lastAutoTable.finalY + 15;
+
+            // Summary Table
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Financial Summary', 14, yPos);
+            yPos += 2;
+
+            const balanceColor = balance >= 0 ? [46, 204, 113] : [231, 76, 60];
+            const balanceStatus = balance >= 0 ? 'SURPLUS' : 'DEFICIT';
+
+            autoTable(doc, {
+                startY: yPos,
+                body: [
+                    ['Total Income', `$${totalIncome.toFixed(2)}`],
+                    ['Total Expenses', `$${totalExpense.toFixed(2)}`],
+                    [{
+                        content: `Net Balance (${balanceStatus})`,
+                        styles: { fontStyle: 'bold', fontSize: 12 }
+                    }, {
+                        content: `$${Math.abs(balance).toFixed(2)}`,
+                        styles: {
+                            fontStyle: 'bold',
+                            fontSize: 12,
+                            textColor: balanceColor
+                        }
+                    }]
+                ],
+                theme: 'grid',
+                styles: { fontSize: 11 },
+                columnStyles: {
+                    0: { cellWidth: 130, fontStyle: 'bold' },
+                    1: { halign: 'right', cellWidth: 60, fontStyle: 'bold' }
+                }
+            });
+
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(128, 128, 128);
+                doc.text(`Page ${i} of ${pageCount}`, 105, 285, { align: 'center' });
+                doc.text(`Financial Report - ${monthName} ${report.year}`, 14, 285);
+            }
+
+            doc.save(`Financial_Report_${monthName}_${report.year}.pdf`);
+        } catch (error) {
+            console.error('PDF Generation Error:', error);
+            alert(`Failed to generate PDF: ${error.message}`);
+        }
     };
 
     const { totalIncome, totalExpense, balance } = calculateTotals();
