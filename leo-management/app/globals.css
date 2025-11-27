@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-leo-50: #eff6ff;
+  --color-leo-100: #dbeafe;
+  --color-leo-200: #bfdbfe;
+  --color-leo-300: #93c5fd;
+  --color-leo-400: #60a5fa;
+  --color-leo-500: #3b82f6;
+  --color-leo-600: #2563eb;
+  --color-leo-700: #1d4ed8;
+  --color-leo-800: #1e40af;
+  --color-leo-900: #1e3a8a;
+
+  --color-gold-50: #fffbeb;
+  --color-gold-100: #fef3c7;
+  --color-gold-200: #fde68a;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #f59e0b;
+  --color-gold-600: #d97706;
+  --color-gold-700: #b45309;
+  --color-gold-800: #92400e;
+  --color-gold-900: #78350f;
+
+  --color-border: #e5e7eb;
+
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/80 backdrop-blur-lg border border-white/20;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-leo-600 text-white hover:bg-leo-700 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-900 hover:bg-gray-300;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-leo-500 focus:border-transparent;
+  }
+}

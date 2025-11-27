@@ -1,0 +1,151 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  role      String   // "admin" or "club"
+  clubId    String?
+  club      Club?    @relation(fields: [clubId], references: [id])
+  createdAt DateTime @default(now())
+  
+  projects         Project[]
+  financialRecords FinancialRecord[]
+  meetings         Meeting[]
+  events           Event[]
+  documents        Document[]
+  chatHistory      AIChatHistory[]
+}
+
+model Club {
+  id           String   @id @default(uuid())
+  name         String
+  code         String   @unique
+  contactEmail String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  
+  users            User[]
+  projects         Project[]
+  financialRecords FinancialRecord[]
+  meetings         Meeting[]
+  events           Event[]
+  documents        Document[]
+}
+
+model Project {
+  id            String   @id @default(uuid())
+  clubId        String
+  club          Club     @relation(fields: [clubId], references: [id])
+  title         String
+  description   String?
+  category      String?
+  venue         String?
+  date          DateTime
+  beneficiaries Int?
+  serviceHours  Float?
+  participants  Int?
+  status        String   @default("draft") // draft, completed
+  chairman      String?
+  secretary     String?
+  treasurer     String?
+  photos        String?  // JSON string of photo URLs
+  documents     String?  // JSON string of document URLs
+  createdBy     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  user             User              @relation(fields: [createdBy], references: [id])
+  financialRecords FinancialRecord[]
+}
+
+model FinancialRecord {
+  id          String   @id @default(uuid())
+  clubId      String
+  club        Club     @relation(fields: [clubId], references: [id])
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id])
+  type        String   // "income" or "expense"
+  category    String
+  amount      Float
+  description String?
+  date        DateTime
+  receiptUrl  String?
+  createdBy   String
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [createdBy], references: [id])
+}
+
+model Meeting {
+  id        String   @id @default(uuid())
+  clubId    String
+  club      Club     @relation(fields: [clubId], references: [id])
+  title     String
+  date      DateTime
+  venue     String?
+  agenda    String?  // Text or JSON
+  minutes   String?  // Text
+  attendees String?  // JSON string of attendee names
+  createdBy String
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [createdBy], references: [id])
+}
+
+model Event {
+  id           String   @id @default(uuid())
+  clubId       String
+  club         Club     @relation(fields: [clubId], references: [id])
+  title        String
+  description  String?
+  startDate    DateTime
+  endDate      DateTime?
+  venue        String?
+  status       String   @default("planned") // planned, ongoing, completed
+  participants Int?
+  createdBy    String
+  createdAt    DateTime @default(now())
+  
+  user User @relation(fields: [createdBy], references: [id])
+}
+
+model Document {
+  id         String   @id @default(uuid())
+  clubId     String
+  club       Club     @relation(fields: [clubId], references: [id])
+  title      String
+  category   String?
+  fileUrl    String
+  uploadedBy String
+  uploadedAt DateTime @default(now())
+  
+  user User @relation(fields: [uploadedBy], references: [id])
+}
+
+model ReferenceDocument {
+  id         String   @id @default(uuid())
+  title      String
+  category   String   // "award", "contest", "guideline"
+  content    String?  // Parsed text content
+  fileUrl    String
+  uploadedBy String?
+  uploadedAt DateTime @default(now())
+}
+
+model AIChatHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   // "form-assist", "consultant", "general"
+  messages  String   // JSON string of chat messages
+  createdAt DateTime @default(now())
+}
