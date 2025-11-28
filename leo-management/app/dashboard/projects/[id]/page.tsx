@@ -198,9 +198,9 @@ export default function ProjectDetailPage() {
                 identifiedCommunityNeed: formData.identifiedCommunityNeed,
                 serviceOpportunity: formData.serviceOpportunity,
                 modeOfDataCollection: formData.modeOfDataCollection,
-                chairman: JSON.stringify(formData.chairmen.filter(c => c.trim())),
-                secretary: JSON.stringify(formData.secretaries.filter(s => s.trim())),
-                treasurer: JSON.stringify(formData.treasurers.filter(t => t.trim())),
+                chairman: JSON.stringify(formData.chairmen.filter(c => c && c.trim())),
+                secretary: JSON.stringify(formData.secretaries.filter(s => s && s.trim())),
+                treasurer: JSON.stringify(formData.treasurers.filter(t => t && t.trim())),
             };
 
             const response = await fetch(`/api/projects/${params.id}`, {
@@ -282,8 +282,8 @@ export default function ProjectDetailPage() {
                                     <div className="flex items-center gap-3 mb-3">
                                         <h2 className="text-3xl font-bold text-gray-900">{project.title}</h2>
                                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${project.status === 'completed'
-                                                ? 'bg-green-100 text-green-800'
-                                                : 'bg-yellow-100 text-yellow-800'
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-yellow-100 text-yellow-800'
                                             }`}>
                                             {project.status}
                                         </span>
