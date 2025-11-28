@@ -454,4 +454,57 @@
       transition-duration: 0.01ms !important;
     }
   }
+
+  /* Dark Mode Styles */
+  .dark {
+    color-scheme: dark;
+  }
+
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+
+  .dark .card,
+  .dark .card-interactive {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .dark .card-interactive:hover {
+    @apply border-blue-600;
+    box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.3), 0 4px 6px -4px rgb(59 130 246 / 0.3);
+  }
+
+  .dark .input {
+    @apply bg-gray-800 border-gray-700 text-gray-100;
+  }
+
+  .dark .input:hover {
+    @apply border-gray-600;
+  }
+
+  .dark .input:focus {
+    @apply border-transparent;
+    --tw-ring-color: rgb(59 130 246);
+  }
+
+  .dark .btn-secondary {
+    @apply bg-gray-700 text-gray-100;
+  }
+
+  .dark .btn-secondary:hover {
+    @apply bg-gray-600;
+  }
+
+  .dark .glass {
+    background-color: rgb(17 24 39 / 0.8);
+    border-color: rgb(255 255 255 / 0.1);
+  }
+
+  .dark .shimmer {
+    background: linear-gradient(90deg,
+        #1f2937 0%,
+        #374151 50%,
+        #1f2937 100%);
+    background-size: 1000px 100%;
+  }
 }
