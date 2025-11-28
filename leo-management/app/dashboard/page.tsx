@@ -177,8 +177,8 @@ export default function DashboardPage() {
                                 </svg>
                             </div>
                             <div className="ml-4 flex-1">
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">New Project</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <h3 className="font-semibold text-gray-900 mb-1">New Project</h3>
+                                <p className="text-sm text-gray-600">
                                     Create a new project report with AI assistance
                                 </p>
                             </div>
@@ -196,8 +196,8 @@ export default function DashboardPage() {
                                 </svg>
                             </div>
                             <div className="ml-4 flex-1">
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">View Projects</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <h3 className="font-semibold text-gray-900 mb-1">View Projects</h3>
+                                <p className="text-sm text-gray-600">
                                     Browse and manage all project reports
                                 </p>
                             </div>
@@ -217,8 +217,8 @@ export default function DashboardPage() {
                                 </svg>
                             </div>
                             <div className="ml-4 flex-1">
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Financial Records</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <h3 className="font-semibold text-gray-900 mb-1">Financial Records</h3>
+                                <p className="text-sm text-gray-600">
                                     Track income and expenses
                                 </p>
                             </div>
@@ -236,8 +236,8 @@ export default function DashboardPage() {
                                 </svg>
                             </div>
                             <div className="ml-4 flex-1">
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Meetings</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <h3 className="font-semibold text-gray-900 mb-1">Meetings</h3>
+                                <p className="text-sm text-gray-600">
                                     Manage meeting minutes and attendance
                                 </p>
                             </div>
@@ -255,8 +255,8 @@ export default function DashboardPage() {
                                 </svg>
                             </div>
                             <div className="ml-4 flex-1">
-                                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">Events</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                <h3 className="font-semibold text-gray-900 mb-1">Events</h3>
+                                <p className="text-sm text-gray-600">
                                     Plan and track club events
                                 </p>
                             </div>
@@ -276,8 +276,8 @@ export default function DashboardPage() {
                                     <GraduationCap className="w-7 h-7 text-purple-600 icon-hover-scale" />
                                 </div>
                                 <div className="ml-4 flex-1">
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">D2 Classroom</h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    <h3 className="font-semibold text-gray-900 mb-1">D2 Classroom</h3>
+                                    <p className="text-sm text-gray-600">
                                         Access study guides & docs
                                     </p>
                                 </div>
@@ -290,16 +290,16 @@ export default function DashboardPage() {
 
                     {user?.role === 'admin' && (
                         <div className="md:col-span-2 lg:col-span-3 mt-8">
-                            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between">
+                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 flex items-center justify-between">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center">
-                                        <svg className="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
                                         </svg>
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Admin Panel</h3>
-                                        <p className="text-gray-600 dark:text-gray-400">Manage club accounts and system settings</p>
+                                        <h3 className="text-lg font-semibold text-gray-900">Admin Panel</h3>
+                                        <p className="text-gray-600">Manage club accounts and system settings</p>
                                     </div>
                                 </div>
                                 <Link
