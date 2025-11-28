@@ -31,9 +31,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         document.documentElement.classList.toggle('dark', newTheme === 'dark');
     };
 
-    if (!isMounted) {
-        return <>{children}</>;
-    }
+    // Avoid hydration mismatch by only rendering after mount, 
+    // BUT we must provide the context even if not mounted yet for SSR to work.
+    // The theme will be 'light' initially on server.
 
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
