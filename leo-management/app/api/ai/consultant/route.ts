@@ -29,8 +29,8 @@ export async function POST(request: NextRequest) {
 
             const consultation = await getProjectConsultation(
                 projectIdea,
-                awardDoc?.content,
-                contestDoc?.content
+                awardDoc?.content ?? undefined,
+                contestDoc?.content ?? undefined
             );
 
             // Save to chat history
