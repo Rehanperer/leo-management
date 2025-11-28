@@ -18,14 +18,13 @@ export async function PUT(request: NextRequest) {
 
             const { clubName, district } = await req.json();
 
-            // In a real app, we might have a separate Club model.
-            // For now, we'll update the admin's clubName as a proxy for the system setting,
-            // or just return success since we don't have a Club table yet.
-            // Let's assume we update the user's clubName for now.
+            if (!auth.clubId) {
+                return NextResponse.json({ error: 'User is not associated with a club' }, { status: 400 });
+            }
 
-            await prisma.user.update({
-                where: { id: auth.userId },
-                data: { clubName },
+            await prisma.club.update({
+                where: { id: auth.clubId },
+                data: { name: clubName },
             });
 
             return NextResponse.json({ message: 'Club settings updated successfully' });
