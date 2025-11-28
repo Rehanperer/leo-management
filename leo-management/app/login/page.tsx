@@ -132,7 +132,8 @@ export default function LoginPage() {
 
                 {/* Footer */}
                 <div className="text-center mt-8 text-white/80 text-sm">
-                    <p>© 2024 Leo Management System. All rights reserved.</p>
+                    <p>© 2025 Leo Management System. All rights reserved.</p>
+                    <p className="mt-1 text-xs opacity-75">Website made by Rehan Perera</p>
                 </div>
             </div>
         </div>

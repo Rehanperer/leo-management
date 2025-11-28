@@ -278,6 +278,12 @@ export default function DashboardPage() {
                         </Link>
                     )}
                 </div>
+
+                {/* Footer */}
+                <div className="mt-12 text-center text-gray-500 text-sm">
+                    <p>© 2025 Leo Management System. All rights reserved.</p>
+                    <p className="mt-1 text-xs">Website made by Rehan Perera</p>
+                </div>
             </main>
         </div>
     );
