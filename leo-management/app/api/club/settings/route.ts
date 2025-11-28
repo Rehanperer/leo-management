@@ -1,4 +1,3 @@
-```typescript
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { withAuth } from '@/lib/middleware';
@@ -23,7 +22,7 @@ export async function PUT(request: NextRequest) {
             // For now, we'll update the admin's clubName as a proxy for the system setting,
             // or just return success since we don't have a Club table yet.
             // Let's assume we update the user's clubName for now.
-            
+
             await prisma.user.update({
                 where: { id: auth.userId },
                 data: { clubName },
@@ -36,4 +35,3 @@ export async function PUT(request: NextRequest) {
         }
     });
 }
-```
