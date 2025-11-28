@@ -1,7 +1,9 @@
 import Groq from 'groq-sdk';
 
+const apiKey = process.env.GROQ_API_KEY;
+
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY,
+    apiKey: apiKey || 'dummy_key', // Prevent SDK initialization error if key is missing
 });
 
 export interface ChatMessage {
@@ -22,6 +24,10 @@ export async function chat(
     messages: ChatMessage[],
     options: AIServiceOptions = {}
 ): Promise<string> {
+    if (!apiKey) {
+        throw new Error('GROQ_API_KEY is not set in environment variables');
+    }
+
     const {
         model = 'llama-3.3-70b-versatile',
         temperature = 0.7,
@@ -37,9 +43,12 @@ export async function chat(
         });
 
         return completion.choices[0]?.message?.content || '';
-    } catch (error) {
+    } catch (error: any) {
         console.error('Groq API error:', error);
-        throw new Error('Failed to get AI response');
+        if (error?.status === 401) {
+            throw new Error('Invalid Groq API Key');
+        }
+        throw new Error(error.message || 'Failed to get AI response');
     }
 }
 

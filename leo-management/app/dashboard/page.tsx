@@ -8,11 +8,31 @@ import Link from 'next/link';
 export default function DashboardPage() {
     const { user, logout, isLoading } = useAuth();
     const router = useRouter();
-    const [stats, setStats] = useState({ projects: 0, meetings: 0, events: 0 });
+    const [stats, setStats] = useState({ projects: 0, meetings: 0, events: 0, budget: 0 });
 
     useEffect(() => {
         if (!isLoading && !user) {
             router.push('/login');
+            return;
+        }
+
+        const fetchStats = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/dashboard/stats', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setStats(data.stats);
+                }
+            } catch (error) {
+                console.error('Failed to fetch stats:', error);
+            }
+        };
+
+        if (user) {
+            fetchStats();
         }
     }, [user, isLoading, router]);
 
@@ -77,7 +97,7 @@ export default function DashboardPage() {
                         <div className="text-green-100 mt-1">Events</div>
                     </div>
                     <div className="card bg-gradient-to-br from-purple-500 to-purple-700 text-white">
-                        <div className="text-3xl font-bold">$0</div>
+                        <div className="text-3xl font-bold">${stats.budget.toFixed(2)}</div>
                         <div className="text-purple-100 mt-1">Budget Balance</div>
                     </div>
                 </div>

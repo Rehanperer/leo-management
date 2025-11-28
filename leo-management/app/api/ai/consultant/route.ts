@@ -48,8 +48,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ consultation });
         } catch (error) {
             console.error('Project consultation error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to get project consultation';
             return NextResponse.json(
-                { error: 'Failed to get project consultation' },
+                { error: errorMessage },
                 { status: 500 }
             );
         }

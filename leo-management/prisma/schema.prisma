@@ -1,3 +1,4 @@
+
 // This is your Prisma schema file
 
 generator client {
@@ -6,6 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {

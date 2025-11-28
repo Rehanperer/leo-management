@@ -34,8 +34,9 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ suggestion });
         } catch (error) {
             console.error('Form assist error:', error);
+            const errorMessage = error instanceof Error ? error.message : 'Failed to get AI assistance';
             return NextResponse.json(
-                { error: 'Failed to get AI assistance' },
+                { error: errorMessage },
                 { status: 500 }
             );
         }
