@@ -72,6 +72,7 @@ model Project {
   
   user             User              @relation(fields: [createdBy], references: [id])
   financialRecords FinancialRecord[]
+  meetings         Meeting[]
 }
 
 model FinancialRecord {
@@ -94,17 +95,29 @@ model FinancialRecord {
 }
 
 model Meeting {
-  id        String   @id @default(uuid())
-  clubId    String
-  club      Club     @relation(fields: [clubId], references: [id])
-  title     String
-  date      DateTime
-  venue     String?
-  agenda    String?  // Text or JSON
-  minutes   String?  // Text
-  attendees String?  // JSON string of attendee names
-  createdBy String
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  clubId      String
+  club        Club     @relation(fields: [clubId], references: [id])
+  title       String
+  date        DateTime
+  startTime   String?  // e.g., "14:00"
+  endTime     String?  // e.g., "16:00"
+  venue       String?
+  type        String   @default("General") // General, Board, Project, Emergency, etc.
+  status      String   @default("scheduled") // scheduled, completed, cancelled
+  summary     String?  // Short summary
+  agenda      String?  // JSON string: [{ title, presenter, duration, outcomes }]
+  minutes     String?  // Text content
+  attendees   String?  // JSON string: { present: [], absent: [], guests: [] }
+  documents   String?  // JSON string: [{ title, url, type }]
+  actionItems String?  // JSON string: [{ task, assignee, deadline, status }]
+  
+  projectId   String?
+  project     Project? @relation(fields: [projectId], references: [id])
+  
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   
   user User @relation(fields: [createdBy], references: [id])
 }
