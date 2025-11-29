@@ -83,6 +83,20 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                 if (response.ok) {
                     const data = await response.json();
                     setEvent(data.event);
+
+                    // Helper to safely parse JSON that might already be an object
+                    const safeParse = (value: any, fallback: any = []) => {
+                        if (!value) return fallback;
+                        if (typeof value === 'string') {
+                            try {
+                                return JSON.parse(value);
+                            } catch {
+                                return fallback;
+                            }
+                        }
+                        return value; // Already an object
+                    };
+
                     // Populate edit form
                     setEditForm({
                         title: data.event.title || '',
@@ -97,9 +111,10 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                         highlight: data.event.highlight || false,
                         mood: data.event.mood || '🌟',
                     });
-                    setEditGoals(data.event.goals ? JSON.parse(data.event.goals) : []);
-                    setEditCollaborators(data.event.collaborators ? JSON.parse(data.event.collaborators) : []);
-                    const metrics = data.event.impactMetrics ? JSON.parse(data.event.impactMetrics) : {};
+
+                    setEditGoals(safeParse(data.event.goals, []));
+                    setEditCollaborators(safeParse(data.event.collaborators, []));
+                    const metrics = safeParse(data.event.impactMetrics, {});
                     setEditImpact({
                         beneficiaries: metrics.beneficiaries || '',
                         fundsRaised: metrics.fundsRaised || ''
@@ -119,10 +134,23 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
     if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     if (!event) return null;
 
-    const goals: Goal[] = event.goals ? JSON.parse(event.goals) : [];
-    const collaborators: Collaborator[] = event.collaborators ? JSON.parse(event.collaborators) : [];
-    const documents: DocumentItem[] = event.documents ? JSON.parse(event.documents) : [];
-    const impactMetrics = event.impactMetrics ? JSON.parse(event.impactMetrics) : {};
+    // Helper to safely parse JSON that might already be an object
+    const safeParse = (value: any, fallback: any = []) => {
+        if (!value) return fallback;
+        if (typeof value === 'string') {
+            try {
+                return JSON.parse(value);
+            } catch {
+                return fallback;
+            }
+        }
+        return value; // Already an object
+    };
+
+    const goals: Goal[] = safeParse(event.goals, []);
+    const collaborators: Collaborator[] = safeParse(event.collaborators, []);
+    const documents: DocumentItem[] = safeParse(event.documents, []);
+    const impactMetrics = safeParse(event.impactMetrics, {});
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -216,9 +244,9 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                 highlight: event.highlight || false,
                 mood: event.mood || '🌟',
             });
-            setEditGoals(event.goals ? JSON.parse(event.goals) : []);
-            setEditCollaborators(event.collaborators ? JSON.parse(event.collaborators) : []);
-            const metrics = event.impactMetrics ? JSON.parse(event.impactMetrics) : {};
+            setEditGoals(safeParse(event.goals, []));
+            setEditCollaborators(safeParse(event.collaborators, []));
+            const metrics = safeParse(event.impactMetrics, {});
             setEditImpact({
                 beneficiaries: metrics.beneficiaries || '',
                 fundsRaised: metrics.fundsRaised || ''
