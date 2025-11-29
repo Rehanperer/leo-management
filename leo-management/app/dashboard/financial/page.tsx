@@ -457,41 +457,76 @@ export default function FinancialPage() {
                         </form>
                     </div>
 
-                    <div className="card">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Projected Expenses</h3>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
-                                    <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estimated Amount</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
-                                    {records.filter(r => r.status === 'projected').map((record) => (
-                                        <tr key={record.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.project?.title || '-'}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.description}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.category}</td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-red-600">
-                                                ${record.amount}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                                    Projected
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    {records.filter(r => r.status === 'projected').length === 0 && (
-                                        <tr><td colSpan={5} className="text-center py-4 text-gray-500">No projected expenses found</td></tr>
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                    <div className="space-y-6">
+                        <h3 className="text-lg font-semibold text-gray-900">Project Budgets</h3>
+
+                        {(() => {
+                            // Group projected expenses by project
+                            const projectBudgets = projects.map(project => {
+                                const projectExpenses = records.filter(r =>
+                                    r.status === 'projected' && r.project?.title === project.title
+                                );
+                                const totalBudget = projectExpenses.reduce((sum, r) => sum + r.amount, 0);
+
+                                return {
+                                    project,
+                                    expenses: projectExpenses,
+                                    totalBudget
+                                };
+                            }).filter(pb => pb.expenses.length > 0);
+
+                            if (projectBudgets.length === 0) {
+                                return (
+                                    <div className="card text-center py-8 text-gray-500">
+                                        No budgets found. Create a budget above to get started.
+                                    </div>
+                                );
+                            }
+
+                            return projectBudgets.map(({ project, expenses, totalBudget }) => (
+                                <div key={project.id} className="card">
+                                    <div className="flex justify-between items-start mb-4 pb-4 border-b border-gray-200">
+                                        <div>
+                                            <h4 className="text-lg font-semibold text-gray-900">{project.title}</h4>
+                                            <p className="text-sm text-gray-500">{expenses.length} budget item{expenses.length !== 1 ? 's' : ''}</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-sm font-medium text-gray-600">Total Estimated Budget</p>
+                                            <p className="text-2xl font-bold text-leo-600">${totalBudget.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="overflow-x-auto">
+                                        <table className="min-w-full divide-y divide-gray-200">
+                                            <thead className="bg-gray-50">
+                                                <tr>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="bg-white divide-y divide-gray-200">
+                                                {expenses.map((record) => (
+                                                    <tr key={record.id}>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.description}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.category}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                            ${record.amount.toLocaleString()}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                                                Projected
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            ));
+                        })()}
                     </div>
                 </div>
             )}
