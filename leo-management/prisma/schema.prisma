@@ -131,10 +131,20 @@ model Event {
   startDate    DateTime
   endDate      DateTime?
   venue        String?
+  type         String   @default("General") // Community Service, Fundraising, etc.
   status       String   @default("planned") // planned, ongoing, completed
+  startTime    String?
+  endTime      String?
+  goals        String?  // JSON string: [{ objective, target, achieved }]
+  impactMetrics String? // JSON string: { beneficiaries, fundsRaised, etc. }
+  collaborators String? // JSON string: [{ name, role, type }]
+  documents    String?  // JSON string: [{ name, url, type }]
+  highlight    Boolean  @default(false)
+  mood         String?  // Icon/Theme identifier
   participants Int?
   createdBy    String
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   
   user User @relation(fields: [createdBy], references: [id])
 }
