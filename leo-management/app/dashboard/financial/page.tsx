@@ -104,9 +104,18 @@ export default function FinancialPage() {
     const handleCreateBudget = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Authentication required. Please log in again.');
+                return;
+            }
+
             const response = await fetch('/api/financial', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     ...budgetForm,
                     type: 'expense',
