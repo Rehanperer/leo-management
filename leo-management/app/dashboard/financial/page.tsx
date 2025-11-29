@@ -48,14 +48,27 @@ export default function FinancialPage() {
     const fetchRecords = async () => {
         setIsLoading(true);
         try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No authentication token found');
+                setIsLoading(false);
+                return;
+            }
+
             const params = new URLSearchParams();
             if (filterType !== 'all') params.append('type', filterType);
             if (filterMonth !== 'all') params.append('month', filterMonth);
 
-            const response = await fetch(`/api/financial?${params.toString()}`);
+            const response = await fetch(`/api/financial?${params.toString()}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (response.ok) {
                 const data = await response.json();
                 setRecords(data.records);
+            } else {
+                console.error('Failed to fetch records:', response.status);
             }
         } catch (error) {
             console.error('Error fetching records:', error);
@@ -66,10 +79,22 @@ export default function FinancialPage() {
 
     const fetchProjects = async () => {
         try {
-            const response = await fetch('/api/projects');
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No authentication token found');
+                return;
+            }
+
+            const response = await fetch('/api/projects', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             if (response.ok) {
                 const data = await response.json();
                 setProjects(data.projects);
+            } else {
+                console.error('Failed to fetch projects:', response.status);
             }
         } catch (error) {
             console.error('Error fetching projects:', error);
@@ -190,8 +215,8 @@ export default function FinancialPage() {
                             key={tab}
                             onClick={() => setActiveTab(tab as any)}
                             className={`pb-4 px-1 border-b-2 font-medium text-sm capitalize ${activeTab === tab
-                                    ? 'border-leo-600 text-leo-600'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                ? 'border-leo-600 text-leo-600'
+                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                 }`}
                         >
                             {tab === 'projects' ? 'Project View' : tab}
@@ -230,8 +255,8 @@ export default function FinancialPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${record.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                                        record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                            'bg-blue-100 text-blue-800'
+                                                    record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                        'bg-blue-100 text-blue-800'
                                                     }`}>
                                                     {record.status}
                                                 </span>
@@ -300,8 +325,8 @@ export default function FinancialPage() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${record.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                                        record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                            'bg-blue-100 text-blue-800'
+                                                    record.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                                        'bg-blue-100 text-blue-800'
                                                     }`}>
                                                     {record.status}
                                                 </span>

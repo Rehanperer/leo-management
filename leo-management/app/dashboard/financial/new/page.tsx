@@ -27,10 +27,22 @@ export default function NewFinancialRecordPage() {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await fetch('/api/projects');
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('No authentication token found');
+                    return;
+                }
+
+                const response = await fetch('/api/projects', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 if (response.ok) {
                     const data = await response.json();
                     setProjects(data.projects);
+                } else {
+                    console.error('Failed to fetch projects:', response.status);
                 }
             } catch (error) {
                 console.error('Error fetching projects:', error);
