@@ -81,6 +81,7 @@ model FinancialRecord {
   projectId   String?
   project     Project? @relation(fields: [projectId], references: [id])
   type        String   // "income" or "expense"
+  status      String   @default("completed") // "completed", "pending", "projected"
   category    String
   amount      Float
   description String?
