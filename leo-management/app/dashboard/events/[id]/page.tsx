@@ -47,8 +47,30 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
     const router = useRouter();
     const [event, setEvent] = useState<Event | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [activeTab, setActiveTab] = useState<'overview' | 'impact' | 'docs'>('overview');
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Edit form state
+    const [editForm, setEditForm] = useState({
+        title: '',
+        description: '',
+        venue: '',
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        status: '',
+        type: '',
+        highlight: false,
+        mood: '',
+    });
+
+    // Dynamic lists for editing
+    const [editGoals, setEditGoals] = useState<Goal[]>([]);
+    const [editCollaborators, setEditCollaborators] = useState<Collaborator[]>([]);
+    const [editImpact, setEditImpact] = useState({ beneficiaries: '', fundsRaised: '' });
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -61,6 +83,27 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                 if (response.ok) {
                     const data = await response.json();
                     setEvent(data.event);
+                    // Populate edit form
+                    setEditForm({
+                        title: data.event.title || '',
+                        description: data.event.description || '',
+                        venue: data.event.venue || '',
+                        startDate: data.event.startDate?.split('T')[0] || '',
+                        endDate: data.event.endDate?.split('T')[0] || '',
+                        startTime: data.event.startTime || '',
+                        endTime: data.event.endTime || '',
+                        status: data.event.status || 'planned',
+                        type: data.event.type || 'General',
+                        highlight: data.event.highlight || false,
+                        mood: data.event.mood || '🌟',
+                    });
+                    setEditGoals(data.event.goals ? JSON.parse(data.event.goals) : []);
+                    setEditCollaborators(data.event.collaborators ? JSON.parse(data.event.collaborators) : []);
+                    const metrics = data.event.impactMetrics ? JSON.parse(data.event.impactMetrics) : {};
+                    setEditImpact({
+                        beneficiaries: metrics.beneficiaries || '',
+                        fundsRaised: metrics.fundsRaised || ''
+                    });
                 } else {
                     router.push('/dashboard/events');
                 }
@@ -133,6 +176,84 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
         }
     };
 
+    const handleSaveEdit = async () => {
+        setIsSaving(true);
+        try {
+            await updateEvent({
+                ...editForm,
+                startDate: new Date(editForm.startDate).toISOString(),
+                endDate: editForm.endDate ? new Date(editForm.endDate).toISOString() : undefined,
+                goals: JSON.stringify(editGoals),
+                collaborators: JSON.stringify(editCollaborators),
+                impactMetrics: JSON.stringify({
+                    beneficiaries: editImpact.beneficiaries,
+                    fundsRaised: editImpact.fundsRaised
+                })
+            });
+            setIsEditing(false);
+        } catch (error) {
+            console.error('Save error:', error);
+            alert('Failed to save changes');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
+        // Reset form to current event data
+        if (event) {
+            setEditForm({
+                title: event.title || '',
+                description: event.description || '',
+                venue: event.venue || '',
+                startDate: event.startDate?.split('T')[0] || '',
+                endDate: event.endDate?.split('T')[0] || '',
+                startTime: event.startTime || '',
+                endTime: event.endTime || '',
+                status: event.status || 'planned',
+                type: event.type || 'General',
+                highlight: event.highlight || false,
+                mood: event.mood || '🌟',
+            });
+            setEditGoals(event.goals ? JSON.parse(event.goals) : []);
+            setEditCollaborators(event.collaborators ? JSON.parse(event.collaborators) : []);
+            const metrics = event.impactMetrics ? JSON.parse(event.impactMetrics) : {};
+            setEditImpact({
+                beneficiaries: metrics.beneficiaries || '',
+                fundsRaised: metrics.fundsRaised || ''
+            });
+        }
+    };
+
+    const handleAddGoal = () => {
+        setEditGoals([...editGoals, { objective: '', target: '' }]);
+    };
+
+    const handleRemoveGoal = (index: number) => {
+        setEditGoals(editGoals.filter((_, i) => i !== index));
+    };
+
+    const handleGoalChange = (index: number, field: keyof Goal, value: string) => {
+        const newGoals = [...editGoals];
+        newGoals[index][field] = value;
+        setEditGoals(newGoals);
+    };
+
+    const handleAddCollaborator = () => {
+        setEditCollaborators([...editCollaborators, { name: '', role: '', type: 'Leo Club' }]);
+    };
+
+    const handleRemoveCollaborator = (index: number) => {
+        setEditCollaborators(editCollaborators.filter((_, i) => i !== index));
+    };
+
+    const handleCollaboratorChange = (index: number, field: keyof Collaborator, value: string) => {
+        const newCollaborators = [...editCollaborators];
+        newCollaborators[index][field] = value;
+        setEditCollaborators(newCollaborators);
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 pb-12">
             {/* Header */}
@@ -154,31 +275,109 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                                     </span>
                                 )}
                             </div>
-                            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                                {event.mood && <span className="text-4xl">{event.mood}</span>}
-                                {event.title}
-                            </h1>
+                            {isEditing ? (
+                                <input
+                                    type="text"
+                                    value={editForm.title}
+                                    onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
+                                    className="text-3xl font-bold text-gray-900 border-b-2 border-leo-500 focus:outline-none bg-transparent w-full"
+                                />
+                            ) : (
+                                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+                                    {event.mood && <span className="text-4xl">{event.mood}</span>}
+                                    {event.title}
+                                </h1>
+                            )}
                             <div className="flex flex-wrap gap-6 mt-4 text-gray-600">
                                 <div className="flex items-center gap-2">
                                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                                    {new Date(event.startDate).toLocaleDateString()}
-                                    {event.startTime && ` • ${event.startTime}`}
+                                    {isEditing ? (
+                                        <input
+                                            type="date"
+                                            value={editForm.startDate}
+                                            onChange={(e) => setEditForm({ ...editForm, startDate: e.target.value })}
+                                            className="input-sm"
+                                        />
+                                    ) : (
+                                        <>{new Date(event.startDate).toLocaleDateString()}</>
+                                    )}
+                                    {isEditing ? (
+                                        <input
+                                            type="time"
+                                            value={editForm.startTime}
+                                            onChange={(e) => setEditForm({ ...editForm, startTime: e.target.value })}
+                                            className="input-sm"
+                                        />
+                                    ) : (
+                                        <>{event.startTime && ` • ${event.startTime}`}</>
+                                    )}
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                    {event.venue}
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={editForm.venue}
+                                            onChange={(e) => setEditForm({ ...editForm, venue: e.target.value })}
+                                            className="input-sm"
+                                            placeholder="Venue"
+                                        />
+                                    ) : (
+                                        <>{event.venue}</>
+                                    )}
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className={`w-2.5 h-2.5 rounded-full ${event.status === 'completed' ? 'bg-green-500' :
-                                            event.status === 'ongoing' ? 'bg-blue-500' : 'bg-yellow-500'
-                                        }`}></span>
-                                    <span className="capitalize">{event.status}</span>
+                                    {isEditing ? (
+                                        <select
+                                            value={editForm.status}
+                                            onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
+                                            className="input-sm"
+                                        >
+                                            <option value="planned">Planned</option>
+                                            <option value="ongoing">Ongoing</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
+                                    ) : (
+                                        <>
+                                            <span className={`w-2.5 h-2.5 rounded-full ${event.status === 'completed' ? 'bg-green-500' :
+                                                event.status === 'ongoing' ? 'bg-blue-500' : 'bg-yellow-500'
+                                                }`}></span>
+                                            <span className="capitalize">{event.status}</span>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
 
                         <div className="flex gap-3">
-                            {/* Actions like Edit could go here */}
+                            {!isEditing ? (
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="btn btn-outline flex items-center gap-2"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Edit Event
+                                </button>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={handleCancelEdit}
+                                        className="btn btn-secondary"
+                                        disabled={isSaving}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleSaveEdit}
+                                        className="btn btn-primary"
+                                        disabled={isSaving}
+                                    >
+                                        {isSaving ? 'Saving...' : 'Save Changes'}
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -191,8 +390,8 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                                 key={tab}
                                 onClick={() => setActiveTab(tab as any)}
                                 className={`${activeTab === tab
-                                        ? 'border-leo-500 text-leo-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    ? 'border-leo-500 text-leo-600'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                     } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm capitalize`}
                             >
                                 {tab === 'docs' ? 'Documents' : tab === 'impact' ? 'Goals & Impact' : tab}
@@ -210,9 +409,19 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                             <div className="space-y-8 animate-fade-in">
                                 <div className="card">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">About the Event</h3>
-                                    <p className="text-gray-600 whitespace-pre-wrap leading-relaxed">
-                                        {event.description || 'No description provided.'}
-                                    </p>
+                                    {isEditing ? (
+                                        <textarea
+                                            value={editForm.description}
+                                            onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                                            className="input w-full"
+                                            rows={4}
+                                            placeholder="Event description..."
+                                        />
+                                    ) : (
+                                        <p className="text-gray-600 whitespace-pre-wrap leading-relaxed">
+                                            {event.description || 'No description provided.'}
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="card">
@@ -245,32 +454,93 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="card bg-gradient-to-br from-blue-50 to-white border-blue-100">
                                         <h4 className="text-sm font-medium text-blue-800 uppercase tracking-wide mb-1">Beneficiaries</h4>
-                                        <p className="text-3xl font-bold text-gray-900">{impactMetrics.beneficiaries || '0'}</p>
-                                        <p className="text-xs text-gray-500 mt-2">People impacted by this project</p>
+                                        {isEditing ? (
+                                            <input
+                                                type="number"
+                                                value={editImpact.beneficiaries}
+                                                onChange={(e) => setEditImpact({ ...editImpact, beneficiaries: e.target.value })}
+                                                className="input w-full mt-2"
+                                                placeholder="0"
+                                            />
+                                        ) : (
+                                            <>
+                                                <p className="text-3xl font-bold text-gray-900">{impactMetrics.beneficiaries || '0'}</p>
+                                                <p className="text-xs text-gray-500 mt-2">People impacted by this project</p>
+                                            </>
+                                        )}
                                     </div>
                                     <div className="card bg-gradient-to-br from-green-50 to-white border-green-100">
                                         <h4 className="text-sm font-medium text-green-800 uppercase tracking-wide mb-1">Funds Raised</h4>
-                                        <p className="text-3xl font-bold text-gray-900">LKR {impactMetrics.fundsRaised || '0'}</p>
-                                        <p className="text-xs text-gray-500 mt-2">Total funds generated</p>
+                                        {isEditing ? (
+                                            <input
+                                                type="number"
+                                                value={editImpact.fundsRaised}
+                                                onChange={(e) => setEditImpact({ ...editImpact, fundsRaised: e.target.value })}
+                                                className="input w-full mt-2"
+                                                placeholder="0.00"
+                                            />
+                                        ) : (
+                                            <>
+                                                <p className="text-3xl font-bold text-gray-900">LKR {impactMetrics.fundsRaised || '0'}</p>
+                                                <p className="text-xs text-gray-500 mt-2">Total funds generated</p>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
 
                                 <div className="card">
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-6">Goals vs. Achievements</h3>
+                                    <div className="flex justify-between items-center mb-6">
+                                        <h3 className="text-lg font-semibold text-gray-900">Goals vs. Achievements</h3>
+                                        {isEditing && (
+                                            <button type="button" onClick={handleAddGoal} className="text-sm text-leo-600 hover:text-leo-700 font-medium">
+                                                + Add Goal
+                                            </button>
+                                        )}
+                                    </div>
                                     <div className="space-y-6">
-                                        {goals.map((goal, i) => (
-                                            <div key={i}>
-                                                <div className="flex justify-between items-end mb-2">
-                                                    <span className="font-medium text-gray-900">{goal.objective}</span>
-                                                    <span className="text-sm text-gray-500">Target: {goal.target}</span>
-                                                </div>
-                                                <div className="w-full bg-gray-100 rounded-full h-2.5">
-                                                    <div className="bg-leo-600 h-2.5 rounded-full w-0 animate-pulse" style={{ width: '0%' }}></div>
-                                                    {/* Progress bar logic would go here if we had 'achieved' value */}
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {goals.length === 0 && <p className="text-gray-500 italic">No specific goals set.</p>}
+                                        {isEditing ? (
+                                            <>
+                                                {editGoals.map((goal, i) => (
+                                                    <div key={i} className="flex gap-4 items-start">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Objective"
+                                                            className="input flex-1"
+                                                            value={goal.objective}
+                                                            onChange={(e) => handleGoalChange(i, 'objective', e.target.value)}
+                                                        />
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Target"
+                                                            className="input w-1/3"
+                                                            value={goal.target}
+                                                            onChange={(e) => handleGoalChange(i, 'target', e.target.value)}
+                                                        />
+                                                        <button type="button" onClick={() => handleRemoveGoal(i)} className="text-red-500 hover:text-red-700 p-2">
+                                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                                {editGoals.length === 0 && <p className="text-gray-500 italic">No goals added yet.</p>}
+                                            </>
+                                        ) : (
+                                            <>
+                                                {goals.map((goal, i) => (
+                                                    <div key={i}>
+                                                        <div className="flex justify-between items-end mb-2">
+                                                            <span className="font-medium text-gray-900">{goal.objective}</span>
+                                                            <span className="text-sm text-gray-500">Target: {goal.target}</span>
+                                                        </div>
+                                                        <div className="w-full bg-gray-100 rounded-full h-2.5">
+                                                            <div className="bg-leo-600 h-2.5 rounded-full w-0 animate-pulse" style={{ width: '0%' }}></div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                                {goals.length === 0 && <p className="text-gray-500 italic">No specific goals set.</p>}
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             </div>
