@@ -1,12 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+
+interface Project {
+    id: string;
+    title: string;
+}
 
 export default function NewFinancialRecordPage() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const [projects, setProjects] = useState<Project[]>([]);
     const [formData, setFormData] = useState({
         type: 'expense',
         status: 'completed',
@@ -18,6 +24,21 @@ export default function NewFinancialRecordPage() {
         receipt: null as string | null,
     });
 
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await fetch('/api/projects');
+                if (response.ok) {
+                    const data = await response.json();
+                    setProjects(data.projects);
+                }
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        };
+        fetchProjects();
+    }, []);
+
     const categories = {
         income: ['Donation', 'Sponsorship', 'Fundraiser', 'Membership Fees', 'Grant', 'Other'],
         expense: ['Supplies', 'Transport', 'Venue', 'Food & Beverage', 'Marketing', 'Equipment', 'Other'],
@@ -26,6 +47,11 @@ export default function NewFinancialRecordPage() {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                e.target.value = '';
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setFormData({ ...formData, receipt: reader.result as string });
@@ -155,9 +181,9 @@ export default function NewFinancialRecordPage() {
                                 onChange={(e) => setFormData({ ...formData, projectId: e.target.value })}
                             >
                                 <option value="">No Project</option>
-                                {/* TODO: Populate with real projects */}
-                                <option value="1">Health Camp</option>
-                                <option value="2">Annual Gala</option>
+                                {projects.map((project) => (
+                                    <option key={project.id} value={project.id}>{project.title}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
@@ -229,3 +255,4 @@ export default function NewFinancialRecordPage() {
         </div>
     );
 }
+
