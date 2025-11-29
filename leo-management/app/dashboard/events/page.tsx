@@ -202,7 +202,7 @@ export default function EventsPage() {
                                 </div>
 
                                 {/* Card */}
-                                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all ml-16 md:ml-0">
+                                <Link href={`/dashboard/events/${event.id}`} className="block w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all ml-16 md:ml-0 cursor-pointer">
                                     <div className="flex justify-between items-start mb-4">
                                         <span className={`px-2 py-1 text-xs font-medium rounded-full uppercase tracking-wide ${event.status === 'completed' ? 'bg-green-100 text-green-800' :
                                                 event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
@@ -213,9 +213,7 @@ export default function EventsPage() {
                                         <span className="text-sm text-gray-500 font-medium">{event.type}</span>
                                     </div>
                                     <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-leo-600 transition-colors">
-                                        <Link href={`/dashboard/events/${event.id}`}>
-                                            {event.title}
-                                        </Link>
+                                        {event.title}
                                     </h3>
                                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{event.description}</p>
 
@@ -233,7 +231,7 @@ export default function EventsPage() {
                                             {event.venue}
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         ))}
                     </div>
