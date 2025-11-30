@@ -195,9 +195,6 @@ model Mindmap {
   entityType  String?  // "project", "meeting", "event", or null for standalone
   entityId    String?  // ID of the linked entity
   
-  // Template used (if any)
-  templateId  String?
-  
   createdBy   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -206,14 +203,4 @@ model Mindmap {
   @@index([entityType, entityId])
 }
 
-model MindmapTemplate {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  category    String   // "project", "event", "meeting", "fundraising", etc.
-  content     String   @db.Text  // Markdown template
-  isPublic    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  
-  @@index([category])
-}
+

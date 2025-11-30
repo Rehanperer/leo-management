@@ -162,9 +162,15 @@ export function exportAsSummary(mindmap: MindmapData): string {
 }
 
 // Build hierarchical structure from flat nodes
-export function buildHierarchy(nodes: MindmapNodeData[]): any[] {
-    const nodeMap = new Map(nodes.map(n => [n.id, { ...n, children: [] }]));
-    const roots: any[] = [];
+export interface HierarchicalNode extends MindmapNodeData {
+    children: HierarchicalNode[];
+}
+
+export function buildHierarchy(nodes: MindmapNodeData[]): HierarchicalNode[] {
+    const nodeMap = new Map<string, HierarchicalNode>(
+        nodes.map(n => [n.id, { ...n, children: [] }])
+    );
+    const roots: HierarchicalNode[] = [];
 
     nodes.forEach(node => {
         const nodeWithChildren = nodeMap.get(node.id);

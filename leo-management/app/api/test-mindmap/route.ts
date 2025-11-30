@@ -11,10 +11,8 @@ export async function POST(request: NextRequest) {
                 clubId: 'test-club',
                 title: 'Simple Test',
                 description: 'Test description',
+                content: '# Simple Test\n\n## Main Idea\n- Task 1\n- Task 2',
                 createdBy: 'test-user',
-                viewportX: 0,
-                viewportY: 0,
-                viewportZoom: 1,
             },
         });
 

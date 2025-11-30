@@ -17,8 +17,6 @@ async function main() {
                 data: {
                     name: 'Test Club',
                     code: 'TEST001',
-                    district: 'D1',
-                    region: 'R1',
                 }
             });
         }

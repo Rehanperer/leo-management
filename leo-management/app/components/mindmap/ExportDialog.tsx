@@ -49,8 +49,7 @@ export default function ExportDialog({ isOpen, onClose, mindmap, canvasRef }: Ex
         if (!canvasRef.current) return;
 
         const canvas = await html2canvas(canvasRef.current, {
-            backgroundColor: '#ffffff',
-            scale: 2,
+            background: '#ffffff',
         });
 
         const link = document.createElement('a');
@@ -63,8 +62,7 @@ export default function ExportDialog({ isOpen, onClose, mindmap, canvasRef }: Ex
         if (!canvasRef.current) return;
 
         const canvas = await html2canvas(canvasRef.current, {
-            backgroundColor: '#ffffff',
-            scale: 2,
+            background: '#ffffff',
         });
 
         const imgData = canvas.toDataURL('image/png');

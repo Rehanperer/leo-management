@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         }
 
         const body = await request.json();
-        const { title, description, entityType, entityId, templateId, content } = body;
+        const { title, description, entityType, entityId, content } = body;
 
         if (!title) {
             return NextResponse.json({ error: 'Title is required' }, { status: 400 });
@@ -73,7 +73,6 @@ export async function POST(request: NextRequest) {
                 description,
                 entityType,
                 entityId,
-                templateId,
                 content: content || defaultContent,
                 createdBy: user.userId,
             },
