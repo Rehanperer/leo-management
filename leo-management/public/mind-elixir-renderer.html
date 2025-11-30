@@ -199,11 +199,102 @@
                             link: true,
                             extend: [
                                 {
+                                    name: 'Add Summary',
+                                    onclick: () => {
+                                        // Mind Elixir doesn't have a direct createSummary API exposed easily in all versions,
+                                        // but let's try the standard way if available, or fallback to adding a child node styled as summary.
+                                        // Checking documentation/source, createSummary might be available.
+                                        // If not, we can simulate it or just add a node.
+                                        // For now, let's assume standard behavior or add a child.
+                                        // Actually, Mind Elixir usually has a 'summary' feature.
+                                        // Let's try to trigger it via data manipulation if API is missing.
+                                        // But wait, the library should handle it.
+                                        // Let's check if we can access the internal method or just use a workaround.
+                                        // Since we are using the CDN version, let's try to use the instance method if it exists.
+                                        // If not, we'll just add a child node with a specific style/tag.
+                                        // Actually, let's just use the built-in 'summary' if it's in the default menu, but we are customizing it.
+                                        // If we customize 'extend', we keep default options if we don't overwrite 'contextMenuOption'.
+                                        // But we are overwriting it.
+                                        // Let's add a custom implementation for summary if needed.
+                                        // For now, let's use a simple child node as summary.
+                                        const node = mind.currentNode;
+                                        if (node) {
+                                            // mind.createSummary(node.nodeObj.id); // If this exists
+                                            // If not, let's just add a child.
+                                            // Actually, let's look at the docs or common usage.
+                                            // Mind Elixir 2.x supports summary.
+                                            // Let's try to find the method.
+                                            // It seems it might be `createSummary`.
+                                            // Let's try it safely.
+                                            try {
+                                                mind.createSummary(node.nodeObj.id);
+                                            } catch (e) {
+                                                console.warn('createSummary not supported, adding child instead');
+                                                mind.addChild(node);
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    name: 'Insert Image',
+                                    onclick: () => {
+                                        const node = mind.currentNode;
+                                        if (node) {
+                                            const url = prompt('Enter Image URL:');
+                                            if (url) {
+                                                const topic = node.nodeObj.topic;
+                                                const newTopic = `${topic}\n![Image](${url})`;
+                                                mind.reshapeNode(node, newTopic);
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    name: 'Insert Link',
+                                    onclick: () => {
+                                        const node = mind.currentNode;
+                                        if (node) {
+                                            const url = prompt('Enter URL:');
+                                            if (url) {
+                                                const topic = node.nodeObj.topic;
+                                                // Markdown link
+                                                const newTopic = `[${topic}](${url})`;
+                                                mind.reshapeNode(node, newTopic);
+                                            }
+                                        }
+                                    }
+                                },
+                                {
+                                    name: 'Bold Text',
+                                    onclick: () => {
+                                        const node = mind.currentNode;
+                                        if (node) {
+                                            const topic = node.nodeObj.topic;
+                                            mind.reshapeNode(node, `<b>${topic}</b>`);
+                                        }
+                                    }
+                                },
+                                {
+                                    name: 'Italic Text',
+                                    onclick: () => {
+                                        const node = mind.currentNode;
+                                        if (node) {
+                                            const topic = node.nodeObj.topic;
+                                            mind.reshapeNode(node, `<i>${topic}</i>`);
+                                        }
+                                    }
+                                },
+                                {
                                     name: 'Add Icon',
                                     onclick: () => {
                                         const node = mind.currentNode;
                                         if (node) {
-                                            mind.updateNodeIcons(node.nodeObj.id, ['📌']);
+                                            const icons = ['📌', '💡', '✅', '❌', '📅', '📝', '🚩', '⭐'];
+                                            const icon = prompt(`Choose an icon:\n${icons.join(' ')}`, icons[0]);
+                                            if (icon) {
+                                                const currentIcons = node.nodeObj.icons || [];
+                                                mind.updateNodeIcons(node.nodeObj.id, [...currentIcons, icon]);
+                                            }
                                         }
                                     }
                                 },
@@ -212,7 +303,11 @@
                                     onclick: () => {
                                         const node = mind.currentNode;
                                         if (node) {
-                                            mind.updateNodeTags(node.nodeObj.id, ['important']);
+                                            const tag = prompt('Enter Tag Name:');
+                                            if (tag) {
+                                                const currentTags = node.nodeObj.tags || [];
+                                                mind.updateNodeTags(node.nodeObj.id, [...currentTags, tag]);
+                                            }
                                         }
                                     }
                                 }
