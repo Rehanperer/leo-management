@@ -107,7 +107,7 @@ export default function JsMindEmbed({ content }: JsMindEmbedProps) {
                             const mind = {
                                 "meta": {
                                     "name": "jsMind",
-                                    "author": "LeoLink",
+                                    "author": "LeoLynk",
                                     "version": "0.2"
                                 },
                                 "format": "node_tree",

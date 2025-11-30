@@ -76,7 +76,7 @@ export default function DashboardPage() {
                                 </div>
                             </div>
                             <div className="ml-4">
-                                <h1 className="text-xl font-bold text-gradient-leo">LeoLink</h1>
+                                <h1 className="text-xl font-bold text-gradient-leo">LeoLynk</h1>
                                 <p className="text-sm text-gray-600">{user?.clubName || 'Admin'}</p>
                             </div>
                         </div>
@@ -344,7 +344,7 @@ export default function DashboardPage() {
 
                 {/* Footer */}
                 <div className="mt-12 text-center text-gray-500 text-sm">
-                    <p>© 2025 LeoLink. All rights reserved.</p>
+                    <p>© 2025 LeoLynk. All rights reserved.</p>
                     <p className="mt-1 text-xs">Website made by Rehan Perera</p>
                 </div>
             </main>

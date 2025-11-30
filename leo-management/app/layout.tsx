@@ -7,7 +7,7 @@ import BotpressWebchat from "./components/BotpressWebchat";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "LeoLink",
+  title: "LeoLynk",
   description: "Comprehensive management system for Leo Clubs",
 };
 

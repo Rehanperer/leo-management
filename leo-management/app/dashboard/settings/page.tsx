@@ -288,7 +288,7 @@ export default function SettingsPage() {
 
                 {/* Footer */}
                 <div className="mt-8 text-center text-gray-500 text-sm">
-                    <p>© 2025 LeoLink. All rights reserved.</p>
+                    <p>© 2025 LeoLynk. All rights reserved.</p>
                     <p className="mt-1 text-xs">Website made by Rehan Perera</p>
                 </div>
             </main>
