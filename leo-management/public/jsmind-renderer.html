@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jsMind Renderer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsmind@0.8.5/style/jsmind.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        #jsmind_container {
+            width: 100%;
+            height: 100%;
+            background: #f8f9fa;
+        }
+
+        #status {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: monospace;
+            z-index: 1000;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="status">Loading...</div>
+    <div id="jsmind_container"></div>
+
+    <!-- Load jsMind from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/jsmind@0.8.5/es6/jsmind.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsmind@0.8.5/es6/jsmind.draggable-node.js"></script>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        let jm = null;
+
+        function updateStatus(message) {
+            statusEl.textContent = message;
+            console.log('[jsMind Renderer]', message);
+        }
+
+        function parseMarkdownToJsMind(markdown) {
+            if (!markdown || markdown.trim() === '') {
+                return { id: 'root', topic: 'Empty Mindmap', children: [] };
+            }
+
+            const lines = markdown.split('\n');
+            const root = { id: 'root', topic: 'Mindmap', children: [] };
+            const stack = [{ level: 0, node: root }];
+
+            lines.forEach((line, index) => {
+                const trimmed = line.trim();
+                if (!trimmed) return;
+
+                let level = 0;
+                let topic = '';
+
+                // Parse headers
+                if (trimmed.startsWith('#')) {
+                    const match = trimmed.match(/^(#+)\s+(.*)/);
+                    if (match) {
+                        level = match[1].length;
+                        topic = match[2];
+                    }
+                } else if (trimmed.startsWith('-')) {
+                    // Parse list items
+                    const indentMatch = line.match(/^(\s*)-/);
+                    const indent = indentMatch ? indentMatch[1].length : 0;
+                    level = Math.floor(indent / 2) + 2;
+                    topic = trimmed.replace(/^-\s+/, '');
+                } else {
+                    // Plain text
+                    topic = trimmed;
+                    level = stack[stack.length - 1].level + 1;
+                }
+
+                if (!topic) return;
+
+                const newNode = {
+                    id: `node_${index}`,
+                    topic: topic,
+                    children: []
+                };
+
+                // Find parent
+                while (stack.length > 0 && stack[stack.length - 1].level >= level) {
+                    stack.pop();
+                }
+
+                if (stack.length > 0) {
+                    const parent = stack[stack.length - 1].node;
+                    if (!parent.children) parent.children = [];
+                    parent.children.push(newNode);
+                    stack.push({ level, node: newNode });
+                }
+            });
+
+            // If root has only one child, use that child as root
+            if (root.children && root.children.length === 1) {
+                const firstChild = root.children[0];
+                firstChild.id = 'root';
+                return firstChild;
+            }
+
+            return root;
+        }
+
+        function jsMindToMarkdown(data) {
+            // Convert jsMind data back to markdown
+            function nodeToMarkdown(node, level = 1) {
+                let markdown = '';
+                const prefix = '#'.repeat(level);
+                markdown += `${prefix} ${node.topic}\n`;
+
+                if (node.children && node.children.length > 0) {
+                    node.children.forEach(child => {
+                        markdown += nodeToMarkdown(child, level + 1);
+                    });
+                }
+
+                return markdown;
+            }
+
+            return nodeToMarkdown(data.data);
+        }
+
+        function renderMindmap(markdown) {
+            try {
+                updateStatus('Rendering mindmap...');
+
+                if (!markdown || markdown.trim() === '') {
+                    updateStatus('No content');
+                    return;
+                }
+
+                const data = parseMarkdownToJsMind(markdown);
+
+                const mind = {
+                    meta: {
+                        name: "jsMind",
+                        author: "Leo Management",
+                        version: "0.2"
+                    },
+                    format: "node_tree",
+                    data: data
+                };
+
+                const options = {
+                    container: 'jsmind_container',
+                    theme: 'primary',
+                    editable: true,
+                    mode: 'full',
+                    view: {
+                        hmargin: 100,
+                        vmargin: 50,
+                        line_width: 2,
+                        line_color: '#558',
+                        draggable: true
+                    }
+                };
+
+                if (!jm) {
+                    jm = new jsMind(options);
+                    jm.enable_edit();
+                }
+
+                jm.show(mind);
+
+                // Listen for changes and sync back to parent
+                jm.add_event_listener(function (type, data) {
+                    if (type === 'edit' || type === 'remove_node' || type === 'add_node') {
+                        // Convert jsMind back to markdown
+                        setTimeout(() => {
+                            const updatedMarkdown = jsMindToMarkdown(jm.get_data());
+                            window.parent.postMessage({
+                                type: 'MINDMAP_UPDATED',
+                                content: updatedMarkdown
+                            }, '*');
+                        }, 100);
+                    }
+                });
+
+                updateStatus(`Rendered (${markdown.length} chars)`);
+
+                // Hide status after 2 seconds
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 2000);
+            } catch (error) {
+                updateStatus('Error: ' + error.message);
+                console.error('[jsMind Renderer] Error:', error);
+            }
+        }
+
+        // Listen for messages from parent window
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'UPDATE_MINDMAP') {
+                renderMindmap(event.data.content);
+            }
+        });
+
+        // Signal ready
+        updateStatus('Ready');
+        if (window.parent !== window) {
+            window.parent.postMessage({ type: 'MINDMAP_READY' }, '*');
+        }
+    </script>
+</body>
+
+</html>

@@ -264,6 +264,35 @@ export default function DashboardPage() {
                     </Link>
 
                     <Link
+                        href="/dashboard/mindmap"
+                        className="card-interactive stagger-item group relative overflow-hidden"
+                    >
+                        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <svg className="w-24 h-24 text-leo-600 transform rotate-12 group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                            </svg>
+                        </div>
+                        <div className="relative z-10">
+                            <div className="flex items-start">
+                                <div className="w-14 h-14 bg-gradient-to-br from-leo-100 to-leo-200 rounded-xl flex items-center justify-center group-hover:from-leo-200 group-hover:to-leo-300 transition-all duration-300">
+                                    <svg className="w-7 h-7 text-leo-600 icon-hover-scale" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                    </svg>
+                                </div>
+                                <div className="ml-4 flex-1">
+                                    <h3 className="font-semibold text-gray-900 mb-1">Mindmaps</h3>
+                                    <p className="text-sm text-gray-600">
+                                        Visualize ideas and plan projects
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="mt-4 flex items-center text-leo-600 font-medium text-sm group-hover:translate-x-1 transition-transform">
+                                Create Mindmap <ArrowRight className="w-4 h-4 ml-1" />
+                            </div>
+                        </div>
+                    </Link>
+
+                    <Link
                         href="/dashboard/classroom"
                         className="card-interactive stagger-item group relative overflow-hidden"
                     >
