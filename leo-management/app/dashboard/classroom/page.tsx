@@ -16,7 +16,7 @@ import {
     Users
 } from 'lucide-react';
 
-// Actual D2 Classroom documents
+// Actual D2 Resources documents
 const categories = [
     {
         id: 'exco-district',
@@ -130,7 +130,14 @@ const categories = [
 export default function ClassroomPage() {
     const [searchQuery, setSearchQuery] = useState('');
 
-    // Filter functionality could be implemented here
+    // Filter documents based on search query
+    const filteredCategories = categories.map(category => ({
+        ...category,
+        docs: category.docs.filter(doc =>
+            doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            doc.type.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+    })).filter(category => category.docs.length > 0);
 
     return (
         <div className="min-h-screen bg-gray-50 pb-12">
@@ -149,7 +156,7 @@ export default function ClassroomPage() {
                                 <GraduationCap className="w-6 h-6 text-white" />
                             </div>
                             <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-leo-700 to-purple-700 animate-fade-in">
-                                D2 Classroom
+                                D2 Resources
                             </h1>
                         </div>
                     </div>
@@ -170,16 +177,15 @@ export default function ClassroomPage() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Welcome Section */}
                 <div className="mb-10 animate-slide-up">
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">Learning Resources</h2>
+                    <h2 className="text-3xl font-bold text-gray-900 mb-2">District Resources</h2>
                     <p className="text-gray-600 max-w-2xl">
-                        Access all your classroom materials, assignments, and reference documents in one place.
-                        Download what you need for your studies.
+                        Access comprehensive district resources, essential documents, templates, and official materials for all club positions and activities.
                     </p>
                 </div>
 
                 {/* Categories Grid */}
                 <div className="space-y-12">
-                    {categories.map((category, categoryIndex) => (
+                    {filteredCategories.map((category, categoryIndex) => (
                         <section key={category.id} className="animate-slide-up" style={{ animationDelay: `${categoryIndex * 0.1}s` }}>
                             <div className="flex items-center gap-3 mb-6">
                                 <div className={`p-2 rounded-lg bg-${category.color}-100 text-${category.color}-600`}>

@@ -305,14 +305,14 @@ export default function DashboardPage() {
                                     <GraduationCap className="w-7 h-7 text-purple-600 icon-hover-scale" />
                                 </div>
                                 <div className="ml-4 flex-1">
-                                    <h3 className="font-semibold text-gray-900 mb-1">D2 Classroom</h3>
+                                    <h3 className="font-semibold text-gray-900 mb-1">D2 Resources</h3>
                                     <p className="text-sm text-gray-600">
-                                        Access study guides & docs
+                                        Access district documents & guides
                                     </p>
                                 </div>
                             </div>
                             <div className="mt-4 flex items-center text-purple-600 font-medium text-sm group-hover:translate-x-1 transition-transform">
-                                Enter Classroom <ArrowRight className="w-4 h-4 ml-1" />
+                                Browse Resources <ArrowRight className="w-4 h-4 ml-1" />
                             </div>
                         </div>
                     </Link>
