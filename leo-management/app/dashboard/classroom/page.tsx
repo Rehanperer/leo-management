@@ -31,7 +31,7 @@ const categories = [
     },
     {
         id: 'exco-approvals',
-        title: 'Exco: Approval Documents',
+        title: 'Approval Documents',
         icon: FileCheck,
         color: 'blue',
         description: 'Project approval forms and requests',
@@ -44,7 +44,7 @@ const categories = [
     },
     {
         id: 'exco-installation',
-        title: 'Exco: Installation Docs',
+        title: 'Installation Docs',
         icon: GraduationCap,
         color: 'indigo',
         description: 'Guides and scripts for club installation',
@@ -57,7 +57,7 @@ const categories = [
     },
     {
         id: 'exco-logos',
-        title: 'Exco: Logos & Emblems',
+        title: 'Logos & Emblems',
         icon: Award,
         color: 'orange',
         description: 'Official branding assets',
@@ -71,7 +71,7 @@ const categories = [
     },
     {
         id: 'exco-other',
-        title: 'Exco: Other Docs',
+        title: 'Other Docs',
         icon: Folder,
         color: 'teal',
         description: 'Other essential forms',
