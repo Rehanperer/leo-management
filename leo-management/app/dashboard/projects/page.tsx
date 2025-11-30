@@ -186,7 +186,7 @@ export default function ProjectsPage() {
 
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Statistics Dashboard */}
-                {stats && stats.totalProjects > 0 && (
+                {stats && (
                     <div className="mb-8 space-y-6">
                         {/* Stat Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
