@@ -39,7 +39,7 @@ export default function LoginPage() {
                         <span className="text-4xl font-bold text-white">L</span>
                     </div>
                     <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
-                        Leo Management System
+                        LeoLink
                     </h1>
                     <p className="text-leo-100 text-lg">
                         Welcome back! Please login to your account.
@@ -132,7 +132,7 @@ export default function LoginPage() {
 
                 {/* Footer */}
                 <div className="text-center mt-8 text-white/80 text-sm">
-                    <p>© 2025 Leo Management System. All rights reserved.</p>
+                    <p>© 2025 LeoLink. All rights reserved.</p>
                     <p className="mt-1 text-xs opacity-75">Website made by Rehan Perera</p>
                 </div>
             </div>

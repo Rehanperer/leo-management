@@ -59,8 +59,8 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('account')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'account'
-                                ? 'bg-leo-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-leo-600 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                     >
                         Account
@@ -68,8 +68,8 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('security')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'security'
-                                ? 'bg-leo-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-leo-600 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                     >
                         Security
@@ -78,8 +78,8 @@ export default function SettingsPage() {
                         <button
                             onClick={() => setActiveTab('club')}
                             className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'club'
-                                    ? 'bg-leo-600 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                ? 'bg-leo-600 text-white'
+                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                                 }`}
                         >
                             Club Settings
@@ -88,8 +88,8 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('notifications')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'notifications'
-                                ? 'bg-leo-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-leo-600 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                     >
                         Notifications
@@ -97,8 +97,8 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('data')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'data'
-                                ? 'bg-leo-600 text-white'
-                                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            ? 'bg-leo-600 text-white'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                     >
                         Data & Export
@@ -288,7 +288,7 @@ export default function SettingsPage() {
 
                 {/* Footer */}
                 <div className="mt-8 text-center text-gray-500 text-sm">
-                    <p>© 2025 Leo Management System. All rights reserved.</p>
+                    <p>© 2025 LeoLink. All rights reserved.</p>
                     <p className="mt-1 text-xs">Website made by Rehan Perera</p>
                 </div>
             </main>
