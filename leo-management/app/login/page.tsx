@@ -25,11 +25,11 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-leo-600 via-purple-600 to-leo-800 px-4 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 px-4 relative overflow-hidden">
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-gold-500/20 rounded-full blur-3xl animate-float" />
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl animate-float" />
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
             </div>
 
             <div className="w-full max-w-md relative z-10 animate-fade-in">
@@ -41,7 +41,7 @@ export default function LoginPage() {
                     <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
                         LeoLynk
                     </h1>
-                    <p className="text-leo-100 text-lg">
+                    <p className="text-blue-100 text-lg">
                         Welcome back! Please login to your account.
                     </p>
                 </div>
@@ -131,10 +131,10 @@ export default function LoginPage() {
                 </div>
 
                 {/* Footer */}
-                <div className="mt-8 text-center text-gray-500 text-sm">
+                <div className="mt-8 text-center text-blue-100 text-sm">
                     <p>© 2025 LeoLynk. All rights reserved.</p>
                     <p className="mt-1 text-xs flex items-center justify-center gap-1">
-                        Crafted with <span className="text-red-500">❤️</span> for Leo Clubs
+                        Crafted with <span className="text-yellow-400">❤️</span> for Leo Clubs
                     </p>
                 </div>
             </div>
