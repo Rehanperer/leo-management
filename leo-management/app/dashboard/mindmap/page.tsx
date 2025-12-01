@@ -1,4 +1,3 @@
-```typescript
 'use client';
 
 import { useAuth } from '@/lib/auth-context';
@@ -51,7 +50,7 @@ export default function MindmapListPage() {
         try {
             const token = localStorage.getItem('token');
             const response = await fetch('/api/mindmaps', {
-                headers: { Authorization: `Bearer ${ token } ` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (response.ok) {
@@ -164,7 +163,7 @@ export default function MindmapListPage() {
                         {filteredMindmaps.map((mindmap) => (
                             <Link
                                 key={mindmap.id}
-                                href={`/ dashboard / mindmap / ${ mindmap.id } `}
+                                href={`/dashboard/mindmap/${mindmap.id}`}
                                 className="card card-hover group"
                             >
                                 <div className="flex items-start justify-between mb-4">
