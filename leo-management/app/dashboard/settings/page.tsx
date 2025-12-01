@@ -102,7 +102,7 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('account')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'account'
-                            ? 'bg-leo-600 !text-white'
+                            ? 'bg-blue-600 !text-white'
                             : 'bg-gray-200 !text-gray-700 hover:bg-gray-300'
                             }`}
                     >
@@ -111,7 +111,7 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('security')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'security'
-                            ? 'bg-leo-600 !text-white'
+                            ? 'bg-blue-600 !text-white'
                             : 'bg-gray-200 !text-gray-700 hover:bg-gray-300'
                             }`}
                     >
@@ -121,7 +121,7 @@ export default function SettingsPage() {
                         <button
                             onClick={() => setActiveTab('club')}
                             className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'club'
-                                ? 'bg-leo-600 !text-white'
+                                ? 'bg-blue-600 !text-white'
                                 : 'bg-gray-200 !text-gray-700 hover:bg-gray-300'
                                 }`}
                         >
@@ -131,7 +131,7 @@ export default function SettingsPage() {
                     <button
                         onClick={() => setActiveTab('about')}
                         className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'about'
-                            ? 'bg-leo-600 !text-white'
+                            ? 'bg-blue-600 !text-white'
                             : 'bg-gray-200 !text-gray-700 hover:bg-gray-300'
                             }`}
                     >
