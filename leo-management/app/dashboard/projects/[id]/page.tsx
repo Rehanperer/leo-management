@@ -95,6 +95,7 @@ export default function ProjectDetailPage() {
         chairmen: [''],
         secretaries: [''],
         treasurers: [''],
+        status: 'draft',
     });
 
     useEffect(() => {
@@ -131,6 +132,7 @@ export default function ProjectDetailPage() {
                         chairmen: chairmen.length > 0 ? chairmen : [''],
                         secretaries: secretaries.length > 0 ? secretaries : [''],
                         treasurers: treasurers.length > 0 ? treasurers : [''],
+                        status: data.project.status || 'draft',
                     });
                 } else {
                     router.push('/dashboard/projects');
@@ -201,6 +203,7 @@ export default function ProjectDetailPage() {
                 chairman: JSON.stringify(formData.chairmen.filter(c => c && c.trim())),
                 secretary: JSON.stringify(formData.secretaries.filter(s => s && s.trim())),
                 treasurer: JSON.stringify(formData.treasurers.filter(t => t && t.trim())),
+                status: formData.status,
             };
 
             const response = await fetch(`/api/projects/${params.id}`, {
@@ -454,6 +457,19 @@ export default function ProjectDetailPage() {
                                             value={formData.title}
                                             onChange={e => setFormData({ ...formData, title: e.target.value })}
                                         />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                        <select
+                                            className="input"
+                                            value={formData.status}
+                                            onChange={e => setFormData({ ...formData, status: e.target.value })}
+                                        >
+                                            <option value="draft">Draft</option>
+                                            <option value="ongoing">Ongoing</option>
+                                            <option value="completed">Completed</option>
+                                        </select>
                                     </div>
 
                                     <div>
