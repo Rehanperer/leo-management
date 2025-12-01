@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "LeoLynk",
   description: "Comprehensive management system for Leo Clubs",
+  icons: {
+    icon: '/logo.png',
+  },
 };
 
 export default function RootLayout({

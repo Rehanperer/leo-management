@@ -71,8 +71,8 @@ export default function DashboardPage() {
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center">
                             <div className="flex-shrink-0 group">
-                                <div className="w-10 h-10 bg-gradient-to-br from-leo-600 to-purple-600 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
-                                    <span className="text-white font-bold text-xl">L</span>
+                                <div className="w-10 h-10 flex items-center justify-center">
+                                    <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
                                 </div>
                             </div>
                             <div className="ml-4">

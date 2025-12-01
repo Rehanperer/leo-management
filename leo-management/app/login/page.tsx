@@ -35,8 +35,8 @@ export default function LoginPage() {
             <div className="w-full max-w-md relative z-10 animate-fade-in">
                 {/* Logo/Header */}
                 <div className="text-center mb-8 animate-slide-up">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-gold-500 to-gold-600 rounded-full mb-4 shadow-2xl animate-pulse-glow">
-                        <span className="text-4xl font-bold text-white">L</span>
+                    <div className="inline-flex items-center justify-center w-24 h-24 mb-4">
+                        <img src="/logo.png" alt="LeoLynk Logo" className="w-full h-full object-contain drop-shadow-2xl" />
                     </div>
                     <h1 className="text-4xl font-bold text-white mb-2 drop-shadow-lg">
                         LeoLynk
