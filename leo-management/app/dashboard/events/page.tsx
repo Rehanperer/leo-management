@@ -154,7 +154,7 @@ export default function EventsPage() {
                         <input
                             type="text"
                             placeholder="Search events..."
-                            className="input pl-14 w-full"
+                            className="input !pl-14 w-full"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
