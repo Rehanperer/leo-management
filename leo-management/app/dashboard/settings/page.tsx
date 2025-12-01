@@ -23,8 +23,7 @@ export default function SettingsPage() {
     // Club Settings State
     const [clubData, setClubData] = useState({
         name: user?.clubName || '',
-        district: '',
-        logo: ''
+        district: ''
     });
     const [clubMessage, setClubMessage] = useState({ type: '', text: '' });
 
@@ -73,22 +72,6 @@ export default function SettingsPage() {
         }
     };
 
-    const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            if (file.size > 5 * 1024 * 1024) {
-                setClubMessage({ type: 'error', text: 'File size should be less than 5MB' });
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setClubData(prev => ({ ...prev, logo: reader.result as string }));
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
     const handleClubSave = async () => {
         if (!user?.clubId) return;
 
@@ -115,8 +98,7 @@ export default function SettingsPage() {
                 if (user) {
                     const updatedUser = {
                         ...user,
-                        clubName: clubData.name,
-                        logo: clubData.logo
+                        clubName: clubData.name
                     };
                     localStorage.setItem('user', JSON.stringify(updatedUser));
                 }

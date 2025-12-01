@@ -72,11 +72,7 @@ export default function DashboardPage() {
                         <div className="flex items-center">
                             <div className="flex-shrink-0 group">
                                 <div className="w-12 h-12 flex items-center justify-center">
-                                    {user?.logo ? (
-                                        <img src={user.logo} alt={user.clubName || 'Club Logo'} className="w-full h-full object-contain rounded-full" />
-                                    ) : (
-                                        <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
-                                    )}
+                                    <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
                                 </div>
                             </div>
                             <div className="ml-4">

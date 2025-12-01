@@ -18,15 +18,15 @@ export async function PATCH(
         }
 
         const body = await request.json();
-        const { name, district, logo } = body;
+        const { name, district } = body;
 
+        // Update club
         const updatedClub = await prisma.club.update({
             where: { id: params.id },
             data: {
                 name,
-                // district, // Note: District is not in the schema yet, ignoring for now or should add it?
-                logo,
-            },
+                district
+            }
         });
 
         return NextResponse.json(updatedClub);

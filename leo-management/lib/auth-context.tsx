@@ -9,7 +9,6 @@ interface User {
     role: string;
     clubId?: string | null;
     clubName?: string;
-    logo?: string | null;
 }
 
 interface AuthContextType {
