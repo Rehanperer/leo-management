@@ -8,12 +8,60 @@ import Link from 'next/link';
 export default function SettingsPage() {
     const router = useRouter();
     const { user, logout } = useAuth();
-    const [activeTab, setActiveTab] = useState<'account' | 'security' | 'club' | 'notifications' | 'data'>('account');
+    const [activeTab, setActiveTab] = useState<'account' | 'security' | 'club' | 'about'>('account');
     const [isLoading, setIsLoading] = useState(false);
+
+    // Password Change State
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+    });
+    const [passwordMessage, setPasswordMessage] = useState({ type: '', text: '' });
 
     const handleLogout = () => {
         logout();
         router.push('/login');
+    };
+
+    const handlePasswordChange = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setPasswordMessage({ type: '', text: '' });
+        setIsLoading(true);
+
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            setPasswordMessage({ type: 'error', text: 'New passwords do not match' });
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch('/api/auth/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    currentPassword: passwordData.currentPassword,
+                    newPassword: passwordData.newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setPasswordMessage({ type: 'success', text: 'Password updated successfully' });
+                setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+            } else {
+                setPasswordMessage({ type: 'error', text: data.error || 'Failed to update password' });
+            }
+        } catch (error) {
+            setPasswordMessage({ type: 'error', text: 'An error occurred. Please try again.' });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -38,12 +86,6 @@ export default function SettingsPage() {
                             <span className="text-2xl font-bold text-white">
                                 {user?.username?.[0]?.toUpperCase() || 'U'}
                             </span>
-                            <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </div>
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-gray-900">{user?.username}</h2>
@@ -86,22 +128,13 @@ export default function SettingsPage() {
                         </button>
                     )}
                     <button
-                        onClick={() => setActiveTab('notifications')}
-                        className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'notifications'
+                        onClick={() => setActiveTab('about')}
+                        className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'about'
                             ? 'bg-leo-600 text-white'
                             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                             }`}
                     >
-                        Notifications
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('data')}
-                        className={`px-4 py-2 rounded-lg font-medium transition-all whitespace-nowrap ${activeTab === 'data'
-                            ? 'bg-leo-600 text-white'
-                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
-                    >
-                        Data & Export
+                        About
                     </button>
                 </div>
 
@@ -156,21 +189,56 @@ export default function SettingsPage() {
                     <div className="space-y-6 animate-fade-in">
                         <div className="card">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h3>
-                            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                            <form className="space-y-4" onSubmit={handlePasswordChange}>
+                                {passwordMessage.text && (
+                                    <div className={`p-3 rounded-lg text-sm ${passwordMessage.type === 'error' ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
+                                        }`}>
+                                        {passwordMessage.text}
+                                    </div>
+                                )}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                                    <input type="password" className="input" placeholder="Enter current password" />
+                                    <input
+                                        type="password"
+                                        className="input"
+                                        placeholder="Enter current password"
+                                        value={passwordData.currentPassword}
+                                        onChange={e => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
+                                        required
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                                    <input type="password" className="input" placeholder="Enter new password" />
+                                    <input
+                                        type="password"
+                                        className="input"
+                                        placeholder="Enter new password"
+                                        value={passwordData.newPassword}
+                                        onChange={e => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                                        required
+                                        minLength={6}
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
-                                    <input type="password" className="input" placeholder="Confirm new password" />
+                                    <input
+                                        type="password"
+                                        className="input"
+                                        placeholder="Confirm new password"
+                                        value={passwordData.confirmPassword}
+                                        onChange={e => setPasswordData({ ...passwordData, confirmPassword: e.target.value })}
+                                        required
+                                        minLength={6}
+                                    />
                                 </div>
                                 <div className="pt-2">
-                                    <button className="btn btn-primary">Update Password</button>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary"
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'Updating...' : 'Update Password'}
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -209,78 +277,41 @@ export default function SettingsPage() {
                     </div>
                 )}
 
-                {/* Notifications */}
-                {activeTab === 'notifications' && (
+                {/* About Section */}
+                {activeTab === 'about' && (
                     <div className="space-y-6 animate-fade-in">
                         <div className="card">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Email Notifications</h3>
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                                    <div>
-                                        <p className="font-medium text-gray-900">Project Approvals</p>
-                                        <p className="text-sm text-gray-600">Get notified when a project is approved</p>
-                                    </div>
-                                    <label className="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" className="sr-only peer" defaultChecked />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-leo-600"></div>
-                                    </label>
-                                </div>
-                                <div className="flex items-center justify-between py-2 border-b border-gray-100">
-                                    <div>
-                                        <p className="font-medium text-gray-900">Upcoming Deadlines</p>
-                                        <p className="text-sm text-gray-600">Reminders for reporting deadlines</p>
-                                    </div>
-                                    <label className="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" className="sr-only peer" defaultChecked />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-leo-600"></div>
-                                    </label>
-                                </div>
-                                <div className="flex items-center justify-between py-2">
-                                    <div>
-                                        <p className="font-medium text-gray-900">System Updates</p>
-                                        <p className="text-sm text-gray-600">News about new features and updates</p>
-                                    </div>
-                                    <label className="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" className="sr-only peer" />
-                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-leo-600"></div>
-                                    </label>
-                                </div>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">About LeoLynk</h3>
+                            <div className="prose prose-sm max-w-none text-gray-600">
+                                <p className="mb-4">
+                                    LeoLynk is a comprehensive management system designed specifically for Leo Clubs.
+                                    It streamlines club operations, project reporting, financial management, and member engagement.
+                                </p>
+                                <p className="mb-4">
+                                    Our mission is to empower Leo Clubs with digital tools that enhance their service impact
+                                    and leadership development journey.
+                                </p>
                             </div>
                         </div>
-                    </div>
-                )}
 
-                {/* Data & Export */}
-                {activeTab === 'data' && (
-                    <div className="space-y-6 animate-fade-in">
                         <div className="card">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Export Data</h3>
-                            <p className="text-gray-600 mb-6">
-                                Download a copy of your club's data, including project reports, financial records, and meeting minutes.
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <button className="p-4 border border-gray-200 rounded-lg hover:border-leo-500 hover:bg-leo-50 transition-all text-left group">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="p-2 bg-green-100 rounded-lg text-green-600 group-hover:bg-green-200">
-                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                            </svg>
-                                        </div>
-                                        <span className="font-semibold text-gray-900">Export as CSV</span>
-                                    </div>
-                                    <p className="text-sm text-gray-500">Best for spreadsheet analysis</p>
-                                </button>
-                                <button className="p-4 border border-gray-200 rounded-lg hover:border-leo-500 hover:bg-leo-50 transition-all text-left group">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="p-2 bg-red-100 rounded-lg text-red-600 group-hover:bg-red-200">
-                                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                        <span className="font-semibold text-gray-900">Export as PDF</span>
-                                    </div>
-                                    <p className="text-sm text-gray-500">Best for printing and sharing</p>
-                                </button>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Administrator Contact</h3>
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 bg-leo-100 rounded-full flex items-center justify-center text-leo-600">
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 className="font-medium text-gray-900">Rehan Perera</h4>
+                                    <p className="text-sm text-gray-500 mb-2">Lead Developer & Administrator</p>
+                                    <a href="mailto:pererarehan2007@gmail.com" className="text-leo-600 hover:text-leo-700 text-sm flex items-center gap-1">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                        pererarehan2007@gmail.com
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
