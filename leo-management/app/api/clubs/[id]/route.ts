@@ -4,16 +4,17 @@ import { verifyAuth } from '@/lib/auth';
 
 export async function PATCH(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const auth = await verifyAuth(request);
         if (!auth) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
         // Ensure user belongs to the club they are trying to update
-        if (auth.clubId !== params.id && auth.role !== 'admin') {
+        if (auth.clubId !== id && auth.role !== 'admin') {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
@@ -22,7 +23,7 @@ export async function PATCH(
 
         // Update club
         const updatedClub = await prisma.club.update({
-            where: { id: params.id },
+            where: { id },
             data: {
                 name,
                 district
