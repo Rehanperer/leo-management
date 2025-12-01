@@ -65,6 +65,10 @@ export async function PUT(
                     photos: body.photos ? JSON.stringify(body.photos) : undefined,
                     documents: body.documents ? JSON.stringify(body.documents) : undefined,
                 },
+                include: {
+                    club: { select: { name: true } },
+                    user: { select: { username: true } },
+                },
             });
 
             return NextResponse.json({ project });
