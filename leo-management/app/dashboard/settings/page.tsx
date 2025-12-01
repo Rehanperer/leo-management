@@ -18,6 +18,7 @@ export default function SettingsPage() {
         confirmPassword: ''
     });
     const [passwordMessage, setPasswordMessage] = useState({ type: '', text: '' });
+    const [showAllFeatures, setShowAllFeatures] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -291,6 +292,48 @@ export default function SettingsPage() {
                                     Our mission is to empower Leo Clubs with digital tools that enhance their service impact
                                     and leadership development journey.
                                 </p>
+
+                                <div className="mt-6">
+                                    <h4 className="font-medium text-gray-900 mb-2">Key Features</h4>
+                                    <ul className="list-disc pl-5 space-y-1 mb-4">
+                                        <li><strong>Project Management:</strong> comprehensive tools to plan, track, and report on service projects with real-time statistics.</li>
+                                        <li><strong>Financial Tracking:</strong> Manage club finances, track income and expenses, and generate transparent financial reports.</li>
+                                        {!showAllFeatures && (
+                                            <button
+                                                onClick={() => setShowAllFeatures(true)}
+                                                className="text-leo-600 hover:text-leo-700 font-medium text-sm mt-2 flex items-center gap-1"
+                                            >
+                                                Read More
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                        )}
+                                    </ul>
+
+                                    {showAllFeatures && (
+                                        <div className="animate-fade-in">
+                                            <ul className="list-disc pl-5 space-y-1 mb-4">
+                                                <li><strong>Meeting Minutes:</strong> Schedule meetings, record detailed minutes, and track member attendance effortlessly.</li>
+                                                <li><strong>Event Planning:</strong> Organize club events, manage tasks, and track participation to ensure successful outcomes.</li>
+                                                <li><strong>Document Repository:</strong> A centralized, secure hub for all club documents, resources, and guidelines.</li>
+                                                <li><strong>AI Assistant:</strong> An intelligent chatbot to assist with reporting, drafting content, and answering queries instantly.</li>
+                                                <li><strong>Mind Mapping:</strong> Visual brainstorming tools to plan projects and organize ideas effectively.</li>
+                                                <li><strong>Member Directory:</strong> Manage club members, track roles, and maintain up-to-date contact information.</li>
+                                                <li><strong>Automated Reporting:</strong> Generate professional monthly and annual reports with a single click.</li>
+                                            </ul>
+                                            <button
+                                                onClick={() => setShowAllFeatures(false)}
+                                                className="text-leo-600 hover:text-leo-700 font-medium text-sm mt-2 flex items-center gap-1"
+                                            >
+                                                Show Less
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -320,7 +363,9 @@ export default function SettingsPage() {
                 {/* Footer */}
                 <div className="mt-8 text-center text-gray-500 text-sm">
                     <p>© 2025 LeoLynk. All rights reserved.</p>
-                    <p className="mt-1 text-xs">Website made by Rehan Perera</p>
+                    <p className="mt-1 text-xs flex items-center justify-center gap-1">
+                        Crafted with <span className="text-red-500">❤️</span> for Leo Clubs
+                    </p>
                 </div>
             </main>
         </div>
