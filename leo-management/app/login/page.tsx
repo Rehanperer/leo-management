@@ -131,9 +131,11 @@ export default function LoginPage() {
                 </div>
 
                 {/* Footer */}
-                <div className="text-center mt-8 text-white/80 text-sm">
+                <div className="mt-8 text-center text-gray-500 text-sm">
                     <p>© 2025 LeoLynk. All rights reserved.</p>
-                    <p className="mt-1 text-xs opacity-75">Website made by Rehan Perera</p>
+                    <p className="mt-1 text-xs flex items-center justify-center gap-1">
+                        Crafted with <span className="text-red-500">❤️</span> for Leo Clubs
+                    </p>
                 </div>
             </div>
         </div>
