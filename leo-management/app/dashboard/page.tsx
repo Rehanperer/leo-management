@@ -71,7 +71,7 @@ export default function DashboardPage() {
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center">
                             <div className="flex-shrink-0 group">
-                                <div className="w-10 h-10 flex items-center justify-center">
+                                <div className="w-12 h-12 flex items-center justify-center">
                                     <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
                                 </div>
                             </div>
