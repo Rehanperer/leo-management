@@ -20,6 +20,14 @@ export default function SettingsPage() {
     const [passwordMessage, setPasswordMessage] = useState({ type: '', text: '' });
     const [showAllFeatures, setShowAllFeatures] = useState(false);
 
+    // Club Settings State
+    const [clubData, setClubData] = useState({
+        name: user?.clubName || '',
+        district: '',
+        logo: ''
+    });
+    const [clubMessage, setClubMessage] = useState({ type: '', text: '' });
+
     const handleLogout = () => {
         logout();
         router.push('/login');
@@ -63,6 +71,66 @@ export default function SettingsPage() {
         } finally {
             setIsLoading(false);
         }
+        const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    setClubMessage({ type: 'error', text: 'File size should be less than 5MB' });
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setClubData(prev => ({ ...prev, logo: reader.result as string }));
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        const handleClubSave = async () => {
+            if (!user?.clubId) return;
+
+            setIsLoading(true);
+            setClubMessage({ type: '', text: '' });
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/clubs/${user.clubId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(clubData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    setClubMessage({ type: 'success', text: 'Club details updated successfully' });
+
+                    // Update local storage with new club details
+                    if (user) {
+                        const updatedUser = {
+                            ...user,
+                            clubName: clubData.name,
+                            logo: clubData.logo
+                        };
+                        localStorage.setItem('user', JSON.stringify(updatedUser));
+                    }
+
+                    // Reload to reflect changes
+                    window.location.reload();
+                } else {
+                    setClubMessage({ type: 'error', text: data.error || 'Failed to update club details' });
+                }
+            } catch (error) {
+                setClubMessage({ type: 'error', text: 'An error occurred. Please try again.' });
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
     };
 
     return (
@@ -252,26 +320,63 @@ export default function SettingsPage() {
                         <div className="card">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Club Details</h3>
                             <div className="space-y-4">
+                                {clubMessage.text && (
+                                    <div className={`p-4 rounded-lg ${clubMessage.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                                        {clubMessage.text}
+                                    </div>
+                                )}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Club Name</label>
-                                    <input type="text" className="input" defaultValue={user?.clubName} />
+                                    <input
+                                        type="text"
+                                        className="input"
+                                        value={clubData.name}
+                                        onChange={(e) => setClubData({ ...clubData, name: e.target.value })}
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">District</label>
-                                    <input type="text" className="input" placeholder="e.g. 306 A2" />
+                                    <input
+                                        type="text"
+                                        className="input"
+                                        placeholder="e.g. 306 A2"
+                                        value={clubData.district}
+                                        onChange={(e) => setClubData({ ...clubData, district: e.target.value })}
+                                    />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Club Logo</label>
-                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-leo-500 transition-colors cursor-pointer">
-                                        <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        <p className="text-sm text-gray-600">Click to upload or drag and drop</p>
-                                        <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 5MB</p>
+                                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-leo-500 transition-colors cursor-pointer relative">
+                                        <input
+                                            type="file"
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                            accept="image/*"
+                                            onChange={handleLogoUpload}
+                                        />
+                                        {clubData.logo ? (
+                                            <div className="flex flex-col items-center">
+                                                <img src={clubData.logo} alt="Club Logo" className="w-24 h-24 object-contain mb-2" />
+                                                <p className="text-sm text-green-600">Logo selected</p>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                                <p className="text-sm text-gray-600">Click to upload or drag and drop</p>
+                                                <p className="text-xs text-gray-500 mt-1">PNG, JPG up to 5MB</p>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="pt-2">
-                                    <button className="btn btn-primary">Save Changes</button>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={handleClubSave}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'Saving...' : 'Save Changes'}
+                                    </button>
                                 </div>
                             </div>
                         </div>

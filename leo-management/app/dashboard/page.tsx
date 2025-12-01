@@ -72,7 +72,11 @@ export default function DashboardPage() {
                         <div className="flex items-center">
                             <div className="flex-shrink-0 group">
                                 <div className="w-12 h-12 flex items-center justify-center">
-                                    <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
+                                    {user?.logo ? (
+                                        <img src={user.logo} alt={user.clubName || 'Club Logo'} className="w-full h-full object-contain rounded-full" />
+                                    ) : (
+                                        <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
+                                    )}
                                 </div>
                             </div>
                             <div className="ml-4">
@@ -342,7 +346,8 @@ export default function DashboardPage() {
                     )}
                 </div>
 
-                <div className="mt-8 text-center text-gray-500 text-sm">
+                <div className="mt-8 text-center text-gray-500 text-sm flex flex-col items-center">
+                    <img src="/logo.png" alt="LeoLynk" className="w-8 h-8 mb-2 opacity-50 grayscale hover:grayscale-0 transition-all" />
                     <p>© 2025 LeoLynk. All rights reserved.</p>
                     <p className="mt-1 text-xs flex items-center justify-center gap-1">
                         Crafted with <span className="text-red-500">❤️</span> for Leo Clubs

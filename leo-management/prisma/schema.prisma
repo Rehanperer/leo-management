@@ -31,6 +31,7 @@ model Club {
   name         String
   code         String   @unique
   contactEmail String?
+  logo         String?  @db.Text // Base64 encoded logo image
   active       Boolean  @default(true)
   createdAt    DateTime @default(now())
 

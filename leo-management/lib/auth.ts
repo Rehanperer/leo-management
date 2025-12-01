@@ -77,6 +77,7 @@ export async function authenticateUser(username: string, password: string) {
             role: user.role,
             clubId: user.clubId,
             clubName: user.club?.name,
+            logo: user.club?.logo,
         },
     };
 }
