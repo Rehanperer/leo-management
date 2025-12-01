@@ -27,14 +27,32 @@ export default function BotpressWebchat() {
                 }}
             />
             {injectLoaded && (
-                <Script
-                    src="https://files.bpcontent.cloud/2025/11/28/07/20251128075317-FCAADZD1.js"
-                    strategy="afterInteractive"
-                    onLoad={() => console.log('Botpress config.js loaded')}
-                    onError={(e) => {
-                        console.error('Failed to load Botpress config.js', e);
-                    }}
-                />
+                <>
+                    <Script
+                        src="https://files.bpcontent.cloud/2025/11/28/07/20251128075317-FCAADZD1.js"
+                        strategy="afterInteractive"
+                        onLoad={() => console.log('Botpress config.js loaded')}
+                        onError={(e) => {
+                            console.error('Failed to load Botpress config.js', e);
+                        }}
+                    />
+                    <Script id="botpress-custom-config" strategy="afterInteractive">
+                        {`
+                            window.botpressWebChat.onEvent(async ({ type }) => {
+                                if (type === 'LIFECYCLE.LOADED') {
+                                    // Override logo with custom logo
+                                    window.botpressWebChat.sendEvent({
+                                        type: 'UPDATE_CONFIG',
+                                        payload: {
+                                            avatarUrl: '/logo.png',
+                                            stylesheet: 'https://webchat-styler-css.botpress.app/prod/code/f6d750a7-fad6-44a7-aa2b-3862cd0f7f2f/v93738/style.css'
+                                        }
+                                    });
+                                }
+                            });
+                        `}
+                    </Script>
+                </>
             )}
         </>
     );

@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   title: "LeoLynk",
   description: "Comprehensive management system for Leo Clubs",
   icons: {
-    icon: '/logo.png',
+    icon: [
+      { url: '/logo.png' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    apple: '/logo.png',
   },
 };
 
