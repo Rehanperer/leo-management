@@ -46,6 +46,19 @@ export function verifyToken(token: string): TokenPayload | null {
 }
 
 /**
+ * Verify authentication from request header
+ */
+export async function verifyAuth(request: Request): Promise<TokenPayload | null> {
+    const token = request.headers.get('Authorization')?.split(' ')[1];
+
+    if (!token) {
+        return null;
+    }
+
+    return verifyToken(token);
+}
+
+/**
  * Authenticate user and return user data with token
  */
 export async function authenticateUser(username: string, password: string) {
