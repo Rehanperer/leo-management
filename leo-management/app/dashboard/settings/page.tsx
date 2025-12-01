@@ -71,61 +71,69 @@ export default function SettingsPage() {
         } finally {
             setIsLoading(false);
         }
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-        setClubData(prev => ({ ...prev, logo: reader.result as string }));
     };
-    reader.readAsDataURL(file);
-}
-        };
 
-const handleClubSave = async () => {
-    if (!user?.clubId) return;
-
-    setIsLoading(true);
-    setClubMessage({ type: '', text: '' });
-
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`/api/clubs/${user.clubId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(clubData)
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            setClubMessage({ type: 'success', text: 'Club details updated successfully' });
-
-            // Update local storage with new club details
-            if (user) {
-                const updatedUser = {
-                    ...user,
-                    clubName: clubData.name,
-                    logo: clubData.logo
-                };
-                localStorage.setItem('user', JSON.stringify(updatedUser));
+    const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                setClubMessage({ type: 'error', text: 'File size should be less than 5MB' });
+                return;
             }
 
-            // Reload to reflect changes
-            window.location.reload();
-        } else {
-            setClubMessage({ type: 'error', text: data.error || 'Failed to update club details' });
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setClubData(prev => ({ ...prev, logo: reader.result as string }));
+            };
+            reader.readAsDataURL(file);
         }
-    } catch (error) {
-        setClubMessage({ type: 'error', text: 'An error occurred. Please try again.' });
-    } finally {
-        setIsLoading(false);
-    }
-};
-
     };
+
+    const handleClubSave = async () => {
+        if (!user?.clubId) return;
+
+        setIsLoading(true);
+        setClubMessage({ type: '', text: '' });
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`/api/clubs/${user.clubId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(clubData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setClubMessage({ type: 'success', text: 'Club details updated successfully' });
+
+                // Update local storage with new club details
+                if (user) {
+                    const updatedUser = {
+                        ...user,
+                        clubName: clubData.name,
+                        logo: clubData.logo
+                    };
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                }
+
+                // Reload to reflect changes
+                window.location.reload();
+            } else {
+                setClubMessage({ type: 'error', text: data.error || 'Failed to update club details' });
+            }
+        } catch (error) {
+            setClubMessage({ type: 'error', text: 'An error occurred. Please try again.' });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+};
 
 return (
     <div className="min-h-screen bg-gray-50">
