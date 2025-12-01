@@ -29,6 +29,7 @@ model User {
 model Club {
   id           String   @id @default(uuid())
   name         String
+  district     String?
   code         String   @unique
   contactEmail String?
   active       Boolean  @default(true)
