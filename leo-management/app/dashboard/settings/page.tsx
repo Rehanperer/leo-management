@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import Link from 'next/link';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function SettingsPage() {
     const router = useRouter();
@@ -335,7 +336,14 @@ export default function SettingsPage() {
                                         onClick={handleClubSave}
                                         disabled={isLoading}
                                     >
-                                        {isLoading ? 'Saving...' : 'Save Changes'}
+                                        {isLoading ? (
+                                            <div className="flex items-center gap-2">
+                                                <LoadingSpinner size="sm" />
+                                                <span>Saving...</span>
+                                            </div>
+                                        ) : (
+                                            'Save Changes'
+                                        )}
                                     </button>
                                 </div>
                             </div>

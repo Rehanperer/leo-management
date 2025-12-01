@@ -20,6 +20,7 @@ import {
     GraduationCap
 } from 'lucide-react';
 import Link from 'next/link';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function DashboardPage() {
     const { user, logout, isLoading } = useAuth();
@@ -55,10 +56,7 @@ export default function DashboardPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-leo-50 to-purple-50">
-                <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-leo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="mt-4 text-gray-600 font-medium">Loading...</p>
-                </div>
+                <LoadingSpinner size="lg" />
             </div>
         );
     }
