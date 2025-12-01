@@ -160,7 +160,7 @@ export default function NewFinancialRecordPage() {
                                     type="number"
                                     step="0.01"
                                     required
-                                    className="input pl-7"
+                                    className="input pl-10"
                                     placeholder="0.00"
                                     value={formData.amount}
                                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}

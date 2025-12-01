@@ -154,7 +154,7 @@ export default function EventsPage() {
                         <input
                             type="text"
                             placeholder="Search events..."
-                            className="input pl-10 w-full"
+                            className="input pl-12 w-full"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
@@ -205,8 +205,8 @@ export default function EventsPage() {
                                 <Link href={`/dashboard/events/${event.id}`} className="block w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all ml-16 md:ml-0 cursor-pointer">
                                     <div className="flex justify-between items-start mb-4">
                                         <span className={`px-2 py-1 text-xs font-medium rounded-full uppercase tracking-wide ${event.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                                event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
-                                                    'bg-yellow-100 text-yellow-800'
+                                            event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
+                                                'bg-yellow-100 text-yellow-800'
                                             }`}>
                                             {event.status}
                                         </span>

@@ -163,7 +163,7 @@ export default function MeetingsPage() {
                             <input
                                 type="text"
                                 placeholder="Search meetings..."
-                                className="input pl-10 w-full"
+                                className="input pl-12 w-full"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
