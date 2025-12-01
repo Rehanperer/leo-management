@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/lib/auth-context';
 
 export default function LoginPage() {
@@ -8,7 +8,17 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const { login } = useAuth();
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            setMousePosition({ x: e.clientX, y: e.clientY });
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,12 +35,32 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 px-4 relative overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-800 via-blue-900 to-slate-900 px-4 relative overflow-hidden cursor-none">
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl animate-float" />
                 <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+
+                {/* Fluid cursor follower */}
+                <div
+                    className="absolute w-96 h-96 bg-gradient-to-r from-blue-400/30 to-yellow-400/30 rounded-full blur-3xl pointer-events-none transition-all duration-300 ease-out"
+                    style={{
+                        left: `${mousePosition.x}px`,
+                        top: `${mousePosition.y}px`,
+                        transform: 'translate(-50%, -50%)'
+                    }}
+                />
             </div>
+
+            {/* Custom cursor */}
+            <div
+                className="fixed w-4 h-4 bg-yellow-400 rounded-full pointer-events-none z-50 mix-blend-difference transition-transform duration-100"
+                style={{
+                    left: `${mousePosition.x}px`,
+                    top: `${mousePosition.y}px`,
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
 
             <div className="w-full max-w-md relative z-10 animate-fade-in">
                 {/* Logo/Header */}
