@@ -166,7 +166,7 @@ export default function ClassroomPage() {
                         <input
                             type="text"
                             placeholder="Search documents..."
-                            className="input pl-12 bg-white/50 focus:bg-white transition-all"
+                            className="input pl-14 bg-white/50 focus:bg-white transition-all"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
