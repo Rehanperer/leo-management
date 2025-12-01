@@ -1,8 +1,10 @@
+```typescript
 'use client';
 
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 import Link from 'next/link';
 import {
     Plus,
@@ -49,7 +51,7 @@ export default function MindmapListPage() {
         try {
             const token = localStorage.getItem('token');
             const response = await fetch('/api/mindmaps', {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${ token } ` },
             });
 
             if (response.ok) {
@@ -88,10 +90,7 @@ export default function MindmapListPage() {
     if (isLoading || loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-leo-50 to-purple-50">
-                <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-leo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="mt-4 text-gray-600 font-medium">Loading mindmaps...</p>
-                </div>
+                <LoadingSpinner size="lg" />
             </div>
         );
     }
@@ -165,7 +164,7 @@ export default function MindmapListPage() {
                         {filteredMindmaps.map((mindmap) => (
                             <Link
                                 key={mindmap.id}
-                                href={`/dashboard/mindmap/${mindmap.id}`}
+                                href={`/ dashboard / mindmap / ${ mindmap.id } `}
                                 className="card card-hover group"
                             >
                                 <div className="flex items-start justify-between mb-4">

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Users, Clock, Heart, TrendingUp, Award } from 'lucide-react';
 import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -156,10 +157,7 @@ export default function ProjectsPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-leo-50 to-purple-50">
-                <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-leo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="mt-4 text-gray-600 font-medium">Loading projects...</p>
-                </div>
+                <LoadingSpinner size="lg" />
             </div>
         );
     }

@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 import { useEffect, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -69,8 +70,7 @@ export default function NewMindmapPage() {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-leo-50 to-purple-50">
                 <div className="text-center">
-                    <div className="w-16 h-16 border-4 border-leo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                    <p className="mt-4 text-gray-600 font-medium">Loading...</p>
+                    <LoadingSpinner size="lg" />
                 </div>
             </div>
         );
@@ -151,8 +151,7 @@ export default function NewMindmapPage() {
                             >
                                 {creating ? (
                                     <>
-                                        <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                                        Creating...
+                                        <LoadingSpinner size="sm" />
                                     </>
                                 ) : (
                                     'Create Mindmap'

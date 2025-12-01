@@ -1,7 +1,8 @@
 'use client';
 
 import { useAuth } from '@/lib/auth-context';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 import { useEffect, useState, useCallback, use, useRef } from 'react';
 import { ArrowLeft, Save, Trash2 } from 'lucide-react';
 import Link from 'next/link';
@@ -136,7 +137,7 @@ export default function MindmapEditorPage({ params }: { params: Promise<{ id: st
     if (isLoading || loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-leo-600"></div>
+                <LoadingSpinner size="lg" />
             </div>
         );
     }
@@ -185,7 +186,7 @@ export default function MindmapEditorPage({ params }: { params: Promise<{ id: st
                         className="btn btn-primary flex items-center gap-2"
                     >
                         {isSaving ? (
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                            <LoadingSpinner size="sm" />
                         ) : (
                             <Save className="w-4 h-4" />
                         )}

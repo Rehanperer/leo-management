@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 interface Meeting {
     id: string;
@@ -201,8 +202,7 @@ export default function MeetingsPage() {
                 {/* Timeline View */}
                 {isLoading ? (
                     <div className="text-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-leo-600 mx-auto"></div>
-                        <p className="mt-4 text-gray-500">Loading your schedule...</p>
+                        <LoadingSpinner size="lg" />
                     </div>
                 ) : filteredMeetings.length === 0 ? (
                     <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-gray-200">
