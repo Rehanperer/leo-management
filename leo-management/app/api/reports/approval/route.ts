@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
         });
 
         // Return the file
-        return new NextResponse(buf, {
+        return new NextResponse(new Uint8Array(buf), {
             headers: {
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                 'Content-Disposition': `attachment; filename="${documentType}_approval_${formData.date || 'report'}.docx"`,
