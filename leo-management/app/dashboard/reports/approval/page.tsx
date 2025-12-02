@@ -20,11 +20,11 @@ export default function ApprovalDocsPage() {
         externalOrgName: '',
         interDistrictClubName: '',
         multipleDistrictDetails: '',
+        interDistrictProject: 'NO',
 
         // Common fields likely needed
         projectChairperson: '',
         presidentName: '',
-        secretaryName: '',
 
         // Extended fields for External Org
         externalOrgAddress: '',
@@ -59,6 +59,25 @@ export default function ApprovalDocsPage() {
         }
     };
 
+    const [joiningClubs, setJoiningClubs] = useState(
+        Array(8).fill({ name: '', president: '', district: '' })
+    );
+    const [districtPresidents, setDistrictPresidents] = useState(
+        Array(4).fill({ name: '', district: '' })
+    );
+
+    const handleJoiningClubChange = (index: number, field: string, value: string) => {
+        const newClubs = [...joiningClubs];
+        newClubs[index] = { ...newClubs[index], [field]: value };
+        setJoiningClubs(newClubs);
+    };
+
+    const handleDistrictPresidentChange = (index: number, field: string, value: string) => {
+        const newPresidents = [...districtPresidents];
+        newPresidents[index] = { ...newPresidents[index], [field]: value };
+        setDistrictPresidents(newPresidents);
+    };
+
     const handleGenerate = async () => {
         if (!documentType) return;
 
@@ -73,6 +92,8 @@ export default function ApprovalDocsPage() {
                 body: JSON.stringify({
                     documentType,
                     ...formData,
+                    joiningClubs,
+                    districtPresidents,
                 }),
             });
 
@@ -147,7 +168,7 @@ export default function ApprovalDocsPage() {
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Details</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Club Name *</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Host Leo Club Name *</label>
                                             <input
                                                 type="text"
                                                 name="clubName"
@@ -158,7 +179,7 @@ export default function ApprovalDocsPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">District Name *</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Leo District *</label>
                                             <input
                                                 type="text"
                                                 name="districtName"
@@ -180,7 +201,7 @@ export default function ApprovalDocsPage() {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Expected Date *</label>
                                             <input
                                                 type="date"
                                                 name="date"
@@ -398,45 +419,235 @@ export default function ApprovalDocsPage() {
                                 )}
 
                                 {documentType === 'inter-district' && (
-                                    <div className="border-t pt-6">
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Inter-District Details</h3>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Partner Leo Club Name *</label>
-                                            <input
-                                                type="text"
-                                                name="interDistrictClubName"
-                                                value={formData.interDistrictClubName}
-                                                onChange={handleInputChange}
-                                                className="input"
-                                                placeholder="e.g. Leo Club of Colombo"
-                                                required
-                                            />
+                                    <>
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Details of Joining Leo Clubs</h3>
+                                            <div className="overflow-x-auto">
+                                                <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
+                                                    <thead className="bg-gray-50">
+                                                        <tr>
+                                                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">No.</th>
+                                                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leo Club Name</th>
+                                                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leo Club President's Name</th>
+                                                            <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leo District</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="bg-white divide-y divide-gray-200">
+                                                        {joiningClubs.map((club, index) => (
+                                                            <tr key={index}>
+                                                                <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500 text-center">{index + 1}</td>
+                                                                <td className="px-3 py-2 whitespace-nowrap">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={club.name}
+                                                                        onChange={(e) => handleJoiningClubChange(index, 'name', e.target.value)}
+                                                                        className="input text-sm py-1"
+                                                                        placeholder="Club Name"
+                                                                    />
+                                                                </td>
+                                                                <td className="px-3 py-2 whitespace-nowrap">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={club.president}
+                                                                        onChange={(e) => handleJoiningClubChange(index, 'president', e.target.value)}
+                                                                        className="input text-sm py-1"
+                                                                        placeholder="President's Name"
+                                                                    />
+                                                                </td>
+                                                                <td className="px-3 py-2 whitespace-nowrap">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={club.district}
+                                                                        onChange={(e) => handleJoiningClubChange(index, 'district', e.target.value)}
+                                                                        className="input text-sm py-1"
+                                                                        placeholder="District"
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval of District Presidents of Joining Leo Clubs</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                {districtPresidents.map((president, index) => (
+                                                    <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                        <h4 className="text-sm font-medium text-gray-700 mb-3">District President {index + 1}</h4>
+                                                        <div className="space-y-3">
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Name of Leo District President</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={president.name}
+                                                                    onChange={(e) => handleDistrictPresidentChange(index, 'name', e.target.value)}
+                                                                    className="input text-sm"
+                                                                    placeholder="Name"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Leo District</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={president.district}
+                                                                    onChange={(e) => handleDistrictPresidentChange(index, 'district', e.target.value)}
+                                                                    className="input text-sm"
+                                                                    placeholder="District"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
                                 )}
 
                                 {documentType === 'multiple-district' && (
-                                    <div className="border-t pt-6">
-                                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Multiple District Details</h3>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Details/Context *</label>
-                                            <input
-                                                type="text"
-                                                name="multipleDistrictDetails"
-                                                value={formData.multipleDistrictDetails}
-                                                onChange={handleInputChange}
-                                                className="input"
-                                                placeholder="Specific details about the MD project..."
-                                                required
-                                            />
+                                    <>
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Multiple District Details</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="md:col-span-2">
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Details/Context *</label>
+                                                    <input
+                                                        type="text"
+                                                        name="multipleDistrictDetails"
+                                                        value={formData.multipleDistrictDetails}
+                                                        onChange={handleInputChange}
+                                                        className="input"
+                                                        placeholder="Specific details about the MD project..."
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Project with Inter District Leo Club/s *</label>
+                                                    <select
+                                                        name="interDistrictProject"
+                                                        value={formData.interDistrictProject}
+                                                        onChange={handleInputChange}
+                                                        className="input"
+                                                    >
+                                                        <option value="YES">YES</option>
+                                                        <option value="NO">NO</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                        {/* Details of Joining Leo Clubs */}
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Details of Joining Leo Clubs</h3>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full border-collapse border border-gray-300">
+                                                    <thead>
+                                                        <tr className="bg-gray-50">
+                                                            <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">No.</th>
+                                                            <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">Leo Club Name</th>
+                                                            <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">Leo Club President's Name</th>
+                                                            <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">Leo District</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {joiningClubs.map((club, index) => (
+                                                            <tr key={index} className="hover:bg-gray-50">
+                                                                <td className="border border-gray-300 px-3 py-2 text-sm text-center">{index + 1}</td>
+                                                                <td className="border border-gray-300 px-3 py-2">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={club.name}
+                                                                        onChange={(e) => handleJoiningClubChange(index, 'name', e.target.value)}
+                                                                        className="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-leo-500 rounded"
+                                                                        placeholder="Club name"
+                                                                    />
+                                                                </td>
+                                                                <td className="border border-gray-300 px-3 py-2">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={club.president}
+                                                                        onChange={(e) => handleJoiningClubChange(index, 'president', e.target.value)}
+                                                                        className="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-leo-500 rounded"
+                                                                        placeholder="President name"
+                                                                    />
+                                                                </td>
+                                                                <td className="border border-gray-300 px-3 py-2">
+                                                                    <input
+                                                                        type="text"
+                                                                        value={club.district}
+                                                                        onChange={(e) => handleJoiningClubChange(index, 'district', e.target.value)}
+                                                                        className="w-full px-2 py-1 border-0 focus:ring-1 focus:ring-leo-500 rounded"
+                                                                        placeholder="District"
+                                                                    />
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        {/* Approval of District Presidents */}
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval of District Presidents of Joining Leo Clubs</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {districtPresidents.map((president, index) => (
+                                                    <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                        <h4 className="text-sm font-semibold text-gray-700 mb-3">District President {index + 1}</h4>
+                                                        <div className="space-y-3">
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Name of Leo District President</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={president.name}
+                                                                    onChange={(e) => handleDistrictPresidentChange(index, 'name', e.target.value)}
+                                                                    className="input text-sm"
+                                                                    placeholder="President name"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Leo District</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={president.district}
+                                                                    onChange={(e) => handleDistrictPresidentChange(index, 'district', e.target.value)}
+                                                                    className="input text-sm"
+                                                                    placeholder="District"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
                                 )}
 
                                 {/* Signatories */}
                                 <div className="border-t pt-6">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Signatories & IDs</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">Host Leo Club President</label>
+                                            <input
+                                                type="text"
+                                                name="presidentName"
+                                                value={formData.presidentName}
+                                                onChange={handleInputChange}
+                                                className="input"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">President MYLCI ID</label>
+                                            <input
+                                                type="text"
+                                                name="presidentMylciId"
+                                                value={formData.presidentMylciId}
+                                                onChange={handleInputChange}
+                                                className="input"
+                                            />
+                                        </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Project Chairperson</label>
                                             <input
@@ -477,36 +688,7 @@ export default function ApprovalDocsPage() {
                                                 className="input"
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Club President</label>
-                                            <input
-                                                type="text"
-                                                name="presidentName"
-                                                value={formData.presidentName}
-                                                onChange={handleInputChange}
-                                                className="input"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">President MYLCI ID</label>
-                                            <input
-                                                type="text"
-                                                name="presidentMylciId"
-                                                value={formData.presidentMylciId}
-                                                onChange={handleInputChange}
-                                                className="input"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Club Secretary</label>
-                                            <input
-                                                type="text"
-                                                name="secretaryName"
-                                                value={formData.secretaryName}
-                                                onChange={handleInputChange}
-                                                className="input"
-                                            />
-                                        </div>
+
                                     </div>
                                 </div>
 
@@ -538,3 +720,4 @@ export default function ApprovalDocsPage() {
         </div>
     );
 }
+

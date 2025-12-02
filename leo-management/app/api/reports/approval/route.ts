@@ -7,7 +7,7 @@ import * as path from 'path';
 export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
-        const { documentType, ...formData } = data;
+        const { documentType, joiningClubs, districtPresidents, ...formData } = data;
 
         if (!documentType) {
             return NextResponse.json(
@@ -22,23 +22,13 @@ export async function POST(request: NextRequest) {
             'inter-district': 'inter-district-approval.docx',
             'external-org': 'external-org-approval.docx',
         };
-
-        const filename = templateMap[documentType];
-        if (!filename) {
-            return NextResponse.json(
-                { error: 'Invalid document type' },
-                { status: 400 }
-            );
-        }
-
         // Load the template
-        const templatePath = path.join(process.cwd(), 'templates', 'reports', 'approval', filename);
+        // We assume the template name matches the document type with -approval suffix
+        const templatePath = path.join(process.cwd(), 'templates', 'reports', 'approval', `${documentType}-approval.docx`);
 
+        // Verify template exists
         if (!fs.existsSync(templatePath)) {
-            return NextResponse.json(
-                { error: 'Template file not found' },
-                { status: 404 }
-            );
+            throw new Error(`Template not found for document type: ${documentType}`);
         }
 
         const content = fs.readFileSync(templatePath, 'binary');
@@ -49,11 +39,22 @@ export async function POST(request: NextRequest) {
             linebreaks: true,
         });
 
+        // Process arrays to add indices
+        const processedJoiningClubs = Array.isArray(joiningClubs)
+            ? joiningClubs.map((club: any, index: number) => ({ ...club, index: index + 1 }))
+            : [];
+
+        const processedDistrictPresidents = Array.isArray(districtPresidents)
+            ? districtPresidents.map((president: any, index: number) => ({ ...president, index: index + 1 }))
+            : [];
+
         // Set the template variables
         // We pass all form data, so the template can use whatever it needs
         doc.setData({
             date: new Date().toLocaleDateString(),
             ...formData,
+            joiningClubs: processedJoiningClubs,
+            districtPresidents: processedDistrictPresidents,
         });
 
         // Render the document
