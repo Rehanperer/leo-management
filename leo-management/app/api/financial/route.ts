@@ -44,7 +44,11 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ records });
         } catch (error) {
             console.error('Error fetching financial records:', error);
-            return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+            console.error('Error details:', JSON.stringify(error, null, 2));
+            return NextResponse.json({
+                error: 'Internal server error',
+                details: error instanceof Error ? error.message : 'Unknown error'
+            }, { status: 500 });
         }
     });
 }

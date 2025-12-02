@@ -185,15 +185,18 @@ export default function FinancialPage() {
                     <h1 className="text-2xl font-bold text-gray-900">Financial Management</h1>
                     <p className="text-gray-600">Track income, expenses, and project budgets</p>
                 </div>
-                <Link
-                    href="/dashboard/financial/new"
-                    className="btn btn-primary flex items-center gap-2"
-                >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
-                    New Entry
-                </Link>
+                <div className="flex gap-3">
+
+                    <Link
+                        href="/dashboard/financial/new"
+                        className="btn btn-primary flex items-center gap-2"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        New Entry
+                    </Link>
+                </div>
             </div>
 
             {/* Summary Cards */}
