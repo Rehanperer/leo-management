@@ -47,7 +47,7 @@ export default function ApprovalDocsPage() {
         projectChairmanEmail: '',
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         if (name === 'documentType') {
             setDocumentType(value);
