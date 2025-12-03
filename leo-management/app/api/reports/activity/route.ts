@@ -3,12 +3,50 @@ import Docxtemplater from 'docxtemplater';
 import PizZip from 'pizzip';
 import * as fs from 'fs';
 import * as path from 'path';
-import ImageModule from 'docxtemplater-image-module-free';
+// @ts-ignore
+const ImageModule = require('docxtemplater-image-module-free');
 
 export async function POST(request: NextRequest) {
     try {
-        const data = await request.json();
-        console.log('Received Activity Report Data:', JSON.stringify(data, null, 2));
+        const formData = await request.formData();
+
+        // Parse basic fields
+        const clubName = formData.get('clubName') as string;
+        const month = formData.get('month') as string;
+        const year = formData.get('year') as string;
+        const secretaryName = formData.get('secretaryName') as string;
+        const membership = JSON.parse(formData.get('membership') as string);
+        const generalMeeting = JSON.parse(formData.get('generalMeeting') as string);
+        const boardMeeting = JSON.parse(formData.get('boardMeeting') as string);
+        const finances = JSON.parse(formData.get('finances') as string);
+        const participation = JSON.parse(formData.get('participation') as string);
+        const projectSummaries = JSON.parse(formData.get('projectSummaries') as string);
+        const projectsCount = formData.get('projectsCount') as string;
+
+        // Process images
+        const processImage = async (file: File | null): Promise<string | null> => {
+            if (!file) return null;
+            const buffer = Buffer.from(await file.arrayBuffer());
+            return buffer.toString('base64');
+        };
+
+        const gmPhoto = await processImage(formData.get('gmPhoto') as File | null);
+        const boardMeetingPhoto = await processImage(formData.get('boardMeetingPhoto') as File | null);
+
+        // Process attendance lists
+        const attendanceListCount = parseInt(formData.get('attendanceListCount') as string || '0');
+        const attendanceLists = [];
+        for (let i = 0; i < attendanceListCount; i++) {
+            const file = formData.get(`attendanceList_${i}`) as File | null;
+            const image = await processImage(file);
+            if (image) attendanceLists.push({ image });
+        }
+
+        const myleoUpdate = await processImage(formData.get('myleoUpdate') as File | null);
+        const mylciUpdate = await processImage(formData.get('mylciUpdate') as File | null);
+        const newsletter = await processImage(formData.get('newsletter') as File | null);
+        const blog = await processImage(formData.get('blog') as File | null);
+        const website = await processImage(formData.get('website') as File | null);
 
         // Load the template
         const templatePath = path.join(process.cwd(), 'templates', 'reports', 'activity-report-template.docx');
@@ -24,19 +62,14 @@ export async function POST(request: NextRequest) {
         const content = fs.readFileSync(templatePath, 'binary');
         const zip = new PizZip(content);
 
-        // Image options
+        // Image options - 2R size: 3.5" x 2.5" at 96 DPI = 336 x 240 pixels
         const opts = {
             centered: false,
-            fileType: "docx",
             getImage: function (tagValue: string) {
-                // tagValue is the base64 string
-                const base64Data = tagValue.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-                return Buffer.from(base64Data, "base64");
+                return Buffer.from(tagValue, 'base64');
             },
             getSize: function () {
-                // 2R size: 2.5 x 3.5 inches
-                // At 96 DPI: 240 x 336 pixels
-                return [240, 336];
+                return [336, 240]; // 3.5" x 2.5" at 96 DPI
             }
         };
 
@@ -65,74 +98,88 @@ export async function POST(request: NextRequest) {
 
         // Flatten data structure to avoid dots in template tags (Word formatting issue)
         const templateData = {
-            clubName: data.clubName || '',
-            month: data.month || '',
-            year: data.year || '',
-            secretaryName: data.secretaryName || '',
+            clubName: clubName || '',
+            month: month || '',
+            year: year || '',
+            secretaryName: secretaryName || '',
             date: new Date().toLocaleDateString(),
 
             // Membership - flattened
-            membershipPrevious: data.membership?.previous || '',
-            membershipInducted: data.membership?.inducted || '',
-            membershipDropped: data.membership?.dropped || '',
-            membershipPresent: data.membership?.present || '',
-            membershipBoard: data.membership?.board || '',
+            membershipPrevious: membership?.previous || '',
+            membershipInducted: membership?.inducted || '',
+            membershipDropped: membership?.dropped || '',
+            membershipPresent: membership?.present || '',
+            membershipBoard: membership?.board || '',
 
             // General Meeting - flattened
-            generalMeetingDate: data.generalMeeting?.date || '',
-            generalMeetingTime: data.generalMeeting?.time || '',
-            generalMeetingVenue: data.generalMeeting?.venue || '',
-            generalMeetingOfficersVisited: data.generalMeeting?.officersVisited || '',
-            generalMeetingAdvisorPresent: data.generalMeeting?.advisorPresent || '',
+            generalMeetingDate: generalMeeting?.date || '',
+            generalMeetingTime: generalMeeting?.time || '',
+            generalMeetingVenue: generalMeeting?.venue || '',
+            generalMeetingOfficersVisited: generalMeeting?.officersVisited || '',
+            generalMeetingAdvisorPresent: generalMeeting?.advisorPresent || '',
 
             // General Meeting Guests - flattened
-            chiefGuestName: data.generalMeeting?.guests?.chief?.name || '',
-            chiefGuestDesignation: data.generalMeeting?.guests?.chief?.designation || '',
-            honorGuestName: data.generalMeeting?.guests?.honor?.name || '',
-            honorGuestDesignation: data.generalMeeting?.guests?.honor?.designation || '',
-            specialGuestName: data.generalMeeting?.guests?.special?.name || '',
-            specialGuestDesignation: data.generalMeeting?.guests?.special?.designation || '',
-            otherGuestName: data.generalMeeting?.guests?.other?.name || '',
-            otherGuestDesignation: data.generalMeeting?.guests?.other?.designation || '',
+            chiefGuestName: generalMeeting?.guests?.chief?.name || '',
+            chiefGuestDesignation: generalMeeting?.guests?.chief?.designation || '',
+            guestOfHonorName: generalMeeting?.guests?.honor?.name || '',
+            guestOfHonorDesignation: generalMeeting?.guests?.honor?.designation || '',
+            specialGuestName: generalMeeting?.guests?.special?.name || '',
+            specialGuestDesignation: generalMeeting?.guests?.special?.designation || '',
+            otherGuestsName: generalMeeting?.guests?.other?.name || '',
+            otherGuestsDesignation: generalMeeting?.guests?.other?.designation || '',
 
             // General Meeting Attendance - flattened
-            attendanceLeos: data.generalMeeting?.attendance?.leos || '',
-            attendanceLeosPresentAbsent: data.generalMeeting?.attendance?.leosPresentAbsent || '',
-            attendanceProspects: data.generalMeeting?.attendance?.prospects || '',
-            attendanceLions: data.generalMeeting?.attendance?.lions || '',
-            attendanceCouncil: data.generalMeeting?.attendance?.council || '',
-            attendanceVisitingLeos: data.generalMeeting?.attendance?.visitingLeos || '',
-            attendanceParents: data.generalMeeting?.attendance?.parents || '',
-            attendanceGuests: data.generalMeeting?.attendance?.guests || '',
-            attendanceStaffAdvisor: data.generalMeeting?.attendance?.staffAdvisor || '',
-            attendanceClubPresident: data.generalMeeting?.attendance?.clubPresident || '',
-            attendanceClubVicePresident: data.generalMeeting?.attendance?.clubVicePresident || '',
-            attendanceClubSecretary: data.generalMeeting?.attendance?.clubSecretary || '',
-            attendanceClubTreasurer: data.generalMeeting?.attendance?.clubTreasurer || '',
-            attendanceLeoAdvisor: data.generalMeeting?.attendance?.leoAdvisor || '',
+            attendanceLeos: generalMeeting?.attendance?.leos || '',
+            attendanceLeosPresentAbsent: generalMeeting?.attendance?.leosPresentAbsent || '',
+            attendanceProspects: generalMeeting?.attendance?.prospects || '',
+            attendanceLions: generalMeeting?.attendance?.lions || '',
+            attendanceCouncil: generalMeeting?.attendance?.council || '',
+            attendanceVisitingLeos: generalMeeting?.attendance?.visitingLeos || '',
+            attendanceParents: generalMeeting?.attendance?.parents || '',
+            attendanceGuests: generalMeeting?.attendance?.guests || '',
+            attendanceStaffAdvisor: generalMeeting?.attendance?.staffAdvisor || '',
+            attendanceClubPresident: generalMeeting?.attendance?.clubPresident || '',
+            attendanceClubVicePresident: generalMeeting?.attendance?.clubVicePresident || '',
+            attendanceClubSecretary: generalMeeting?.attendance?.clubSecretary || '',
+            attendanceClubTreasurer: generalMeeting?.attendance?.clubTreasurer || '',
+            attendanceLeoAdvisor: generalMeeting?.attendance?.leoAdvisor || '',
 
             // Board Meeting - flattened
-            boardMeetingDate: data.boardMeeting?.date || '',
-            boardMeetingTime: data.boardMeeting?.time || '',
-            boardMeetingVenue: data.boardMeeting?.venue || '',
-            boardMeetingMembersPresent: data.boardMeeting?.membersPresent || '',
-            boardMeetingAttendancePercent: data.boardMeeting?.attendancePercent || '',
-            boardMeetingAdvisorPresent: data.boardMeeting?.advisorPresent || '',
+            boardMeetingDate: boardMeeting?.date || '',
+            boardMeetingTime: boardMeeting?.time || '',
+            boardMeetingVenue: boardMeeting?.venue || '',
+            boardMeetingMembersPresent: boardMeeting?.membersPresent || '',
+            boardMeetingAttendancePercent: boardMeeting?.attendancePercent || '',
+            boardMeetingAdvisorPresent: boardMeeting?.advisorPresent || '',
 
             // Finances - flattened
-            financesSurplusDeficit: data.finances?.surplusDeficit || '',
-            financesReceivables: data.finances?.receivables || '',
-            financesPayables: data.finances?.payables || '',
+            financesOpening: finances?.opening || '',
+            financesIncome: finances?.income || '',
+            financesExpenditure: finances?.expenditure || '',
+            financesClosing: finances?.closing || '',
+            financesSurplusDeficit: finances?.surplusDeficit || '',
+            financesReceivables: finances?.receivables || '',
+            financesPayables: finances?.payables || '',
 
             // Participation - keep as arrays for loops
-            participationDistrict: data.participation?.district || [],
-            participationMultipleDistrict: data.participation?.multipleDistrict || [],
-            participationLions: data.participation?.lions || [],
-            participationOtherClubs: data.participation?.otherClubs || [],
+            participationDistrict: participation?.district || [],
+            participationMultipleDistrict: participation?.multipleDistrict || [],
+            participationLions: participation?.lions || [],
+            participationOtherClubs: participation?.otherClubs || [],
 
             // Project Summaries
-            projectSummaries: data.projectSummaries || [],
-            projectsCount: data.projectsCount || ''
+            projectSummaries: projectSummaries || [],
+            projectsCount: projectsCount || '',
+
+            // Images
+            gmPhoto: gmPhoto,
+            boardMeetingPhoto: boardMeetingPhoto,
+            attendanceLists: attendanceLists,
+            myleoUpdate: myleoUpdate,
+            mylciUpdate: mylciUpdate,
+            newsletter: newsletter,
+            blog: blog,
+            website: website,
         };
 
         console.log('Template Data (with defaults):', JSON.stringify(templateData, null, 2));
@@ -152,7 +199,7 @@ export async function POST(request: NextRequest) {
         return new NextResponse(new Uint8Array(buf), {
             headers: {
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                'Content-Disposition': `attachment; filename="Activity_Report_${data.month}_${data.year}.docx"`,
+                'Content-Disposition': `attachment; filename="Activity_Report_${month}_${year}.docx"`,
             },
         });
     } catch (error) {

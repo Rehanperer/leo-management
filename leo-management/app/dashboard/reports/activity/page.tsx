@@ -104,6 +104,16 @@ export default function ActivityReportPage() {
     // Project Summary List
     const [projectSummaries, setProjectSummaries] = useState<ProjectSummary[]>([]);
 
+    // Images
+    const [gmPhoto, setGmPhoto] = useState<File | null>(null);
+    const [boardMeetingPhoto, setBoardMeetingPhoto] = useState<File | null>(null);
+    const [attendanceLists, setAttendanceLists] = useState<(File | null)[]>([null]);
+    const [myleoUpdate, setMyleoUpdate] = useState<File | null>(null);
+    const [mylciUpdate, setMylciUpdate] = useState<File | null>(null);
+    const [newsletter, setNewsletter] = useState<File | null>(null);
+    const [blog, setBlog] = useState<File | null>(null);
+    const [website, setWebsite] = useState<File | null>(null);
+
     // Helper to add items to lists
     const addParticipation = (type: keyof typeof participation) => {
         setParticipation(prev => ({
@@ -145,28 +155,37 @@ export default function ActivityReportPage() {
         setLoading(true);
 
         try {
-            const payload = {
-                clubName,
-                month,
-                year,
-                secretaryName,
-                membership,
-                generalMeeting,
-                boardMeeting,
-                finances,
-                participation,
-                projectSummaries,
-                projectsCount
-            };
+            const formData = new FormData();
 
-            console.log('Sending Activity Report Data:', JSON.stringify(payload, null, 2));
+            // Basic fields
+            formData.append('clubName', clubName);
+            formData.append('month', month);
+            formData.append('year', year);
+            formData.append('secretaryName', secretaryName);
+            formData.append('membership', JSON.stringify(membership));
+            formData.append('generalMeeting', JSON.stringify(generalMeeting));
+            formData.append('boardMeeting', JSON.stringify(boardMeeting));
+            formData.append('finances', JSON.stringify(finances));
+            formData.append('participation', JSON.stringify(participation));
+            formData.append('projectSummaries', JSON.stringify(projectSummaries));
+            formData.append('projectsCount', projectsCount);
+
+            // Images
+            if (gmPhoto) formData.append('gmPhoto', gmPhoto);
+            if (boardMeetingPhoto) formData.append('boardMeetingPhoto', boardMeetingPhoto);
+            attendanceLists.forEach((file, index) => {
+                if (file) formData.append(`attendanceList_${index}`, file);
+            });
+            formData.append('attendanceListCount', attendanceLists.filter(f => f !== null).length.toString());
+            if (myleoUpdate) formData.append('myleoUpdate', myleoUpdate);
+            if (mylciUpdate) formData.append('mylciUpdate', mylciUpdate);
+            if (newsletter) formData.append('newsletter', newsletter);
+            if (blog) formData.append('blog', blog);
+            if (website) formData.append('website', website);
 
             const response = await fetch('/api/reports/activity', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
+                body: formData,
             });
 
             if (!response.ok) throw new Error('Failed to generate report');
@@ -408,6 +427,196 @@ export default function ActivityReportPage() {
                                     ))}
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+
+                    {/* Images Section */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                            <Upload className="w-5 h-5 mr-2 text-leo-600" />
+                            Photos & Documents
+                        </h2>
+                        <div className="space-y-6">
+                            {/* Meeting Photos */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">General Meeting Photo</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={e => setGmPhoto(e.target.files?.[0] || null)}
+                                        className="hidden"
+                                        id="gmPhoto"
+                                    />
+                                    <label
+                                        htmlFor="gmPhoto"
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${gmPhoto ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                    >
+                                        <Upload className="w-5 h-5 mr-2" />
+                                        {gmPhoto ? gmPhoto.name : 'Upload Photo'}
+                                    </label>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">Board Meeting Photo</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={e => setBoardMeetingPhoto(e.target.files?.[0] || null)}
+                                        className="hidden"
+                                        id="boardMeetingPhoto"
+                                    />
+                                    <label
+                                        htmlFor="boardMeetingPhoto"
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${boardMeetingPhoto ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                    >
+                                        <Upload className="w-5 h-5 mr-2" />
+                                        {boardMeetingPhoto ? boardMeetingPhoto.name : 'Upload Photo'}
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* Attendance Lists */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Attendance Lists (up to 10)</label>
+                                <div className="space-y-2">
+                                    {attendanceLists.map((file, index) => (
+                                        <div key={index} className="flex items-center gap-2">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={e => {
+                                                    const newLists = [...attendanceLists];
+                                                    newLists[index] = e.target.files?.[0] || null;
+                                                    setAttendanceLists(newLists);
+                                                }}
+                                                className="hidden"
+                                                id={`attendance_${index}`}
+                                            />
+                                            <label
+                                                htmlFor={`attendance_${index}`}
+                                                className={`flex-1 flex items-center justify-center px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${file ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                            >
+                                                <Upload className="w-4 h-4 mr-2" />
+                                                {file ? file.name : `Attendance List ${index + 1}`}
+                                            </label>
+                                            {index > 0 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setAttendanceLists(attendanceLists.filter((_, i) => i !== index))}
+                                                    className="text-red-500 hover:text-red-700"
+                                                >
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    {attendanceLists.length < 10 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setAttendanceLists([...attendanceLists, null])}
+                                            className="flex items-center text-leo-600 hover:text-leo-700 font-medium text-sm"
+                                        >
+                                            <Plus className="w-4 h-4 mr-1" /> Add Attendance List
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* MyLeo & MyLCI */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">MyLeo Update</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={e => setMyleoUpdate(e.target.files?.[0] || null)}
+                                        className="hidden"
+                                        id="myleoUpdate"
+                                    />
+                                    <label
+                                        htmlFor="myleoUpdate"
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${myleoUpdate ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                    >
+                                        <Upload className="w-5 h-5 mr-2" />
+                                        {myleoUpdate ? myleoUpdate.name : 'Upload Screenshot'}
+                                    </label>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">MyLCI Update</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={e => setMylciUpdate(e.target.files?.[0] || null)}
+                                        className="hidden"
+                                        id="mylciUpdate"
+                                    />
+                                    <label
+                                        htmlFor="mylciUpdate"
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${mylciUpdate ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                    >
+                                        <Upload className="w-5 h-5 mr-2" />
+                                        {mylciUpdate ? mylciUpdate.name : 'Upload Screenshot'}
+                                    </label>
+                                </div>
+                            </div>
+
+                            {/* Monthly Publications */}
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Publications</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Newsletter</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={e => setNewsletter(e.target.files?.[0] || null)}
+                                            className="hidden"
+                                            id="newsletter"
+                                        />
+                                        <label
+                                            htmlFor="newsletter"
+                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${newsletter ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        >
+                                            <Upload className="w-5 h-5 mr-2" />
+                                            {newsletter ? newsletter.name : 'Upload'}
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Blog</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={e => setBlog(e.target.files?.[0] || null)}
+                                            className="hidden"
+                                            id="blog"
+                                        />
+                                        <label
+                                            htmlFor="blog"
+                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${blog ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        >
+                                            <Upload className="w-5 h-5 mr-2" />
+                                            {blog ? blog.name : 'Upload'}
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={e => setWebsite(e.target.files?.[0] || null)}
+                                            className="hidden"
+                                            id="website"
+                                        />
+                                        <label
+                                            htmlFor="website"
+                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${website ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        >
+                                            <Upload className="w-5 h-5 mr-2" />
+                                            {website ? website.name : 'Upload'}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
