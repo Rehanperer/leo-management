@@ -55,6 +55,24 @@ export default function ReportsPage() {
                             </div>
                         </div>
                     </Link>
+
+                    {/* Activity Report Card */}
+                    <Link
+                        href="/dashboard/reports/activity"
+                        className="card-interactive stagger-item"
+                    >
+                        <div className="flex items-start">
+                            <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
+                                <FileText className="w-7 h-7 text-purple-600 icon-hover-scale" />
+                            </div>
+                            <div className="ml-4 flex-1">
+                                <h3 className="font-semibold text-gray-900 mb-1">Activity Report</h3>
+                                <p className="text-sm text-gray-600">
+                                    Generate monthly activity reports with project photos
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
                 </div>
             </div>
         </div>
