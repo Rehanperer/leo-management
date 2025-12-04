@@ -29,6 +29,15 @@ export default function DashboardPage() {
     const { user, logout, isLoading } = useAuth();
     const router = useRouter();
     const [stats, setStats] = useState({ projects: 0, meetings: 0, events: 0, budget: 0 });
+    const [logoClicks, setLogoClicks] = useState(0);
+
+    const handleLogoClick = () => {
+        const newClicks = logoClicks + 1;
+        setLogoClicks(newClicks);
+        if (newClicks === 6) {
+            router.push('/mini-games');
+        }
+    };
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -72,7 +81,10 @@ export default function DashboardPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center">
-                            <div className="flex-shrink-0 group">
+                            <div
+                                className="flex-shrink-0 group cursor-pointer select-none active:scale-95 transition-transform"
+                                onClick={handleLogoClick}
+                            >
                                 <div className="w-12 h-12 flex items-center justify-center">
                                     <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
                                 </div>

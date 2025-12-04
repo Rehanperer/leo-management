@@ -14,11 +14,13 @@
     "@vercel/speed-insights": "^1.2.0",
     "bcryptjs": "^3.0.3",
     "chart.js": "^4.5.1",
+    "clsx": "^2.1.1",
     "d3": "^7.9.0",
     "docx": "^9.5.1",
     "docxtemplater": "^3.67.5",
     "docxtemplater-image-module-free": "^1.1.1",
     "file-saver": "^2.0.5",
+    "framer-motion": "^12.23.25",
     "groq-sdk": "^0.37.0",
     "html2canvas": "^1.4.1",
     "jsonwebtoken": "^9.0.2",
@@ -35,7 +37,9 @@
     "react-chartjs-2": "^5.3.1",
     "react-dom": "19.2.0",
     "reactflow": "^11.11.4",
-    "recharts": "^3.5.1"
+    "recharts": "^3.5.1",
+    "tailwind-merge": "^3.4.0",
+    "use-sound": "^5.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

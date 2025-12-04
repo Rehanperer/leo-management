@@ -205,3 +205,13 @@ model Mindmap {
 }
 
 
+
+model LeaderboardEntry {
+  id        String   @id @default(uuid())
+  gameId    String
+  playerName String
+  score     Int
+  createdAt DateTime @default(now())
+
+  @@index([gameId, score(sort: Desc)])
+}
