@@ -30,6 +30,7 @@ export default function DashboardPage() {
     const router = useRouter();
     const [stats, setStats] = useState({ projects: 0, meetings: 0, events: 0, budget: 0 });
     const [logoClicks, setLogoClicks] = useState(0);
+    const [justLoggedIn, setJustLoggedIn] = useState(true);
 
     const handleLogoClick = () => {
         const newClicks = logoClicks + 1;
@@ -38,6 +39,14 @@ export default function DashboardPage() {
             router.push('/mini-games');
         }
     };
+
+    useEffect(() => {
+        // Reset the zoom animation state after it plays
+        if (justLoggedIn) {
+            const timer = setTimeout(() => setJustLoggedIn(false), 600);
+            return () => clearTimeout(timer);
+        }
+    }, [justLoggedIn]);
 
     useEffect(() => {
         if (!isLoading && !user) {
@@ -74,7 +83,7 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 animate-fade-in relative">
+        <div className={`min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 relative ${justLoggedIn ? 'animate-zoom-in' : 'animate-fade-in'}`}>
             <ParticleBackground />
             {/* Header */}
             <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">

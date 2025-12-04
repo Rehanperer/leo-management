@@ -8,6 +8,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [showContactModal, setShowContactModal] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const { login } = useAuth();
@@ -28,6 +29,8 @@ export default function LoginPage() {
 
         try {
             await login(username, password);
+            // Trigger zoom-out animation on successful login
+            setIsLoggingIn(true);
         } catch (err: any) {
             setError(err.message || 'Login failed');
         } finally {
@@ -36,7 +39,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-800 via-blue-900 to-slate-900 px-4 relative overflow-hidden cursor-none">
+        <div className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-800 via-blue-900 to-slate-900 px-4 relative overflow-hidden cursor-none ${isLoggingIn ? 'animate-zoom-out' : ''}`}>
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl animate-float" />
