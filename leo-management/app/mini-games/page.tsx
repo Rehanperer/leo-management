@@ -8,7 +8,8 @@ import { ProjectBuilderGame } from "@/components/mini-games/ProjectBuilderGame";
 import { LionsDashGame } from "@/components/mini-games/LionsDashGame";
 import { LynkMazeGame } from "@/components/mini-games/LynkMazeGame";
 import { LeoQuizQuestGame } from "@/components/mini-games/LeoQuizQuestGame";
-import { Zap, Layers, Activity, Map, BrainCircuit } from "lucide-react";
+import { LeoPacGame } from "@/components/mini-games/LeoPacGame";
+import { Zap, Layers, Activity, Map, BrainCircuit, Ghost } from "lucide-react";
 
 
 
@@ -59,6 +60,14 @@ export default function MiniGamesPage() {
             icon: BrainCircuit,
             color: "pink",
             component: LeoQuizQuestGame,
+        },
+        {
+            id: "leo-pac",
+            title: "Leo Pac",
+            description: "Classic arcade action! Eat pellets, avoid ghosts, and survive.",
+            icon: Ghost,
+            color: "yellow",
+            component: LeoPacGame,
         },
     ];
 

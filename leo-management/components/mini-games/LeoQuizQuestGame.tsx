@@ -49,6 +49,96 @@ const QUESTIONS: Question[] = [
         options: ["Rotary Club", "Lions Club", "Kiwanis Club", "Optimist Club"],
         correct: 1,
     },
+    {
+        id: 6,
+        question: "What are the two types of Leo Clubs?",
+        options: ["Alpha and Beta", "Junior and Senior", "School-based and Community-based", "Local and International"],
+        correct: 0,
+    },
+    {
+        id: 7,
+        question: "What is the age range for Alpha Leo Club members?",
+        options: ["12-18 years", "12-30 years", "18-30 years", "16-25 years"],
+        correct: 0,
+    },
+    {
+        id: 8,
+        question: "What is the age range for Beta Leo Club members?",
+        options: ["12-18 years", "18-30 years", "16-25 years", "21-35 years"],
+        correct: 1,
+    },
+    {
+        id: 9,
+        question: "Which city was home to the first Leo Club?",
+        options: ["New York", "Los Angeles", "Abington, Pennsylvania", "Chicago"],
+        correct: 2,
+    },
+    {
+        id: 10,
+        question: "What is one of the core values of Leo Clubs?",
+        options: ["Competition", "Kindness", "Profit", "Independence"],
+        correct: 1,
+    },
+    {
+        id: 11,
+        question: "How many Leo Clubs are there worldwide approximately?",
+        options: ["Over 5,000", "Over 7,000", "Over 10,000", "Over 15,000"],
+        correct: 1,
+    },
+    {
+        id: 12,
+        question: "What is the primary focus of Leo Clubs?",
+        options: ["Academic excellence", "Community service", "Sports achievement", "Political activism"],
+        correct: 1,
+    },
+    {
+        id: 13,
+        question: "Leo Clubs are part of which larger organization?",
+        options: ["Rotary International", "Lions Clubs International", "UNESCO", "Red Cross"],
+        correct: 1,
+    },
+    {
+        id: 14,
+        question: "What leadership skill do Leo Clubs emphasize?",
+        options: ["Delegation", "All of these", "Communication", "Problem-solving"],
+        correct: 1,
+    },
+    {
+        id: 15,
+        question: "What is the Leo Club slogan?",
+        options: ["Be the change", "Leadership in Action", "Service First", "Together We Serve"],
+        correct: 1,
+    },
+    {
+        id: 16,
+        question: "How often do most Leo Clubs meet?",
+        options: ["Daily", "Weekly", "Monthly", "Quarterly"],
+        correct: 2,
+    },
+    {
+        id: 17,
+        question: "What is a key benefit of joining a Leo Club?",
+        options: ["Free travel", "Networking opportunities", "Academic credits", "Financial rewards"],
+        correct: 1,
+    },
+    {
+        id: 18,
+        question: "Which of these is a typical Leo Club project?",
+        options: ["Food drives", "All of these", "Environmental cleanups", "Youth mentoring"],
+        correct: 1,
+    },
+    {
+        id: 19,
+        question: "What quality does Leo Club membership develop?",
+        options: ["Athletic ability", "Civic responsibility", "Musical talent", "Artistic skill"],
+        correct: 1,
+    },
+    {
+        id: 20,
+        question: "Leo Clubs promote leadership through:",
+        options: ["Lectures only", "Hands-on service", "Online courses", "Written exams"],
+        correct: 1,
+    },
 ];
 
 export const LeoQuizQuestGame = ({ onBack }: { onBack: () => void }) => {
