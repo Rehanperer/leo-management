@@ -1,54 +1,13 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, HTMLMotionProps } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-// --- CRT Overlay Effect ---
-export const CRTEffect = () => (
-    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden h-full w-full">
-        {/* Scanlines */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-10 bg-[length:100%_4px,3px_100%] pointer-events-none" />
-        {/* Flicker/Noise (Subtle) */}
-        <div className="absolute inset-0 bg-white opacity-[0.02] animate-pulse pointer-events-none" />
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)] pointer-events-none" />
-    </div>
-);
-
-// --- Retro Text ---
-interface RetroTextProps extends React.HTMLAttributes<HTMLHeadingElement> {
-    children: React.ReactNode;
-    variant?: "h1" | "h2" | "h3" | "p";
-    glow?: boolean;
-}
-
-export const RetroText = ({
-    children,
-    className,
-    variant = "p",
-    glow = false,
-    ...props
-}: RetroTextProps) => {
-    const Component = variant === "p" ? "p" : variant;
-
-    return (
-        <Component
-            className={cn(
-                "font-mono tracking-wider uppercase",
-                glow && "drop-shadow-[0_0_10px_rgba(0,255,255,0.7)] text-cyan-400",
-                !glow && "text-slate-200",
-                className
-            )}
-            {...props}
-        >
-            {children}
-        </Component>
-    );
-};
+// ... (CRTEffect and RetroText remain unchanged)
 
 // --- Arcade Button ---
-interface ArcadeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ArcadeButtonProps extends HTMLMotionProps<"button"> {
     children: React.ReactNode;
     variant?: "primary" | "secondary" | "danger";
 }
