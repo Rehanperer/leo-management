@@ -358,48 +358,180 @@ export default function SettingsPage() {
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">About LeoLynk</h3>
                             <div className="prose prose-sm max-w-none text-gray-600">
                                 <p className="mb-4">
-                                    LeoLynk is a comprehensive management system designed specifically for Leo Clubs.
-                                    It streamlines club operations, project reporting, financial management, and member engagement.
+                                    LeoLynk is a comprehensive, next-generation management platform meticulously designed to empower Leo Clubs across the globe.
+                                    More than just a management tool, LeoLynk serves as your club's digital headquarters, seamlessly integrating project planning,
+                                    financial oversight, member engagement, and strategic reporting into one unified ecosystem. Built with the specific needs of
+                                    Leo Clubs in mind, our platform eliminates the administrative burden that often hampers service work, allowing your club to
+                                    focus on what truly matters: making a positive impact in your community.
                                 </p>
                                 <p className="mb-4">
-                                    Our mission is to empower Leo Clubs with digital tools that enhance their service impact
-                                    and leadership development journey.
+                                    Our mission is to revolutionize how Leo Clubs operate by providing cutting-edge digital tools that amplify service impact,
+                                    streamline leadership workflows, and foster meaningful collaboration. Whether you're a club president managing multiple projects,
+                                    a treasurer tracking finances, or a member contributing to your club's success, LeoLynk adapts to your role and enhances
+                                    your leadership development journey with intelligent automation, insightful analytics, and intuitive user experiences.
                                 </p>
 
                                 <div className="mt-6">
-                                    <h4 className="font-medium text-gray-900 mb-2">Key Features</h4>
-                                    <ul className="list-disc pl-5 space-y-1 mb-4">
-                                        <li><strong>Project Management:</strong> comprehensive tools to plan, track, and report on service projects with real-time statistics.</li>
-                                        <li><strong>Financial Tracking:</strong> Manage club finances, track income and expenses, and generate transparent financial reports.</li>
+                                    <h4 className="font-semibold text-gray-900 mb-4 text-base">Comprehensive Feature Set</h4>
+
+                                    <div className="space-y-4 mb-4">
+                                        <div className="bg-gradient-to-br from-leo-50 to-purple-50 p-4 rounded-lg border border-leo-200">
+                                            <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                <svg className="w-5 h-5 text-leo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                                Project Management
+                                            </h5>
+                                            <p className="text-sm">
+                                                Transform your service projects from concept to completion with our comprehensive project management suite. LeoLynk
+                                                enables you to create detailed project proposals with AI-assisted writing, upload and organize project photos and receipts,
+                                                track participant engagement, and generate professional PDF reports that meet Leo International standards. With real-time
+                                                statistics, customizable PDF themes, and automatic financial calculations, managing multiple projects simultaneously has
+                                                never been easier. Visualize your club's journey with the stunning animated Timeline View that showcases projects
+                                                chronologically with smooth scroll-based animations and alternating layouts, or use the traditional Grid View for quick
+                                                overview. Each project becomes a documented legacy of your club's impact, ready to share with district leadership.
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
+                                            <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                Financial Tracking
+                                            </h5>
+                                            <p className="text-sm">
+                                                Maintain complete financial transparency with our robust accounting system designed for Leo Club treasurers. Record every
+                                                income source and expense with detailed categorization, attach digital receipts for audit trails, and monitor your club's
+                                                budget balance in real-time through an intuitive dashboard. The system automatically calculates running balances, generates
+                                                treasurer reports for district submissions, and provides visual analytics to help your club make informed financial decisions.
+                                                Say goodbye to spreadsheet chaos and embrace financial clarity.
+                                            </p>
+                                        </div>
+
                                         {!showAllFeatures && (
                                             <button
                                                 onClick={() => setShowAllFeatures(true)}
-                                                className="text-leo-600 hover:text-leo-700 font-medium text-sm mt-2 flex items-center gap-1"
+                                                className="text-leo-600 hover:text-leo-700 font-semibold text-sm mt-2 flex items-center gap-2 bg-leo-50 px-4 py-2 rounded-lg hover:bg-leo-100 transition-colors"
                                             >
-                                                Read More
+                                                <span>Explore All Features</span>
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                                 </svg>
                                             </button>
                                         )}
-                                    </ul>
+                                    </div>
 
                                     {showAllFeatures && (
-                                        <div className="animate-fade-in">
-                                            <ul className="list-disc pl-5 space-y-1 mb-4">
-                                                <li><strong>Meeting Minutes:</strong> Schedule meetings, record detailed minutes, and track member attendance effortlessly.</li>
-                                                <li><strong>Event Planning:</strong> Organize club events, manage tasks, and track participation to ensure successful outcomes.</li>
-                                                <li><strong>Document Repository:</strong> A centralized, secure hub for all club documents, resources, and guidelines.</li>
-                                                <li><strong>AI Assistant:</strong> An intelligent chatbot to assist with reporting, drafting content, and answering queries instantly.</li>
-                                                <li><strong>Mind Mapping:</strong> Visual brainstorming tools to plan projects and organize ideas effectively.</li>
-                                                <li><strong>Member Directory:</strong> Manage club members, track roles, and maintain up-to-date contact information.</li>
-                                                <li><strong>Automated Reporting:</strong> Generate professional monthly and annual reports with a single click.</li>
-                                            </ul>
+                                        <div className="animate-fade-in space-y-4 mb-4">
+                                            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-4 rounded-lg border border-purple-200">
+                                                <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                    </svg>
+                                                    Meeting Minutes
+                                                </h5>
+                                                <p className="text-sm">
+                                                    Streamline your club meetings from scheduling to documentation with our intelligent meeting management system. Schedule
+                                                    meetings with date and time tracking, record comprehensive minutes with structured formatting, track member attendance
+                                                    with digital roll calls, and capture action items with assigned responsibilities. Our AI assistant can help draft
+                                                    meeting minutes, suggest agenda items based on club activities, and even generate meeting scripts for board meetings.
+                                                    Export professional meeting minutes in Word format for district reporting, ensuring your club maintains excellent
+                                                    documentation standards effortlessly.
+                                                </p>
+                                            </div>
+
+                                            <div className="bg-gradient-to-br from-orange-50 to-amber-50 p-4 rounded-lg border border-orange-200">
+                                                <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    Event Planning
+                                                </h5>
+                                                <p className="text-sm">
+                                                    Elevate your club events from concept to execution with our comprehensive event management platform. Plan every detail
+                                                    of your fundraisers, service activities, and social gatherings with structured event profiles that include date, time,
+                                                    location, participant lists, and task assignments. Track event budgets, monitor RSVPs, coordinate logistics, and capture
+                                                    event highlights with integrated photo galleries. The system helps you analyze event success metrics, compare attendance
+                                                    patterns, and build on successful event templates for recurring activities. Never miss a detail with automated reminders
+                                                    and collaborative planning tools.
+                                                </p>
+                                            </div>
+
+                                            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-4 rounded-lg border border-indigo-200">
+                                                <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                                    </svg>
+                                                    D2 Classroom Resources
+                                                </h5>
+                                                <p className="text-sm">
+                                                    Access a comprehensive digital library of essential Leo Club resources curated specifically for District 306 A2 clubs.
+                                                    The D2 Classroom serves as your centralized knowledge hub, featuring the Club Exco Essential Pack with leadership guides,
+                                                    project planning templates, constitutional documents, officer handbooks, and district-specific guidelines. All documents
+                                                    are organized by category for easy navigation and available for instant download. Whether you're a new officer seeking
+                                                    guidance or an experienced leader refreshing your knowledge, these resources provide the foundation for club excellence
+                                                    and compliance with Leo International standards.
+                                                </p>
+                                            </div>
+
+                                            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-lg border border-blue-200">
+                                                <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                                                    </svg>
+                                                    AI Assistant (Chatbot)
+                                                </h5>
+                                                <p className="text-sm">
+                                                    Meet your intelligent club assistant, powered by advanced AI technology through Botpress integration. Available 24/7
+                                                    via the chat bubble on every page, this AI companion helps you draft project descriptions, write meeting minutes,
+                                                    generate report content, answer Leo Club policy questions, and provide guidance on administrative tasks. The chatbot
+                                                    understands context about your club activities and can suggest improvements to your writing, help brainstorm project
+                                                    ideas, and even assist with formatting requirements for district submissions. It's like having an experienced Leo advisor
+                                                    available at any time, accelerating your productivity and enhancing content quality.
+                                                </p>
+                                            </div>
+
+                                            <div className="bg-gradient-to-br from-teal-50 to-green-50 p-4 rounded-lg border border-teal-200">
+                                                <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                                                    </svg>
+                                                    Mind Mapping
+                                                </h5>
+                                                <p className="text-sm">
+                                                    Unleash your club's creative potential with our advanced visual mind mapping tools powered by Mind Elixir.
+                                                    Transform brainstorming sessions into structured action plans by creating dynamic, interactive mind maps for project
+                                                    planning, event ideation, goal setting, and strategic thinking. Add custom styles with colors and icons, insert images
+                                                    and hyperlinks, create rich text formatting, use tags for organization, and build hierarchical structures with unlimited
+                                                    nodes. Mind maps are automatically saved and can be exported for presentations or shared with club members. Perfect for
+                                                    collaborative planning sessions, officer transition planning, and long-term club strategy development.
+                                                </p>
+                                            </div>
+
+                                            <div className="bg-gradient-to-br from-pink-50 to-rose-50 p-4 rounded-lg border border-pink-200">
+                                                <h5 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                                    <svg className="w-5 h-5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    </svg>
+                                                    Automated Reporting
+                                                </h5>
+                                                <p className="text-sm">
+                                                    Eliminate hours of manual report writing with our intelligent automated reporting system. Generate professional,
+                                                    district-ready reports with a single click, including Monthly Activity Reports that summarize all club activities,
+                                                    Financial Statements with detailed transaction histories, Meeting Agendas with structured formatting, Board Meeting
+                                                    Scripts with speaking points, and Annual Performance Reviews with comprehensive analytics. Each report template is
+                                                    pre-formatted to meet Leo International standards and can be exported in Word or PDF formats. The system automatically
+                                                    pulls data from your projects, finances, meetings, and events, intelligently formatting everything into polished
+                                                    documents that showcase your club's achievements and professionalism.
+                                                </p>
+                                            </div>
+
                                             <button
                                                 onClick={() => setShowAllFeatures(false)}
-                                                className="text-leo-600 hover:text-leo-700 font-medium text-sm mt-2 flex items-center gap-1"
+                                                className="text-leo-600 hover:text-leo-700 font-semibold text-sm mt-2 flex items-center gap-2 bg-leo-50 px-4 py-2 rounded-lg hover:bg-leo-100 transition-colors"
                                             >
-                                                Show Less
+                                                <span>Show Less</span>
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
                                                 </svg>
