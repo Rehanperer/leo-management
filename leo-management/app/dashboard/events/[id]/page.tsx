@@ -134,22 +134,33 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
     if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     if (!event) return null;
 
-    // Helper to safely parse JSON that might already be an object
+    // Helper to safely parse JSON that might already be an object or double-stringified
     const safeParse = (value: any, fallback: any = []) => {
         if (!value) return fallback;
         if (typeof value === 'string') {
             try {
-                return JSON.parse(value);
+                const parsed = JSON.parse(value);
+                // If it's still a string after parsing, try parsing again (double-stringified case)
+                if (typeof parsed === 'string') {
+                    try {
+                        return JSON.parse(parsed);
+                    } catch {
+                        return fallback;
+                    }
+                }
+                // Ensure we return the expected type
+                return Array.isArray(parsed) || typeof parsed === 'object' ? parsed : fallback;
             } catch {
                 return fallback;
             }
         }
-        return value; // Already an object
+        // Already an object/array
+        return value;
     };
 
-    const goals: Goal[] = safeParse(event.goals, []);
-    const collaborators: Collaborator[] = safeParse(event.collaborators, []);
-    const documents: DocumentItem[] = safeParse(event.documents, []);
+    const goals: Goal[] = Array.isArray(safeParse(event.goals, [])) ? safeParse(event.goals, []) : [];
+    const collaborators: Collaborator[] = Array.isArray(safeParse(event.collaborators, [])) ? safeParse(event.collaborators, []) : [];
+    const documents: DocumentItem[] = Array.isArray(safeParse(event.documents, [])) ? safeParse(event.documents, []) : [];
     const impactMetrics = safeParse(event.impactMetrics, {});
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
