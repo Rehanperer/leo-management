@@ -81,9 +81,32 @@ export default function MeetingDetailsPage({ params }: { params: Promise<{ id: s
     if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     if (!meeting) return null;
 
-    const agendaItems: AgendaItem[] = meeting.agenda ? JSON.parse(meeting.agenda) : [];
-    const actionItems: ActionItem[] = meeting.actionItems ? JSON.parse(meeting.actionItems) : [];
-    const documents: DocumentItem[] = meeting.documents ? JSON.parse(meeting.documents) : [];
+    const agendaItems: AgendaItem[] = (() => {
+        try {
+            return meeting.agenda ? JSON.parse(meeting.agenda) : [];
+        } catch (error) {
+            console.error('Error parsing agenda:', error);
+            return [];
+        }
+    })();
+
+    const actionItems: ActionItem[] = (() => {
+        try {
+            return meeting.actionItems ? JSON.parse(meeting.actionItems) : [];
+        } catch (error) {
+            console.error('Error parsing actionItems:', error);
+            return [];
+        }
+    })();
+
+    const documents: DocumentItem[] = (() => {
+        try {
+            return meeting.documents ? JSON.parse(meeting.documents) : [];
+        } catch (error) {
+            console.error('Error parsing documents:', error);
+            return [];
+        }
+    })();
 
     const handleUpdateMeeting = async (updates: Partial<Meeting>) => {
         setIsSaving(true);
@@ -223,7 +246,7 @@ export default function MeetingDetailsPage({ params }: { params: Promise<{ id: s
                                             value={meeting.status}
                                             onChange={(e) => handleStatusChange(e.target.value)}
                                             className={`text-xs font-medium uppercase tracking-wide border-0 rounded py-1 pl-2 pr-8 cursor-pointer focus:ring-2 focus:ring-offset-1 ${meeting.status === 'completed' ? 'bg-green-100 text-green-800 focus:ring-green-500' :
-                                                    meeting.status === 'cancelled' ? 'bg-red-100 text-red-800 focus:ring-red-500' : 'bg-yellow-100 text-yellow-800 focus:ring-yellow-500'
+                                                meeting.status === 'cancelled' ? 'bg-red-100 text-red-800 focus:ring-red-500' : 'bg-yellow-100 text-yellow-800 focus:ring-yellow-500'
                                                 }`}
                                         >
                                             <option value="scheduled">Scheduled</option>
@@ -320,8 +343,8 @@ export default function MeetingDetailsPage({ params }: { params: Promise<{ id: s
                                         key={tab}
                                         onClick={() => setActiveTab(tab as any)}
                                         className={`${activeTab === tab
-                                                ? 'border-leo-500 text-leo-600'
-                                                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                            ? 'border-leo-500 text-leo-600'
+                                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm capitalize`}
                                     >
                                         {tab === 'docs' ? 'Documents' : tab}
@@ -400,8 +423,8 @@ export default function MeetingDetailsPage({ params }: { params: Promise<{ id: s
                                                 </div>
                                                 <div className="text-right">
                                                     <span className={`text-xs font-medium px-2 py-1 rounded-full ${new Date(item.deadline) < new Date() && item.status !== 'completed'
-                                                            ? 'bg-red-100 text-red-800'
-                                                            : 'bg-gray-100 text-gray-600'
+                                                        ? 'bg-red-100 text-red-800'
+                                                        : 'bg-gray-100 text-gray-600'
                                                         }`}>
                                                         Due {new Date(item.deadline).toLocaleDateString()}
                                                     </span>
