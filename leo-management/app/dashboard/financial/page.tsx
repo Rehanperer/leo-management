@@ -142,6 +142,34 @@ export default function FinancialPage() {
         }
     };
 
+    const handleDeleteTransaction = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this transaction? This action cannot be undone.')) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Authentication required. Please log in again.');
+                return;
+            }
+
+            const response = await fetch(`/api/financial/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                fetchRecords(); // Refresh the list
+            } else {
+                alert('Failed to delete transaction');
+            }
+        } catch (error) {
+            console.error('Error deleting transaction:', error);
+            alert('An error occurred while deleting the transaction');
+        }
+    };
+
     // Calculate totals
     const totalIncome = records.filter(r => r.type === 'income' && r.status === 'completed').reduce((sum, r) => sum + r.amount, 0);
     const totalExpenses = records.filter(r => r.type === 'expense' && r.status === 'completed').reduce((sum, r) => sum + r.amount, 0);
@@ -317,13 +345,14 @@ export default function FinancialPage() {
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receipt</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {isLoading ? (
-                                    <tr><td colSpan={7} className="text-center py-4">Loading...</td></tr>
+                                    <tr><td colSpan={8} className="text-center py-4">Loading...</td></tr>
                                 ) : records.length === 0 ? (
-                                    <tr><td colSpan={7} className="text-center py-4">No records found</td></tr>
+                                    <tr><td colSpan={8} className="text-center py-4">No records found</td></tr>
                                 ) : (
                                     records.map((record) => (
                                         <tr key={record.id}>
@@ -347,6 +376,17 @@ export default function FinancialPage() {
                                                 {record.receiptUrl ? (
                                                     <a href={record.receiptUrl} target="_blank" rel="noopener noreferrer">View</a>
                                                 ) : 'No Receipt'}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                                <button
+                                                    onClick={() => handleDeleteTransaction(record.id)}
+                                                    className="text-red-600 hover:text-red-800 transition-colors"
+                                                    title="Delete transaction"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
                                             </td>
                                         </tr>
                                     ))
