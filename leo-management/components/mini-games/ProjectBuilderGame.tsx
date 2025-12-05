@@ -34,13 +34,13 @@ export const ProjectBuilderGame = ({ onBack }: { onBack: () => void }) => {
 
     const requestRef = useRef<number>(0);
     const lastPlaceTime = useRef<number>(0); // For debouncing
-    const { playClick, playScore, playGameOver, playStart, playPlace, isMuted, toggleMute } = useGameSound();
+    const { playClick, playScore, playGameOver, playCoinInsert, playPlace, isMuted, toggleMute } = useGameSound();
 
     const colors = ["bg-cyan-500", "bg-blue-500", "bg-indigo-500", "bg-violet-500", "bg-fuchsia-500"];
 
     // Initialize Game
     const startGame = () => {
-        playStart();
+        playCoinInsert();
         setScore(0);
         setBlocks([{ id: 0, width: INITIAL_WIDTH, left: (CONTAINER_WIDTH - INITIAL_WIDTH) / 2, color: colors[0] }]);
         setCurrentBlockPos(0);
@@ -211,7 +211,7 @@ export const ProjectBuilderGame = ({ onBack }: { onBack: () => void }) => {
                         </p>
                         <div className="flex gap-4">
                             <ArcadeButton onClick={startGame} className="text-xl px-12 py-4">
-                                START BUILDING
+                                INSERT COIN
                             </ArcadeButton>
                             <ArcadeButton onClick={() => setShowLeaderboard(true)} variant="secondary">
                                 LEADERBOARD

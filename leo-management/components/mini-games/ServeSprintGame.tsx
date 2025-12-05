@@ -29,7 +29,7 @@ export const ServeSprintGame = ({ onBack }: { onBack: () => void }) => {
     const [items, setItems] = useState<SpawnItem[]>([]);
     const [showLeaderboard, setShowLeaderboard] = useState(false);
 
-    const { playClick, playScore, playGameOver, playStart, isMuted, toggleMute } = useGameSound();
+    const { playClick, playScore, playGameOver, playCoinInsert, isMuted, toggleMute } = useGameSound();
 
     // Icons mapping
     const icons = {
@@ -87,7 +87,7 @@ export const ServeSprintGame = ({ onBack }: { onBack: () => void }) => {
     };
 
     const startGame = () => {
-        playStart();
+        playCoinInsert();
         setScore(0);
         setTimeLeft(GAME_DURATION);
         setItems([]);

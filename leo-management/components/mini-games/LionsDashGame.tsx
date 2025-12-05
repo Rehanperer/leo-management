@@ -31,7 +31,7 @@ export const LionsDashGame = ({ onBack }: { onBack: () => void }) => {
 
     const requestRef = useRef<number>(0);
     const lastSpawnTime = useRef<number>(0);
-    const { playClick, playScore, playGameOver, playStart, playJump, isMuted, toggleMute } = useGameSound();
+    const { playClick, playScore, playGameOver, playCoinInsert, playJump, isMuted, toggleMute } = useGameSound();
 
     // Game Loop
     const update = useCallback((time: number) => {
@@ -124,7 +124,7 @@ export const LionsDashGame = ({ onBack }: { onBack: () => void }) => {
     };
 
     const startGame = () => {
-        playStart();
+        playCoinInsert();
         setScore(0);
         setPlayerY(0);
         setVelocity(0);
@@ -210,7 +210,7 @@ export const LionsDashGame = ({ onBack }: { onBack: () => void }) => {
                             Run as far as you can! Tap to jump over obstacles.
                         </p>
                         <ArcadeButton onClick={(e) => { e.stopPropagation(); startGame(); }} className="text-xl px-12 py-4">
-                            START RUNNING
+                            INSERT COIN
                         </ArcadeButton>
                     </div>
                 )}

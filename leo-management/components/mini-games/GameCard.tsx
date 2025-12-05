@@ -32,7 +32,7 @@ export const GameCard = ({ title, description, icon: Icon, color, onPlay }: Game
 
             <div className="pt-4">
                 <ArcadeButton onClick={onPlay} className="w-full flex items-center justify-center gap-2">
-                    <span>Start Game</span>
+                    <span>Insert Coin</span>
                 </ArcadeButton>
             </div>
 

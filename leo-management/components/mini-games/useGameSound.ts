@@ -3,14 +3,16 @@
 import useSound from "use-sound";
 import { useState, useCallback } from "react";
 
-// Placeholder URLs for sound effects (using short, open-source 8-bit sounds)
-// In a real app, these would be local files in /public/sounds/
+// Sound effects - using external URLs from mixkit.co
 const SOUNDS = {
     click: "https://assets.mixkit.co/active_storage/sfx/2578/2578-preview.mp3", // Click
     score: "https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3", // Coin
     gameOver: "https://assets.mixkit.co/active_storage/sfx/213/213-preview.mp3", // Retro Game Over
     start: "https://assets.mixkit.co/active_storage/sfx/1182/1182-preview.mp3", // Power up
     jump: "https://assets.mixkit.co/active_storage/sfx/216/216-preview.mp3", // Jump Coin
+    arcadeMusic: "https://assets.mixkit.co/active_storage/sfx/2001/2001-preview.mp3", // Classic 8-bit arcade music
+    gameSelect: "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3", // Game select beep
+    coinInsert: "https://assets.mixkit.co/active_storage/sfx/1995/1995-preview.mp3", // Coin insert
 };
 
 export const useGameSound = () => {
@@ -25,6 +27,11 @@ export const useGameSound = () => {
     const [playJump] = useSound(SOUNDS.jump, { volume: 0.4, soundEnabled: !isMuted });
     const [playPlace] = useSound(SOUNDS.click, { volume: 0.6, soundEnabled: !isMuted, playbackRate: 0.5 }); // Low pitch click = Thud
 
+    // Arcade-specific sounds
+    const [playArcadeMusic] = useSound(SOUNDS.arcadeMusic, { volume: 0.3, soundEnabled: !isMuted, loop: true });
+    const [playGameSelect] = useSound(SOUNDS.gameSelect, { volume: 0.5, soundEnabled: !isMuted });
+    const [playCoinInsert] = useSound(SOUNDS.coinInsert, { volume: 0.5, soundEnabled: !isMuted });
+
     const toggleMute = useCallback(() => {
         setIsMuted((prev) => !prev);
     }, []);
@@ -36,6 +43,9 @@ export const useGameSound = () => {
         playStart,
         playJump,
         playPlace,
+        playArcadeMusic,
+        playGameSelect,
+        playCoinInsert,
         isMuted,
         toggleMute,
     };

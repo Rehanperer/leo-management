@@ -115,7 +115,7 @@ export const LynkMazeGame = ({ onBack }: { onBack: () => void }) => {
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(LEVEL_TIMES[0]);
 
-    const { playClick, playScore, playGameOver, playStart, playJump, isMuted, toggleMute } = useGameSound();
+    const { playClick, playScore, playGameOver, playCoinInsert, playJump, isMuted, toggleMute } = useGameSound();
 
     const currentMaze = LEVELS[currentLevel];
 
@@ -186,7 +186,7 @@ export const LynkMazeGame = ({ onBack }: { onBack: () => void }) => {
     }, [movePlayer]);
 
     const startGame = () => {
-        playStart();
+        playCoinInsert();
         setScore(0);
         setCurrentLevel(0);
         setTimeLeft(LEVEL_TIMES[0]);
@@ -195,7 +195,7 @@ export const LynkMazeGame = ({ onBack }: { onBack: () => void }) => {
     };
 
     const nextLevel = () => {
-        playStart();
+        playCoinInsert();
         const newLevel = currentLevel + 1;
         setCurrentLevel(newLevel);
         setTimeLeft(LEVEL_TIMES[newLevel]);
@@ -289,7 +289,7 @@ export const LynkMazeGame = ({ onBack }: { onBack: () => void }) => {
                             Use arrow keys or buttons to reach the flag.
                         </p>
                         <ArcadeButton onClick={startGame} className="text-xl px-12 py-4">
-                            START MAZE
+                            INSERT COIN
                         </ArcadeButton>
                     </div>
                 )}

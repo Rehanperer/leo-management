@@ -149,7 +149,7 @@ export const LeoQuizQuestGame = ({ onBack }: { onBack: () => void }) => {
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [isAnswered, setIsAnswered] = useState(false);
 
-    const { playClick, playScore, playGameOver, playStart, playJump, isMuted, toggleMute } = useGameSound();
+    const { playClick, playScore, playGameOver, playCoinInsert, isMuted, toggleMute } = useGameSound();
 
     // Timer
     useEffect(() => {
@@ -196,7 +196,7 @@ export const LeoQuizQuestGame = ({ onBack }: { onBack: () => void }) => {
     };
 
     const startGame = () => {
-        playStart();
+        playCoinInsert();
         setScore(0);
         setCurrentQuestionIndex(0);
         setTimeLeft(QUESTION_TIME);
@@ -290,7 +290,7 @@ export const LeoQuizQuestGame = ({ onBack }: { onBack: () => void }) => {
                             Test your knowledge about Leo Clubs and Leadership!
                         </p>
                         <ArcadeButton onClick={startGame} className="text-xl px-12 py-4">
-                            START QUIZ
+                            INSERT COIN
                         </ArcadeButton>
                     </div>
                 )}

@@ -64,7 +64,7 @@ export const LeoPacGame = ({ onBack }: { onBack: () => void }) => {
     const [powerMode, setPowerMode] = useState(false);
     const [pelletsLeft, setPelletsLeft] = useState(0);
 
-    const { playClick, playScore, playGameOver, playStart, isMuted, toggleMute } = useGameSound();
+    const { playClick, playScore, playGameOver, playCoinInsert, isMuted, toggleMute } = useGameSound();
 
     // Use refs to avoid stale closures
     const playerPosRef = useRef(playerPos);
@@ -99,7 +99,7 @@ export const LeoPacGame = ({ onBack }: { onBack: () => void }) => {
     }, [maze]);
 
     const startGame = () => {
-        playStart();
+        playCoinInsert();
         setMaze(MAZE.map(row => [...row]));
         setPlayerPos({ x: 9, y: 16 });
         setPlayerDir({ x: 0, y: 0 });
@@ -555,7 +555,7 @@ export const LeoPacGame = ({ onBack }: { onBack: () => void }) => {
                             Use arrow keys or WASD to move. Eat power pellets to turn the tables!
                         </p>
                         <ArcadeButton onClick={startGame} className="text-xl px-12 py-4">
-                            START GAME
+                            INSERT COIN
                         </ArcadeButton>
                     </div>
                 )}

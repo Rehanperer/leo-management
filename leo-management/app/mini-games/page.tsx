@@ -1,6 +1,7 @@
+
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CRTEffect, RetroText } from "@/components/mini-games/ArcadeUI";
 import { GameCard } from "@/components/mini-games/GameCard";
 import { ServeSprintGame } from "@/components/mini-games/ServeSprintGame";
@@ -10,14 +11,19 @@ import { LynkMazeGame } from "@/components/mini-games/LynkMazeGame";
 import { LeoQuizQuestGame } from "@/components/mini-games/LeoQuizQuestGame";
 import { LeoPacGame } from "@/components/mini-games/LeoPacGame";
 import { Zap, Layers, Activity, Map, BrainCircuit, Ghost } from "lucide-react";
-
-
-
-
+import { useGameSound } from "@/components/mini-games/useGameSound";
 
 
 export default function MiniGamesPage() {
     const [activeGame, setActiveGame] = useState<string | null>(null);
+    const { playGameSelect } = useGameSound();
+
+
+
+    const handleGameSelect = (gameId: string) => {
+        playGameSelect();
+        setActiveGame(gameId);
+    };
 
     const games = [
         {
@@ -102,7 +108,7 @@ export default function MiniGamesPage() {
                                 description={game.description}
                                 icon={game.icon}
                                 color={game.color}
-                                onPlay={() => setActiveGame(game.id)}
+                                onPlay={() => handleGameSelect(game.id)}
                             />
                         ))}
                     </div>
