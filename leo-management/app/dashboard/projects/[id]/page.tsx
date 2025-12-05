@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import Link from 'next/link';
+import ProjectImageUpload from '@/app/components/ProjectImageUpload';
+import ImageSlideshow from '@/app/components/ImageSlideshow';
 
 const PROJECT_CATEGORIES = [
     "Best Project for Spotlight on Children",
@@ -67,6 +69,7 @@ interface Project {
     identifiedCommunityNeed: string;
     serviceOpportunity: string;
     modeOfDataCollection: string;
+    photos?: string;
     club: { name: string };
     user: { username: string };
 }
@@ -78,6 +81,8 @@ export default function ProjectDetailPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [showImagePrompt, setShowImagePrompt] = useState(false);
+    const [previousStatus, setPreviousStatus] = useState('');
 
     const [formData, setFormData] = useState({
         title: '',
@@ -97,6 +102,7 @@ export default function ProjectDetailPage() {
         secretaries: [''],
         treasurers: [''],
         status: 'draft',
+        images: [] as string[],
     });
 
     useEffect(() => {
@@ -115,6 +121,7 @@ export default function ProjectDetailPage() {
                     const chairmen = parseOfficers(data.project.chairman);
                     const secretaries = parseOfficers(data.project.secretary);
                     const treasurers = parseOfficers(data.project.treasurer);
+                    const photos = parsePhotos(data.project.photos);
 
                     setFormData({
                         title: data.project.title || '',
@@ -134,7 +141,9 @@ export default function ProjectDetailPage() {
                         secretaries: secretaries.length > 0 ? secretaries : [''],
                         treasurers: treasurers.length > 0 ? treasurers : [''],
                         status: data.project.status || 'draft',
+                        images: photos,
                     });
+                    setPreviousStatus(data.project.status || 'draft');
                 } else {
                     router.push('/dashboard/projects');
                 }
@@ -157,6 +166,16 @@ export default function ProjectDetailPage() {
             return Array.isArray(parsed) ? parsed.filter(o => o) : [officerData];
         } catch {
             return officerData ? [officerData] : [];
+        }
+    };
+
+    const parsePhotos = (photosData: string | undefined) => {
+        if (!photosData) return [];
+        try {
+            const parsed = JSON.parse(photosData);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
         }
     };
 
@@ -183,6 +202,14 @@ export default function ProjectDetailPage() {
         }));
     };
 
+    const handleStatusChange = (newStatus: string) => {
+        // If changing to completed and no images exist, show prompt
+        if (newStatus === 'completed' && previousStatus !== 'completed' && formData.images.length === 0) {
+            setShowImagePrompt(true);
+        }
+        setFormData({ ...formData, status: newStatus });
+    };
+
     const handleSave = async () => {
         setIsSaving(true);
         try {
@@ -205,6 +232,7 @@ export default function ProjectDetailPage() {
                 secretary: JSON.stringify(formData.secretaries.filter(s => s && s.trim())),
                 treasurer: JSON.stringify(formData.treasurers.filter(t => t && t.trim())),
                 status: formData.status,
+                photos: formData.images.length > 0 ? JSON.stringify(formData.images) : undefined,
             };
 
             const response = await fetch(`/api/projects/${params.id}`, {
@@ -219,7 +247,9 @@ export default function ProjectDetailPage() {
             if (response.ok) {
                 const data = await response.json();
                 setProject(data.project);
+                setPreviousStatus(data.project.status);
                 setIsEditing(false);
+                setShowImagePrompt(false);
                 alert('Project updated successfully!');
             } else {
                 throw new Error('Failed to update project');
@@ -426,6 +456,14 @@ export default function ProjectDetailPage() {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Project Images */}
+                        {parsePhotos(project.photos).length > 0 && (
+                            <div className="card mb-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Images</h3>
+                                <ImageSlideshow images={parsePhotos(project.photos)} compact={false} />
+                            </div>
+                        )}
                     </>
                 ) : (
                     <>
@@ -462,7 +500,7 @@ export default function ProjectDetailPage() {
                                         <select
                                             className="input"
                                             value={formData.status}
-                                            onChange={e => setFormData({ ...formData, status: e.target.value })}
+                                            onChange={e => handleStatusChange(e.target.value)}
                                         >
                                             <option value="draft">Draft</option>
                                             <option value="ongoing">Ongoing</option>
@@ -714,8 +752,50 @@ export default function ProjectDetailPage() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Project Images Section */}
+                            <div className="card">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Images</h3>
+                                <ProjectImageUpload
+                                    images={formData.images}
+                                    onChange={(images) => setFormData({ ...formData, images })}
+                                />
+                            </div>
                         </form>
                     </>
+                )}
+
+                {/* Image Prompt Modal */}
+                {showImagePrompt && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-lg max-w-2xl w-full p-6">
+                            <h3 className="text-xl font-bold text-gray-900 mb-4">Add Project Images</h3>
+                            <p className="text-gray-600 mb-6">
+                                Congratulations on completing this project! Would you like to add up to 5 images to showcase your work?
+                                This is optional but recommended.
+                            </p>
+                            <ProjectImageUpload
+                                images={formData.images}
+                                onChange={(images) => setFormData({ ...formData, images })}
+                            />
+                            <div className="flex justify-end gap-4 mt-6">
+                                <button
+                                    onClick={() => setShowImagePrompt(false)}
+                                    className="btn btn-secondary"
+                                    type="button"
+                                >
+                                    Skip for Now
+                                </button>
+                                <button
+                                    onClick={() => setShowImagePrompt(false)}
+                                    className="btn btn-primary"
+                                    type="button"
+                                >
+                                    Done
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </main>
         </div>

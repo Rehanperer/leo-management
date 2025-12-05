@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Calendar, Users, Clock, Heart, MapPin } from 'lucide-react';
+import ImageSlideshow from '@/app/components/ImageSlideshow';
 
 interface Project {
     id: string;
@@ -14,6 +15,7 @@ interface Project {
     beneficiaries?: number;
     serviceHours?: number;
     participants?: number;
+    photos?: string;
     club: { name: string };
     user: { username: string };
 }
@@ -51,6 +53,16 @@ export default function ProjectTimeline({ projects }: ProjectTimelineProps) {
 
         return () => observer.disconnect();
     }, [sortedProjects.length]);
+
+    const parsePhotos = (photosData: string | undefined) => {
+        if (!photosData) return [];
+        try {
+            const parsed = JSON.parse(photosData);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    };
 
     if (sortedProjects.length === 0) {
         return (
@@ -116,6 +128,13 @@ export default function ProjectTimeline({ projects }: ProjectTimelineProps) {
                                                     } timeline-card-left`}
                                                 style={{ transitionDelay: `${index * 100}ms` }}
                                             >
+                                                {/* Project Images Slideshow */}
+                                                {parsePhotos(project.photos).length > 0 && (
+                                                    <div className="mb-4 -mx-6 -mt-6">
+                                                        <ImageSlideshow images={parsePhotos(project.photos)} compact={false} />
+                                                    </div>
+                                                )}
+
                                                 {/* Status Badge */}
                                                 <div className="flex items-center justify-between mb-3">
                                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${project.status === 'completed'
@@ -203,6 +222,13 @@ export default function ProjectTimeline({ projects }: ProjectTimelineProps) {
                                                     } timeline-card-right`}
                                                 style={{ transitionDelay: `${index * 100}ms` }}
                                             >
+                                                {/* Project Images Slideshow */}
+                                                {parsePhotos(project.photos).length > 0 && (
+                                                    <div className="mb-4 -mx-6 -mt-6">
+                                                        <ImageSlideshow images={parsePhotos(project.photos)} compact={false} />
+                                                    </div>
+                                                )}
+
                                                 {/* Status Badge */}
                                                 <div className="flex items-center justify-between mb-3">
                                                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${project.status === 'completed'

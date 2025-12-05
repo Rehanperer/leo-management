@@ -8,6 +8,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import ProjectTimeline from '@/app/components/ProjectTimeline';
+import ImageSlideshow from '@/app/components/ImageSlideshow';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -21,6 +22,7 @@ interface Project {
     beneficiaries?: number;
     serviceHours?: number;
     participants?: number;
+    photos?: string;
     club: { name: string };
     user: { username: string };
 }
@@ -62,6 +64,16 @@ export default function ProjectsPage() {
 
         fetchProjects();
     }, []);
+
+    const parsePhotos = (photosData: string | undefined) => {
+        if (!photosData) return [];
+        try {
+            const parsed = JSON.parse(photosData);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
+    };
 
     const calculateStats = (projectList: Project[]) => {
         const now = new Date();
@@ -325,6 +337,13 @@ export default function ProjectsPage() {
                                         href={`/dashboard/projects/${project.id}`}
                                         className="card hover:shadow-lg transition-shadow duration-200 cursor-pointer"
                                     >
+                                        {/* Project Images Slideshow */}
+                                        {parsePhotos(project.photos).length > 0 && (
+                                            <div className="mb-3 -mx-6 -mt-6">
+                                                <ImageSlideshow images={parsePhotos(project.photos)} compact={true} />
+                                            </div>
+                                        )}
+
                                         <div className="flex items-start justify-between mb-3">
                                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${project.status === 'completed'
                                                 ? 'bg-green-100 text-green-800'

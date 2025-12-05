@@ -62,8 +62,8 @@ export async function PUT(
                 data: {
                     ...body,
                     date: body.date ? new Date(body.date) : undefined,
-                    photos: body.photos ? JSON.stringify(body.photos) : undefined,
-                    documents: body.documents ? JSON.stringify(body.documents) : undefined,
+                    photos: body.photos || undefined,
+                    documents: body.documents || undefined,
                 },
                 include: {
                     club: { select: { name: true } },

@@ -87,8 +87,8 @@ export async function POST(request: NextRequest) {
                     identifiedCommunityNeed,
                     serviceOpportunity,
                     modeOfDataCollection,
-                    photos: photos ? JSON.stringify(photos) : undefined,
-                    documents: documents ? JSON.stringify(documents) : undefined,
+                    photos: photos || undefined,
+                    documents: documents || undefined,
                     createdBy: auth.userId,
                 },
             });

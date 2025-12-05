@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ProjectImageUpload from '@/app/components/ProjectImageUpload';
 
 interface Club {
     id: string;
@@ -76,6 +77,7 @@ export default function NewProjectPage() {
         chairmen: [''],
         secretaries: [''],
         treasurers: [''],
+        images: [] as string[],
     });
 
     useEffect(() => {
@@ -152,6 +154,7 @@ export default function NewProjectPage() {
                 chairman: JSON.stringify(formData.chairmen.filter(c => c.trim())),
                 secretary: JSON.stringify(formData.secretaries.filter(s => s.trim())),
                 treasurer: JSON.stringify(formData.treasurers.filter(t => t.trim())),
+                photos: formData.images.length > 0 ? JSON.stringify(formData.images) : undefined,
             };
 
             if (isAdmin) {
@@ -501,6 +504,15 @@ export default function NewProjectPage() {
                                 />
                             </div>
                         </div>
+                    </div>
+
+                    {/* Project Images Section */}
+                    <div className="card">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Images (Optional)</h3>
+                        <ProjectImageUpload
+                            images={formData.images}
+                            onChange={(images) => setFormData({ ...formData, images })}
+                        />
                     </div>
 
                     <div className="flex justify-end gap-4">
