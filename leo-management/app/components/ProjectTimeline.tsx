@@ -84,7 +84,7 @@ export default function ProjectTimeline({ projects }: ProjectTimelineProps) {
             {/* Timeline Line */}
             <div
                 ref={timelineRef}
-                className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-leo-400 via-purple-400 to-leo-400 transform -translate-x-1/2 timeline-line"
+                className="absolute left-8 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-leo-400 via-purple-400 to-leo-400 transform -translate-x-1/2 timeline-line"
             />
 
             {/* Projects */}
@@ -105,27 +105,31 @@ export default function ProjectTimeline({ projects }: ProjectTimelineProps) {
                             className="relative"
                         >
                             {/* Timeline Date Marker */}
-                            <div className="absolute left-1/2 top-0 transform -translate-x-1/2 z-10">
+                            <div className="absolute left-8 md:left-1/2 top-0 transform -translate-x-1/2 z-10">
                                 <div className={`timeline-dot ${isVisible ? 'timeline-dot-visible' : ''}`}>
                                     <div className="w-6 h-6 bg-gradient-to-br from-leo-500 to-purple-600 rounded-full border-4 border-white shadow-lg flex items-center justify-center">
                                         <Calendar className="w-3 h-3 text-white" />
                                     </div>
                                 </div>
-                                <div className={`absolute top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-white px-3 py-1 rounded-full shadow-md border border-leo-200 timeline-date ${isVisible ? 'timeline-date-visible' : ''}`}>
+                                <div className={`hidden md:block absolute top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-white px-3 py-1 rounded-full shadow-md border border-leo-200 timeline-date ${isVisible ? 'timeline-date-visible' : ''}`}>
                                     <span className="text-sm font-semibold text-leo-600">{monthYear}</span>
+                                </div>
+                                {/* Mobile Date Label */}
+                                <div className={`md:hidden absolute left-8 top-0 ml-4 whitespace-nowrap bg-white px-2 py-0.5 rounded-full shadow-sm border border-leo-100`}>
+                                    <span className="text-xs font-semibold text-leo-600">{monthYear}</span>
                                 </div>
                             </div>
 
                             {/* Project Card */}
-                            <div className="grid grid-cols-2 gap-8 items-start">
-                                {/* Show on LEFT side (index 1, 3, 5...)*/}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start pl-16 md:pl-0">
+                                {/* Show on LEFT side (index 1, 3, 5...) - Desktop Only logic mixed with Mobile */}
                                 {isLeft && (
                                     <>
-                                        <div className="text-right pr-8">
+                                        <div className="text-left md:text-right md:pr-8">
                                             <Link
                                                 href={`/dashboard/projects/${project.id}`}
                                                 className={`block card hover:shadow-xl transition-all duration-300 cursor-pointer timeline-card ${isVisible ? 'timeline-card-visible' : ''
-                                                    } timeline-card-left`}
+                                                    } timeline-card-right md:timeline-card-left`}
                                                 style={{ transitionDelay: `${index * 100}ms` }}
                                             >
                                                 {/* Project Images Slideshow */}
@@ -207,15 +211,15 @@ export default function ProjectTimeline({ projects }: ProjectTimelineProps) {
                                                 </div>
                                             </Link>
                                         </div>
-                                        <div /> {/* Empty right side */}
+                                        <div className="hidden md:block" /> {/* Empty right side only on desktop */}
                                     </>
                                 )}
 
                                 {/* Show on RIGHT side (index 0, 2, 4...)*/}
                                 {!isLeft && (
                                     <>
-                                        <div /> {/* Empty left side */}
-                                        <div className="text-left pl-8">
+                                        <div className="hidden md:block" /> {/* Empty left side only on desktop */}
+                                        <div className="text-left md:pl-8">
                                             <Link
                                                 href={`/dashboard/projects/${project.id}`}
                                                 className={`block card hover:shadow-xl transition-all duration-300 cursor-pointer timeline-card ${isVisible ? 'timeline-card-visible' : ''

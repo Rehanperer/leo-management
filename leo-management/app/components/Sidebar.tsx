@@ -142,7 +142,7 @@ export default function Sidebar() {
             <aside
                 className={`
                     fixed md:relative inset-y-0 left-0 z-50
-                    flex flex-col h-screen transition-all duration-300 ease-in-out
+                    flex flex-col h-[100dvh] transition-all duration-300 ease-in-out
                     ${isOpen ? 'translate-x-0 w-24' : '-translate-x-full md:translate-x-0 w-24'}
                     bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(15,23,42,0.85)]
                     backdrop-blur-2xl saturate-150 border-r border-white/40 shadow-2xl
