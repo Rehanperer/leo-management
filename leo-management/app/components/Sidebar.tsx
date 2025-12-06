@@ -45,18 +45,18 @@ const menuItems: MenuItem[] = [
 
 function getActiveClasses(color: ItemColor): string {
     switch (color) {
-        case 'blue': return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 shadow-lg shadow-blue-500/20';
-        case 'emerald': return 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shadow-lg shadow-emerald-500/20';
-        case 'amber': return 'bg-amber-500/15 text-amber-600 dark:text-amber-400 shadow-lg shadow-amber-500/20';
-        case 'green': return 'bg-green-500/15 text-green-600 dark:text-green-400 shadow-lg shadow-green-500/20';
-        case 'violet': return 'bg-violet-500/15 text-violet-600 dark:text-violet-400 shadow-lg shadow-violet-500/20';
-        case 'indigo': return 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 shadow-lg shadow-indigo-500/20';
-        case 'rose': return 'bg-rose-500/15 text-rose-600 dark:text-rose-400 shadow-lg shadow-rose-500/20';
-        case 'pink': return 'bg-pink-500/15 text-pink-600 dark:text-pink-400 shadow-lg shadow-pink-500/20';
-        case 'cyan': return 'bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 shadow-lg shadow-cyan-500/20';
-        case 'red': return 'bg-red-500/15 text-red-600 dark:text-red-400 shadow-lg shadow-red-500/20';
-        case 'slate': return 'bg-slate-500/15 text-slate-600 dark:text-slate-400 shadow-lg shadow-slate-500/20';
-        default: return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 shadow-lg shadow-blue-500/20';
+        case 'blue': return 'bg-blue-500/20 text-white shadow-lg shadow-blue-500/20';
+        case 'emerald': return 'bg-emerald-500/20 text-white shadow-lg shadow-emerald-500/20';
+        case 'amber': return 'bg-amber-500/20 text-white shadow-lg shadow-amber-500/20';
+        case 'green': return 'bg-green-500/20 text-white shadow-lg shadow-green-500/20';
+        case 'violet': return 'bg-violet-500/20 text-white shadow-lg shadow-violet-500/20';
+        case 'indigo': return 'bg-indigo-500/20 text-white shadow-lg shadow-indigo-500/20';
+        case 'rose': return 'bg-rose-500/20 text-white shadow-lg shadow-rose-500/20';
+        case 'pink': return 'bg-pink-500/20 text-white shadow-lg shadow-pink-500/20';
+        case 'cyan': return 'bg-cyan-500/20 text-white shadow-lg shadow-cyan-500/20';
+        case 'red': return 'bg-red-500/20 text-white shadow-lg shadow-red-500/20';
+        case 'slate': return 'bg-slate-500/20 text-white shadow-lg shadow-slate-500/20';
+        default: return 'bg-blue-500/20 text-white shadow-lg shadow-blue-500/20';
     }
 }
 
