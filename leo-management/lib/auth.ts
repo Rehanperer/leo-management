@@ -8,6 +8,7 @@ export interface TokenPayload {
     userId: string;
     role: string;
     clubId?: string;
+    profilePicture?: string | null;
 }
 
 /**
@@ -80,6 +81,7 @@ export async function authenticateUser(username: string, password: string) {
         userId: user.id,
         role: user.role,
         clubId: user.clubId || undefined,
+        profilePicture: user.profilePicture,
     });
 
     return {
@@ -90,6 +92,7 @@ export async function authenticateUser(username: string, password: string) {
             role: user.role,
             clubId: user.clubId,
             clubName: user.club?.name,
+            profilePicture: user.profilePicture,
         },
     };
 }

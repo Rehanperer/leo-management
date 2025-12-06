@@ -20,6 +20,15 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
         }
 
+        // Fetch user to check permissions
+        const adminUser = await prisma.user.findUnique({
+            where: { id: payload.userId }
+        });
+
+        if (!adminUser?.canCreateClubs) {
+            return NextResponse.json({ error: 'Club creation is disabled. Please enable it in Settings.' }, { status: 403 });
+        }
+
         const body = await request.json();
         const { clubName, contactEmail, username } = body;
 

@@ -15,7 +15,8 @@ import {
     BrainCircuit,
     GraduationCap,
     LogOut,
-    Settings
+    Settings,
+    Shield
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
@@ -205,12 +206,27 @@ export default function Sidebar() {
                             isActive={pathname === item.href}
                         />
                     ))}
+                    {user?.role === 'admin' && (
+                        <DockItem
+                            mouseX={mouseX}
+                            item={{ name: 'Admin Panel', icon: Shield, href: '/dashboard/admin' }}
+                            isActive={pathname === '/dashboard/admin'}
+                        />
+                    )}
                 </div>
 
                 {/* User Profile & Logout */}
                 <div className="mt-auto flex flex-col items-center gap-4 mb-4 w-full">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg flex-shrink-0">
-                        {user?.username?.[0]?.toUpperCase() || 'U'}
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg flex-shrink-0 overflow-hidden">
+                        {user?.profilePicture ? (
+                            <img
+                                src={user.profilePicture}
+                                alt="Profile"
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            user?.username?.[0]?.toUpperCase() || 'U'
+                        )}
                     </div>
 
                     <div className="flex flex-row md:flex-col gap-2">

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
 import Link from 'next/link';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
+
+import { Camera, Upload, X } from 'lucide-react';
 
 export default function SettingsPage() {
     const router = useRouter();
@@ -27,6 +29,62 @@ export default function SettingsPage() {
         district: ''
     });
     const [clubMessage, setClubMessage] = useState({ type: '', text: '' });
+
+    // Profile Picture State
+    const [profileImage, setProfileImage] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file');
+            return;
+        }
+
+        // Convert to Base64
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const base64String = reader.result as string;
+            // Optimistic update
+            setProfileImage(base64String);
+
+            // Upload to server
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/user/profile', {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ profilePicture: base64String })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Update local user data
+                    if (user) {
+                        const updatedUser = {
+                            ...user,
+                            profilePicture: data.user.profilePicture
+                        };
+                        localStorage.setItem('user', JSON.stringify(updatedUser));
+                        // Force a reload or update context (reload is simpler for now to propagate changes)
+                        window.location.reload();
+                    }
+                } else {
+                    console.error('Failed to upload image');
+                    // Revert optimistic update if needed, or show error
+                }
+            } catch (error) {
+                console.error('Error uploading image', error);
+            }
+        };
+        reader.readAsDataURL(file);
+    };
 
     const handleLogout = () => {
         logout();
@@ -136,10 +194,36 @@ export default function SettingsPage() {
                 {/* User Info Card */}
                 <div className="card mb-6">
                     <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-leo-600 to-purple-600 rounded-full flex items-center justify-center relative group cursor-pointer">
-                            <span className="text-2xl font-bold text-white">
-                                {user?.username?.[0]?.toUpperCase() || 'U'}
-                            </span>
+                        <div className="relative group">
+                            <div className="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-leo-600 to-purple-600 border-2 border-white shadow-md">
+                                {user?.profilePicture || profileImage ? (
+                                    <img
+                                        src={user?.profilePicture || profileImage || ''}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <span className="text-2xl font-bold text-white">
+                                        {user?.username?.[0]?.toUpperCase() || 'U'}
+                                    </span>
+                                )}
+                            </div>
+
+                            <button
+                                onClick={() => fileInputRef.current?.click()}
+                                className="absolute bottom-0 right-0 bg-white rounded-full p-1 shadow-md border border-gray-200 hover:bg-gray-50 transition-colors"
+                                title="Change Profile Picture"
+                            >
+                                <Camera className="w-3 h-3 text-gray-600" />
+                            </button>
+
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleImageSelect}
+                            />
                         </div>
                         <div>
                             <h2 className="text-xl font-bold text-gray-900">{user?.username}</h2>
@@ -214,6 +298,53 @@ export default function SettingsPage() {
                                 )}
                             </div>
                         </div>
+
+                        {user?.role === 'admin' && (
+                            <div className="card mb-6 border-blue-200 bg-blue-50/50">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center justify-between">
+                                    Admin Controls
+                                    <Link href="/dashboard/admin" className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 hover:underline">
+                                        Go to Admin Dashboard <span aria-hidden="true">&rarr;</span>
+                                    </Link>
+                                </h3>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="font-medium text-gray-900">Allow Club Creation</p>
+                                        <p className="text-sm text-gray-600">Enable or disable the ability to create new club accounts.</p>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="sr-only peer"
+                                            checked={user?.canCreateClubs ?? true}
+                                            onChange={async (e) => {
+                                                const newValue = e.target.checked;
+                                                if (user) {
+                                                    const updatedUser = { ...user, canCreateClubs: newValue };
+                                                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                                                    window.location.reload();
+                                                }
+
+                                                try {
+                                                    const token = localStorage.getItem('token');
+                                                    await fetch('/api/user/profile', {
+                                                        method: 'PATCH',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'Authorization': `Bearer ${token}`
+                                                        },
+                                                        body: JSON.stringify({ canCreateClubs: newValue })
+                                                    });
+                                                } catch (error) {
+                                                    console.error('Failed to update setting', error);
+                                                }
+                                            }}
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="card border-red-200">
                             <h3 className="text-lg font-semibold text-red-600 mb-4">Danger Zone</h3>

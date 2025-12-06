@@ -24,6 +24,8 @@ model User {
   events           Event[]
   documents        Document[]
   chatHistory      AIChatHistory[]
+  profilePicture   String?  // Base64 string
+  canCreateClubs   Boolean  @default(true)
 }
 
 model Club {

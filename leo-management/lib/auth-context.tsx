@@ -9,6 +9,8 @@ interface User {
     role: string;
     clubId?: string | null;
     clubName?: string;
+    profilePicture?: string | null;
+    canCreateClubs?: boolean;
 }
 
 interface AuthContextType {
