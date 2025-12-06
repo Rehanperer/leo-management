@@ -45,6 +45,12 @@ export default function ApprovalDocsPage() {
         projectChairmanMylciId: '',
         projectChairmanContact: '',
         projectChairmanEmail: '',
+
+        // Signature fields (Base64)
+        districtPresidentSignature: '',
+        hostClubPresidentSignature: '',
+        leoAdvisorSignature: '',
+        hostClubSignature: '',
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -59,11 +65,35 @@ export default function ApprovalDocsPage() {
         }
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, fieldName: string, index?: number) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+
+                if (index !== undefined) {
+                    // It's for the districtPresidents array
+                    const newPresidents = [...districtPresidents];
+                    newPresidents[index] = { ...newPresidents[index], [fieldName]: base64String };
+                    setDistrictPresidents(newPresidents);
+                } else {
+                    // It's for the main formData
+                    setFormData(prev => ({
+                        ...prev,
+                        [fieldName]: base64String
+                    }));
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const [joiningClubs, setJoiningClubs] = useState(
         Array(8).fill({ name: '', president: '', district: '' })
     );
     const [districtPresidents, setDistrictPresidents] = useState(
-        Array(4).fill({ name: '', district: '' })
+        Array(4).fill({ name: '', district: '', signature: '' })
     );
 
     const handleJoiningClubChange = (index: number, field: string, value: string) => {
@@ -159,6 +189,7 @@ export default function ApprovalDocsPage() {
                                 <option value="external-org">Projects with Outside Organization</option>
                                 <option value="inter-district">Projects with Inter-District Leo Clubs</option>
                                 <option value="multiple-district">Projects on Behalf of Multiple District</option>
+                                <option value="district-behalf">Projects on Behalf of District</option>
                             </select>
                         </div>
 
@@ -413,6 +444,24 @@ export default function ApprovalDocsPage() {
                                                         className="input"
                                                     />
                                                 </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Leo Advisor's Signature</label>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleFileChange(e, 'leoAdvisorSignature')}
+                                                        className="input"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">District President's Signature</label>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleFileChange(e, 'districtPresidentSignature')}
+                                                        className="input"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </>
@@ -497,9 +546,27 @@ export default function ApprovalDocsPage() {
                                                                     placeholder="District"
                                                                 />
                                                             </div>
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Signature</label>
+                                                                <input
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    onChange={(e) => handleFileChange(e, 'signature', index)}
+                                                                    className="input text-sm"
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))}
+                                            </div>
+                                            <div className="mt-6">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Host Leo Club Signature</label>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => handleFileChange(e, 'hostClubSignature')}
+                                                    className="input"
+                                                />
                                             </div>
                                         </div>
                                     </>
@@ -614,6 +681,97 @@ export default function ApprovalDocsPage() {
                                                                     onChange={(e) => handleDistrictPresidentChange(index, 'district', e.target.value)}
                                                                     className="input text-sm"
                                                                     placeholder="District"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Signature</label>
+                                                                <input
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    onChange={(e) => handleFileChange(e, 'signature', index)}
+                                                                    className="input text-sm"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <div className="mt-6">
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Host Leo Club President's Signature</label>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={(e) => handleFileChange(e, 'hostClubPresidentSignature')}
+                                                    className="input"
+                                                />
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {documentType === 'district-behalf' && (
+                                    <>
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Host Leo Club Information</h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Host Leo Club President's Name *</label>
+                                                    <input
+                                                        type="text"
+                                                        name="presidentName"
+                                                        value={formData.presidentName}
+                                                        onChange={handleInputChange}
+                                                        className="input"
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Host Leo Club President's Signature</label>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleFileChange(e, 'hostClubPresidentSignature')}
+                                                        className="input"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">District President's Signature</label>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => handleFileChange(e, 'districtPresidentSignature')}
+                                                        className="input"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="border-t pt-6">
+                                            <h3 className="text-lg font-semibold text-gray-900 mb-4">Intra-District Leo Clubs (If Jointly Organizing)</h3>
+                                            <p className="text-sm text-gray-600 mb-4">If organizing jointly with other Intra-District Leo Clubs, provide their details below (up to 4 clubs)</p>
+                                            <div className="space-y-4">
+                                                {[0, 1, 2, 3].map((index) => (
+                                                    <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                        <h4 className="text-sm font-medium text-gray-700 mb-3">Leo Club {index + 1}</h4>
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Leo Club Name</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={joiningClubs[index]?.name || ''}
+                                                                    onChange={(e) => handleJoiningClubChange(index, 'name', e.target.value)}
+                                                                    className="input text-sm"
+                                                                    placeholder="Club name (optional)"
+                                                                />
+                                                            </div>
+                                                            <div>
+                                                                <label className="block text-xs font-medium text-gray-600 mb-1">Leo Club President's Name</label>
+                                                                <input
+                                                                    type="text"
+                                                                    value={joiningClubs[index]?.president || ''}
+                                                                    onChange={(e) => handleJoiningClubChange(index, 'president', e.target.value)}
+                                                                    className="input text-sm"
+                                                                    placeholder="President's name (optional)"
                                                                 />
                                                             </div>
                                                         </div>
