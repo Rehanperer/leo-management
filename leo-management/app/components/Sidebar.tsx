@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -42,6 +43,12 @@ function DockItem({
 }) {
     const ref = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
+    const [tooltipPos, setTooltipPos] = useState({ top: 0, left: 0 });
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const distance = useTransform(mouseX, (val) => {
         const bounds = ref.current?.getBoundingClientRect() ?? { y: 0, height: 0 };
@@ -51,18 +58,29 @@ function DockItem({
     const widthSync = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
     const width = useSpring(widthSync, { mass: 0.1, stiffness: 150, damping: 12 });
 
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+        if (ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            setTooltipPos({
+                top: rect.top + rect.height / 2,
+                left: rect.right + 10
+            });
+        }
+    };
+
     return (
         <Link
             href={item.href}
-            className="w-full flex justify-center mb-2 relative group"
-            onMouseEnter={() => setIsHovered(true)}
+            className="w-full flex md:justify-center items-center mb-2 relative group px-4 md:px-0"
+            onMouseEnter={handleMouseEnter}
             onMouseLeave={() => setIsHovered(false)}
         >
             <motion.div
                 ref={ref}
                 style={{ width, height: width }}
                 className={`
-                    flex items-center justify-center rounded-full transition-colors duration-200
+                    flex items-center justify-center rounded-full transition-colors duration-200 flex-shrink-0
                     ${isActive
                         ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
                         : 'bg-white/50 dark:bg-slate-800/50 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-slate-700/80'
@@ -72,24 +90,39 @@ function DockItem({
                 <item.icon size={20} className={isActive ? 'text-white' : ''} />
             </motion.div>
 
-            {/* Tooltip */}
-            <AnimatePresence>
-                {isHovered && (
-                    <motion.div
-                        initial={{ opacity: 0, x: 20, scale: 0.8 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: 10, scale: 0.8 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute left-full ml-4 top-1/2 -translate-y-1/2 z-50 whitespace-nowrap"
-                    >
-                        <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md text-gray-800 dark:text-white text-sm font-medium px-3 py-1.5 rounded-lg shadow-xl border border-white/20 dark:border-gray-700/30 flex items-center">
-                            {item.name}
-                            {/* Little triangle pointer */}
-                            <div className="absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 w-2 h-2 bg-white/90 dark:bg-slate-800/90 rotate-45 border-l border-b border-white/20 dark:border-gray-700/30 transform" />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/* Mobile Label */}
+            <span className={`md:hidden ml-4 font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-700 dark:text-gray-200'}`}>
+                {item.name}
+            </span>
+
+            {/* Desktop Tooltip (Portal) */}
+            {mounted && isHovered && createPortal(
+                <AnimatePresence>
+                    {isHovered && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -10, scale: 0.8 }}
+                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                            exit={{ opacity: 0, x: -10, scale: 0.8 }}
+                            transition={{ duration: 0.2 }}
+                            style={{
+                                position: 'fixed',
+                                top: tooltipPos.top,
+                                left: tooltipPos.left,
+                                transform: 'translateY(-50%)',
+                                zIndex: 9999
+                            }}
+                            className="hidden md:block pointer-events-none"
+                        >
+                            <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md text-gray-800 dark:text-white text-sm font-medium px-3 py-1.5 rounded-lg shadow-xl border border-white/20 dark:border-gray-700/30 flex items-center whitespace-nowrap -translate-y-1/2">
+                                {item.name}
+                                {/* Little triangle pointer */}
+                                <div className="absolute left-0 top-1/2 -translate-x-1 -translate-y-1/2 w-2 h-2 bg-white/90 dark:bg-slate-800/90 rotate-45 border-l border-b border-white/20 dark:border-gray-700/30 transform" />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </Link>
     );
 }
@@ -143,7 +176,7 @@ export default function Sidebar() {
                 className={`
                     fixed md:relative inset-y-0 left-0 z-50
                     flex flex-col h-[100dvh] transition-all duration-300 ease-in-out
-                    ${isOpen ? 'translate-x-0 w-24' : '-translate-x-full md:translate-x-0 w-24'}
+                    ${isOpen ? 'translate-x-0 w-64 md:w-24' : '-translate-x-full md:translate-x-0 w-64 md:w-24'}
                     bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(15,23,42,0.85)]
                     backdrop-blur-2xl saturate-150 border-r border-white/40 shadow-2xl
                     items-center py-6
@@ -175,11 +208,11 @@ export default function Sidebar() {
 
                 {/* User Profile & Logout */}
                 <div className="mt-auto flex flex-col items-center gap-4 mb-4 w-full">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg flex-shrink-0">
                         {user?.username?.[0]?.toUpperCase() || 'U'}
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-row md:flex-col gap-2">
                         <Link
                             href="/dashboard/settings"
                             className="p-2 rounded-full text-gray-500 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-blue-600 transition-colors"
