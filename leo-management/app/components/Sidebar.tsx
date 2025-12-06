@@ -21,17 +21,62 @@ import {
 import { useAuth } from '@/lib/auth-context';
 import { motion, useMotionValue, useSpring, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
 
-const menuItems = [
-    { name: 'Home', icon: LayoutDashboard, href: '/dashboard' },
-    { name: 'New Project', icon: Plus, href: '/dashboard/projects/new' },
-    { name: 'View Projects', icon: FolderOpen, href: '/dashboard/projects' },
-    { name: 'Financial Records', icon: DollarSign, href: '/dashboard/financial' },
-    { name: 'Reports', icon: FileText, href: '/dashboard/reports' },
-    { name: 'Meetings', icon: Users, href: '/dashboard/meetings' },
-    { name: 'Events', icon: Calendar, href: '/dashboard/events' },
-    { name: 'Mindmaps', icon: BrainCircuit, href: '/dashboard/mindmap' },
-    { name: 'D2 Resources', icon: GraduationCap, href: '/dashboard/classroom' },
+// Defined color palette type
+type ItemColor = 'blue' | 'emerald' | 'amber' | 'green' | 'violet' | 'indigo' | 'rose' | 'pink' | 'cyan' | 'slate' | 'red';
+
+interface MenuItem {
+    name: string;
+    icon: any;
+    href: string;
+    color: ItemColor;
+}
+
+const menuItems: MenuItem[] = [
+    { name: 'Home', icon: LayoutDashboard, href: '/dashboard', color: 'blue' },
+    { name: 'New Project', icon: Plus, href: '/dashboard/projects/new', color: 'emerald' },
+    { name: 'View Projects', icon: FolderOpen, href: '/dashboard/projects', color: 'amber' },
+    { name: 'Financial Records', icon: DollarSign, href: '/dashboard/financial', color: 'green' },
+    { name: 'Reports', icon: FileText, href: '/dashboard/reports', color: 'violet' },
+    { name: 'Meetings', icon: Users, href: '/dashboard/meetings', color: 'indigo' },
+    { name: 'Events', icon: Calendar, href: '/dashboard/events', color: 'rose' },
+    { name: 'Mindmaps', icon: BrainCircuit, href: '/dashboard/mindmap', color: 'pink' },
+    { name: 'D2 Resources', icon: GraduationCap, href: '/dashboard/classroom', color: 'cyan' },
 ];
+
+function getActiveClasses(color: ItemColor): string {
+    switch (color) {
+        case 'blue': return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 shadow-lg shadow-blue-500/20';
+        case 'emerald': return 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 shadow-lg shadow-emerald-500/20';
+        case 'amber': return 'bg-amber-500/15 text-amber-600 dark:text-amber-400 shadow-lg shadow-amber-500/20';
+        case 'green': return 'bg-green-500/15 text-green-600 dark:text-green-400 shadow-lg shadow-green-500/20';
+        case 'violet': return 'bg-violet-500/15 text-violet-600 dark:text-violet-400 shadow-lg shadow-violet-500/20';
+        case 'indigo': return 'bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 shadow-lg shadow-indigo-500/20';
+        case 'rose': return 'bg-rose-500/15 text-rose-600 dark:text-rose-400 shadow-lg shadow-rose-500/20';
+        case 'pink': return 'bg-pink-500/15 text-pink-600 dark:text-pink-400 shadow-lg shadow-pink-500/20';
+        case 'cyan': return 'bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 shadow-lg shadow-cyan-500/20';
+        case 'red': return 'bg-red-500/15 text-red-600 dark:text-red-400 shadow-lg shadow-red-500/20';
+        case 'slate': return 'bg-slate-500/15 text-slate-600 dark:text-slate-400 shadow-lg shadow-slate-500/20';
+        default: return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 shadow-lg shadow-blue-500/20';
+    }
+}
+
+function getMobileTextClass(color: ItemColor): string {
+    switch (color) {
+        case 'blue': return 'text-blue-600 dark:text-blue-400';
+        case 'emerald': return 'text-emerald-600 dark:text-emerald-400';
+        case 'amber': return 'text-amber-600 dark:text-amber-400';
+        case 'green': return 'text-green-600 dark:text-green-400';
+        case 'violet': return 'text-violet-600 dark:text-violet-400';
+        case 'indigo': return 'text-indigo-600 dark:text-indigo-400';
+        case 'rose': return 'text-rose-600 dark:text-rose-400';
+        case 'pink': return 'text-pink-600 dark:text-pink-400';
+        case 'cyan': return 'text-cyan-600 dark:text-cyan-400';
+        case 'red': return 'text-red-600 dark:text-red-400';
+        case 'slate': return 'text-slate-600 dark:text-slate-400';
+        default: return 'text-blue-600 dark:text-blue-400';
+    }
+}
+
 
 function DockItem({
     mouseX,
@@ -39,7 +84,7 @@ function DockItem({
     isActive
 }: {
     mouseX: MotionValue;
-    item: any;
+    item: MenuItem;
     isActive: boolean;
 }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -70,6 +115,9 @@ function DockItem({
         }
     };
 
+    const activeClasses = getActiveClasses(item.color);
+    const mobileTextClass = getMobileTextClass(item.color);
+
     return (
         <Link
             href={item.href}
@@ -83,16 +131,16 @@ function DockItem({
                 className={`
                     flex items-center justify-center rounded-full transition-colors duration-200 flex-shrink-0
                     ${isActive
-                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+                        ? activeClasses
                         : 'bg-white/50 dark:bg-slate-800/50 text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-slate-700/80'
                     }
                 `}
             >
-                <item.icon size={20} className={isActive ? 'text-white' : ''} />
+                <item.icon size={20} className={isActive ? 'currentColor' : ''} />
             </motion.div>
 
             {/* Mobile Label */}
-            <span className={`md:hidden ml-4 font-medium transition-colors ${isActive ? 'text-blue-600' : 'text-gray-700 dark:text-gray-200'}`}>
+            <span className={`md:hidden ml-4 font-medium transition-colors ${isActive ? mobileTextClass : 'text-gray-700 dark:text-gray-200'}`}>
                 {item.name}
             </span>
 
@@ -209,7 +257,7 @@ export default function Sidebar() {
                     {user?.role === 'admin' && (
                         <DockItem
                             mouseX={mouseX}
-                            item={{ name: 'Admin Panel', icon: Shield, href: '/dashboard/admin' }}
+                            item={{ name: 'Admin Panel', icon: Shield, href: '/dashboard/admin', color: 'red' }}
                             isActive={pathname === '/dashboard/admin'}
                         />
                     )}
