@@ -216,14 +216,14 @@ export default function Sidebar() {
                     <div className="flex flex-row md:flex-col gap-2">
                         <Link
                             href="/dashboard/settings"
-                            className="p-2 rounded-full text-gray-500 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-blue-600 transition-colors"
+                            className="p-2 rounded-full text-gray-800 dark:text-white hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-blue-600 transition-colors"
                             title="Settings"
                         >
                             <Settings size={20} />
                         </Link>
                         <button
                             onClick={logout}
-                            className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                            className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full transition-colors"
                             title="Logout"
                         >
                             <LogOut size={20} />
