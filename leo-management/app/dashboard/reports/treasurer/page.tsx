@@ -137,7 +137,7 @@ export default function TreasurerReportPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 animate-fade-in pb-12">
+        <div className="min-h-screen animate-fade-in pb-12">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
                     <Link href="/dashboard/reports" className="inline-flex items-center text-gray-600 hover:text-leo-600 transition-colors mb-4">
@@ -150,7 +150,7 @@ export default function TreasurerReportPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Basic Details */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                             <FileText className="w-5 h-5 mr-2 text-leo-600" />
                             Project Details
@@ -171,7 +171,7 @@ export default function TreasurerReportPage() {
                     </div>
 
                     {/* Income Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-semibold text-green-700 flex items-center">
                                 <DollarSign className="w-5 h-5 mr-2" />
@@ -182,7 +182,7 @@ export default function TreasurerReportPage() {
 
                         <div className="space-y-4">
                             {incomes.map((item, index) => (
-                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg">
+                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-sky-mist p-4 rounded-lg">
                                     <div className="md:col-span-4">
                                         <input placeholder="Description" value={item.description} onChange={e => updateIncome(index, 'description', e.target.value)} className="input" required />
                                     </div>
@@ -203,7 +203,7 @@ export default function TreasurerReportPage() {
                                             />
                                             <label
                                                 htmlFor={`income-receipt-${index}`}
-                                                className={`flex items-center justify-center px-4 py-2 border rounded-lg cursor-pointer transition-colors ${item.receipt ? 'bg-green-50 border-green-200 text-green-700' : 'bg-white border-gray-300 hover:bg-gray-50'}`}
+                                                className={`flex items-center justify-center px-4 py-2 border rounded-lg cursor-pointer transition-colors ${item.receipt ? 'bg-sky-mist border-green-200 text-green-700' : 'bg-white border-gray-300 hover:bg-sky-mist'}`}
                                             >
                                                 <Upload className="w-4 h-4 mr-2" />
                                                 {item.receipt ? 'Receipt Added' : 'Add Receipt'}
@@ -224,7 +224,7 @@ export default function TreasurerReportPage() {
                     </div>
 
                     {/* Expense Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-semibold text-red-700 flex items-center">
                                 <DollarSign className="w-5 h-5 mr-2" />
@@ -235,7 +235,7 @@ export default function TreasurerReportPage() {
 
                         <div className="space-y-4">
                             {expenses.map((item, index) => (
-                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-gray-50 p-4 rounded-lg">
+                                <div key={item.id} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start bg-sky-mist p-4 rounded-lg">
                                     <div className="md:col-span-4">
                                         <input placeholder="Description" value={item.description} onChange={e => updateExpense(index, 'description', e.target.value)} className="input" required />
                                     </div>
@@ -256,7 +256,7 @@ export default function TreasurerReportPage() {
                                             />
                                             <label
                                                 htmlFor={`expense-receipt-${index}`}
-                                                className={`flex items-center justify-center px-4 py-2 border rounded-lg cursor-pointer transition-colors ${item.receipt ? 'bg-green-50 border-green-200 text-green-700' : 'bg-white border-gray-300 hover:bg-gray-50'}`}
+                                                className={`flex items-center justify-center px-4 py-2 border rounded-lg cursor-pointer transition-colors ${item.receipt ? 'bg-sky-mist border-green-200 text-green-700' : 'bg-white border-gray-300 hover:bg-sky-mist'}`}
                                             >
                                                 <Upload className="w-4 h-4 mr-2" />
                                                 {item.receipt ? 'Receipt Added' : 'Add Receipt'}
@@ -277,7 +277,7 @@ export default function TreasurerReportPage() {
                     </div>
 
                     {/* Summary */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <div className="flex justify-between items-center">
                             <h2 className="text-xl font-semibold text-gray-900">Summary</h2>
                             <div className={`text-2xl font-bold ${surplusDeficit >= 0 ? 'text-green-600' : 'text-red-600'}`}>

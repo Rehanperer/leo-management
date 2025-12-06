@@ -102,7 +102,7 @@ export default function ScriptReportPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 animate-fade-in pb-12">
+        <div className="min-h-screen animate-fade-in pb-12">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
                     <Link href="/dashboard/reports" className="inline-flex items-center text-gray-600 hover:text-leo-600 transition-colors mb-4">
@@ -115,7 +115,7 @@ export default function ScriptReportPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Meeting Details */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                             <Users className="w-5 h-5 mr-2 text-leo-600" />
                             Meeting Details
@@ -134,10 +134,10 @@ export default function ScriptReportPage() {
                             <div className="md:col-span-2">
                                 <label className="label">Meeting Type</label>
                                 <div className="flex space-x-4">
-                                    <button type="button" onClick={() => setMeetingType('Physical')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Physical' ? 'bg-leo-50 border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                                    <button type="button" onClick={() => setMeetingType('Physical')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Physical' ? 'bg-sky-mist border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-sky-mist'}`}>
                                         <MapPin className="w-4 h-4 inline mr-2" /> Physical
                                     </button>
-                                    <button type="button" onClick={() => setMeetingType('Online')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Online' ? 'bg-leo-50 border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                                    <button type="button" onClick={() => setMeetingType('Online')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Online' ? 'bg-sky-mist border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-sky-mist'}`}>
                                         <Video className="w-4 h-4 inline mr-2" /> Online
                                     </button>
                                 </div>
@@ -148,7 +148,7 @@ export default function ScriptReportPage() {
                     {/* Physical Only Fields */}
                     {meetingType === 'Physical' && (
                         <>
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div className="card p-6">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Front Row Guests (up to 8)</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {frontRowGuests.map((guest, idx) => (
@@ -160,7 +160,7 @@ export default function ScriptReportPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div className="card p-6">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Head Table Guests (up to 15)</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     {headTableGuests.map((guest, idx) => (
@@ -172,7 +172,7 @@ export default function ScriptReportPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div className="card p-6">
                                 <h2 className="text-xl font-semibold text-gray-900 mb-4">Introduction</h2>
                                 <div>
                                     <label className="label">Introduction of Head Table</label>
@@ -183,7 +183,7 @@ export default function ScriptReportPage() {
                     )}
 
                     {/* Common Script Fields */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Script Assignments</h2>
                         <div className="space-y-4">
                             <div><label className="label">Pledge of Allegiance to the National Flag</label><input type="text" value={pledgeAllegiance} onChange={e => setPledgeAllegiance(e.target.value)} className="input" placeholder="Name" /></div>

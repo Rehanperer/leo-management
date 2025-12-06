@@ -159,8 +159,8 @@ export default function NewEventPage() {
     const moodIcons = ['🌟', '🤝', '🎉', '💪', '🌱', '🎓', '🏆', '❤️'];
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12">
-            <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="min-h-screen pb-12">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-10">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/dashboard/events" className="text-leo-600 hover:text-leo-700 font-medium flex items-center gap-2">
@@ -368,7 +368,7 @@ export default function NewEventPage() {
                         )}
 
                         {collaborators.map((collab, index) => (
-                            <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start bg-gray-50 p-4 rounded-lg">
+                            <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start bg-sky-mist p-4 rounded-lg">
                                 <input
                                     type="text"
                                     placeholder="Organization Name"
@@ -428,8 +428,8 @@ export default function NewEventPage() {
                                         type="button"
                                         onClick={() => setFormData({ ...formData, mood: icon })}
                                         className={`w-10 h-10 rounded-full flex items-center justify-center text-xl border transition-all ${formData.mood === icon
-                                                ? 'border-leo-500 bg-leo-50 scale-110 shadow-sm'
-                                                : 'border-gray-200 hover:border-gray-300'
+                                            ? 'border-leo-500 bg-leo-50 scale-110 shadow-sm'
+                                            : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                     >
                                         {icon}

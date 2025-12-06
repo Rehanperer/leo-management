@@ -32,7 +32,7 @@ export default function FinancialCharts({ monthlyData, categoryData }: Financial
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Monthly Income vs Expenses */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <div className="bg-sky-mist p-6 rounded-xl shadow-sm border border-sky-shadow">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Income vs Expenses</h3>
                 <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
@@ -60,7 +60,7 @@ export default function FinancialCharts({ monthlyData, categoryData }: Financial
             </div>
 
             {/* Expenses by Category */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+            <div className="bg-sky-mist p-6 rounded-xl shadow-sm border border-sky-shadow">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Expenses by Category</h3>
                 <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const fs = require('fs');

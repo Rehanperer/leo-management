@@ -1,4 +1,6 @@
 const fs = require('fs');
+/* eslint-disable @typescript-eslint/no-require-imports */
+const PizZip = require('pizzip');
 const path = require('path');
 const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, TextRun, AlignmentType, BorderStyle } = require('docx');
 

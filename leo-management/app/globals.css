@@ -1,13 +1,22 @@
 @import "tailwindcss";
 
 @layer base {
+  :root {
+    --color-soft-sky: #E6F4FD;
+    --color-sky-mist: #F0F9FF;
+    --color-sky-cloud: #E0F2FE;
+    --color-sky-shadow: #D1E9F9;
+  }
+
   * {
-    border-color: theme('colors.gray.200');
+    border-color: var(--color-sky-shadow);
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    background: linear-gradient(180deg, var(--color-sky-mist) 0%, var(--color-soft-sky) 100%);
+    @apply text-gray-900 antialiased;
     cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%233b82f6" stroke-width="2"><circle cx="12" cy="12" r="4"/></svg>') 12 12, auto;
+    min-height: 100vh;
   }
 
   a,
@@ -249,17 +258,48 @@
 
 @layer utilities {
   .glass {
-    background-color: rgb(255 255 255 / 0.8);
-    backdrop-filter: blur(16px);
-    border-width: 1px;
-    border-color: rgb(255 255 255 / 0.2);
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    border-radius: 1.5rem;
+    /* rounded-3xl */
+  }
+
+  .glass-card {
+    background-color: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    border-radius: 1.5rem;
+    /* rounded-3xl */
   }
 
   .glass-dark {
-    background-color: rgb(17 24 39 / 0.8);
-    backdrop-filter: blur(16px);
-    border-width: 1px;
-    border-color: rgb(255 255 255 / 0.1);
+    background-color: rgba(30, 41, 59, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    /* rounded-3xl */
+  }
+
+  .bg-sky-cloud {
+    background-color: var(--color-sky-cloud);
+  }
+
+  .bg-sky-mist {
+    background-color: var(--color-sky-mist);
+  }
+
+  .bg-soft-sky {
+    background-color: var(--color-soft-sky);
+  }
+
+  .border-sky-shadow {
+    border-color: var(--color-sky-shadow);
   }
 
   /* Button styles */
@@ -316,11 +356,11 @@
 
   /* Card styles */
   .card {
-    background-color: white;
+    background-color: var(--color-sky-cloud);
     border-radius: 0.75rem;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     border-width: 1px;
-    border-color: rgb(229 231 235);
+    border-color: var(--color-sky-shadow);
     padding: 1.5rem;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -333,11 +373,11 @@
   }
 
   .card-interactive {
-    background-color: white;
+    background-color: var(--color-sky-cloud);
     border-radius: 0.75rem;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
     border-width: 1px;
-    border-color: rgb(229 231 235);
+    border-color: var(--color-sky-shadow);
     padding: 1.5rem;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

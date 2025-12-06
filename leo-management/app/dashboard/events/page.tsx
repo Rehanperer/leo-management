@@ -82,8 +82,8 @@ export default function EventsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12">
-            <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="min-h-screen pb-12">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <h1 className="text-2xl font-bold text-gray-900">Events Management</h1>
@@ -146,7 +146,7 @@ export default function EventsPage() {
                 )}
 
                 {/* Filters & Search */}
-                <div className="flex flex-col md:flex-row gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <div className="flex flex-col md:flex-row gap-4 card p-4">
                     <div className="flex-1 relative">
                         <svg className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -183,7 +183,7 @@ export default function EventsPage() {
                 {isLoading ? (
                     <div className="text-center py-12">Loading events...</div>
                 ) : filteredEvents.length === 0 ? (
-                    <div className="text-center py-16 bg-white rounded-xl border border-dashed border-gray-300">
+                    <div className="text-center py-16 card border-dashed border-sky-shadow">
                         <div className="mx-auto h-16 w-16 text-gray-300 mb-4">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         </div>
@@ -202,7 +202,7 @@ export default function EventsPage() {
                                 </div>
 
                                 {/* Card */}
-                                <Link href={`/dashboard/events/${event.id}`} className="block w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all ml-16 md:ml-0 cursor-pointer">
+                                <Link href={`/dashboard/events/${event.id}`} className="block w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] card hover:shadow-md transition-all ml-16 md:ml-0 cursor-pointer">
                                     <div className="flex justify-between items-start mb-4">
                                         <span className={`px-2 py-1 text-xs font-medium rounded-full uppercase tracking-wide ${event.status === 'completed' ? 'bg-green-100 text-green-800' :
                                             event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :

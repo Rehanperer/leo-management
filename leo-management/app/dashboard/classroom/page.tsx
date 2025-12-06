@@ -140,9 +140,9 @@ export default function ClassroomPage() {
     })).filter(category => category.docs.length > 0);
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12">
+        <div className="min-h-screen pb-12">
             {/* Header */}
-            <header className="sticky top-0 z-30 glass border-b border-gray-200">
+            <header className="sticky top-0 z-30 bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Link
@@ -233,7 +233,7 @@ export default function ClassroomPage() {
                                             <a
                                                 href={doc.url}
                                                 download
-                                                className={`p-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-${category.color}-500 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md group/btn`}
+                                                className={`p-2 rounded-lg bg-sky-mist text-gray-600 hover:bg-${category.color}-500 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md group/btn`}
                                             >
                                                 <Download className="w-4 h-4 group-hover/btn:scale-110 transition-transform" />
                                             </a>

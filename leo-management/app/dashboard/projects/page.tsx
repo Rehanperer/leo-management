@@ -181,8 +181,8 @@ export default function ProjectsPage() {
         : 0;
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <header className="bg-white border-b border-gray-200">
+        <div className="min-h-screen">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/dashboard" className="text-leo-600 hover:text-leo-700 font-medium">
@@ -203,10 +203,10 @@ export default function ProjectsPage() {
                         {/* Stat Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {/* Total Projects */}
-                            <div className="card bg-gradient-to-br from-leo-500 to-purple-600 text-white">
+                            <div className="card bg-gradient-to-br from-purple-400 to-pink-500 text-white">
                                 <div className="flex items-start justify-between">
                                     <div>
-                                        <p className="text-leo-100 text-sm font-medium mb-1">Completed Projects</p>
+                                        <p className="text-purple-100 text-sm font-medium mb-1">Completed Projects</p>
                                         <p className="text-4xl font-bold">{stats.totalProjects}</p>
                                         {growthRate !== 0 && (
                                             <div className="mt-2 flex items-center gap-1 text-sm">
@@ -222,7 +222,7 @@ export default function ProjectsPage() {
                             </div>
 
                             {/* Total Service Hours */}
-                            <div className="card bg-gradient-to-br from-blue-500 to-indigo-600 text-white">
+                            <div className="card bg-gradient-to-br from-blue-400 to-indigo-500 text-white">
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <p className="text-blue-100 text-sm font-medium mb-1">Service Hours</p>
@@ -236,7 +236,7 @@ export default function ProjectsPage() {
                             </div>
 
                             {/* Total Beneficiaries */}
-                            <div className="card bg-gradient-to-br from-emerald-500 to-green-600 text-white">
+                            <div className="card bg-gradient-to-br from-emerald-400 to-green-500 text-white">
                                 <div className="flex items-start justify-between">
                                     <div>
                                         <p className="text-emerald-100 text-sm font-medium mb-1">Beneficiaries</p>

@@ -275,8 +275,8 @@ export default function ProjectDetailPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <header className="bg-white border-b border-gray-200">
+        <div className="min-h-screen">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/dashboard/projects" className="text-leo-600 hover:text-leo-700 font-medium">
@@ -442,17 +442,17 @@ export default function ProjectDetailPage() {
                         <div className="card mb-6">
                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Project Statistics</h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="bg-leo-50 rounded-lg p-4">
-                                    <div className="text-3xl font-bold text-leo-600 mb-1">{project.beneficiaries || 0}</div>
-                                    <div className="text-sm text-gray-600">Beneficiaries</div>
+                                <div className="bg-sky-mist rounded-lg p-4 border border-sky-shadow">
+                                    <div className="text-3xl font-bold text-sky-700 mb-1">{project.beneficiaries || 0}</div>
+                                    <div className="text-sm text-sky-900">Beneficiaries</div>
                                 </div>
-                                <div className="bg-purple-50 rounded-lg p-4">
-                                    <div className="text-3xl font-bold text-purple-600 mb-1">{project.serviceHours || 0}</div>
-                                    <div className="text-sm text-gray-600">Service Hours</div>
+                                <div className="bg-sky-mist rounded-lg p-4 border border-sky-shadow">
+                                    <div className="text-3xl font-bold text-sky-700 mb-1">{project.serviceHours || 0}</div>
+                                    <div className="text-sm text-sky-900">Service Hours</div>
                                 </div>
-                                <div className="bg-green-50 rounded-lg p-4">
-                                    <div className="text-3xl font-bold text-green-600 mb-1">{project.participants || 0}</div>
-                                    <div className="text-sm text-gray-600">Participants</div>
+                                <div className="bg-sky-mist rounded-lg p-4 border border-sky-shadow">
+                                    <div className="text-3xl font-bold text-sky-700 mb-1">{project.participants || 0}</div>
+                                    <div className="text-sm text-sky-900">Participants</div>
                                 </div>
                             </div>
                         </div>
@@ -468,14 +468,14 @@ export default function ProjectDetailPage() {
                 ) : (
                     <>
                         {/* Edit Mode - Similar to create form */}
-                        <div className="mb-6 bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div className="mb-6 bg-sky-mist border border-sky-shadow rounded-lg p-4">
                             <div className="flex items-start gap-3">
-                                <svg className="w-5 h-5 text-purple-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 text-sky-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 <div>
-                                    <p className="text-sm font-medium text-purple-900">Need assistance editing this form?</p>
-                                    <p className="text-sm text-purple-700 mt-1">Use the AI chatbot in the bottom right corner for help with any field!</p>
+                                    <p className="text-sm font-medium text-sky-900">Need assistance editing this form?</p>
+                                    <p className="text-sm text-sky-700 mt-1">Use the AI chatbot in the bottom right corner for help with any field!</p>
                                 </div>
                             </div>
                         </div>

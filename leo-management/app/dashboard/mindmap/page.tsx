@@ -88,16 +88,16 @@ export default function MindmapListPage() {
 
     if (isLoading || loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-leo-50 to-purple-50">
+            <div className="min-h-screen flex items-center justify-center">
                 <LoadingSpinner size="lg" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30">
+        <div className="min-h-screen">
             {/* Header */}
-            <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center gap-4">

@@ -123,8 +123,8 @@ export default function NewMeetingPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12">
-            <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="min-h-screen pb-12">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-10">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/dashboard/meetings" className="text-leo-600 hover:text-leo-700 font-medium">
@@ -248,7 +248,7 @@ export default function NewMeetingPage() {
                         </div>
                         <div className="space-y-4">
                             {agendaItems.map((item, index) => (
-                                <div key={index} className="flex gap-4 items-start bg-gray-50 p-4 rounded-lg group">
+                                <div key={index} className="flex gap-4 items-start bg-sky-mist p-4 rounded-lg group">
                                     <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-4">
                                         <div className="md:col-span-6">
                                             <input
@@ -304,7 +304,7 @@ export default function NewMeetingPage() {
                         </div>
                         <div className="space-y-4">
                             {actionItems.map((item, index) => (
-                                <div key={index} className="flex gap-4 items-start bg-gray-50 p-4 rounded-lg">
+                                <div key={index} className="flex gap-4 items-start bg-sky-mist p-4 rounded-lg">
                                     <div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-4">
                                         <div className="md:col-span-6">
                                             <input

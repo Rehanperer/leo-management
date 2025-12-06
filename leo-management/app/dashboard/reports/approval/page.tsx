@@ -150,8 +150,8 @@ export default function ApprovalDocsPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30">
-            <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">
+        <div className="min-h-screen">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center gap-4">
@@ -244,9 +244,9 @@ export default function ApprovalDocsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                        <p className="text-sm text-blue-800">
-                                            <strong>Note:</strong> After downloading, you can rename the file to your preferred name and ensure it has the <code className="bg-blue-100 px-1 rounded">.docx</code> extension.
+                                    <div className="mt-4 p-3 bg-sky-mist border border-sky-shadow rounded-lg">
+                                        <p className="text-sm text-sky-900">
+                                            <strong>Note:</strong> After downloading, you can rename the file to your preferred name and ensure it has the <code className="bg-soft-sky px-1 rounded">.docx</code> extension.
                                         </p>
                                     </div>
                                 </div>
@@ -473,7 +473,7 @@ export default function ApprovalDocsPage() {
                                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Details of Joining Leo Clubs</h3>
                                             <div className="overflow-x-auto">
                                                 <table className="min-w-full divide-y divide-gray-200 border border-gray-200 rounded-lg">
-                                                    <thead className="bg-gray-50">
+                                                    <thead className="bg-sky-mist">
                                                         <tr>
                                                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">No.</th>
                                                             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Leo Club Name</th>
@@ -523,7 +523,7 @@ export default function ApprovalDocsPage() {
                                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval of District Presidents of Joining Leo Clubs</h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                 {districtPresidents.map((president, index) => (
-                                                    <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                    <div key={index} className="p-4 bg-sky-mist rounded-lg border border-gray-200">
                                                         <h4 className="text-sm font-medium text-gray-700 mb-3">District President {index + 1}</h4>
                                                         <div className="space-y-3">
                                                             <div>
@@ -610,7 +610,7 @@ export default function ApprovalDocsPage() {
                                             <div className="overflow-x-auto">
                                                 <table className="w-full border-collapse border border-gray-300">
                                                     <thead>
-                                                        <tr className="bg-gray-50">
+                                                        <tr className="bg-sky-mist">
                                                             <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">No.</th>
                                                             <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">Leo Club Name</th>
                                                             <th className="border border-gray-300 px-3 py-2 text-left text-sm font-semibold">Leo Club President's Name</th>
@@ -619,7 +619,7 @@ export default function ApprovalDocsPage() {
                                                     </thead>
                                                     <tbody>
                                                         {joiningClubs.map((club, index) => (
-                                                            <tr key={index} className="hover:bg-gray-50">
+                                                            <tr key={index} className="hover:bg-sky-mist">
                                                                 <td className="border border-gray-300 px-3 py-2 text-sm text-center">{index + 1}</td>
                                                                 <td className="border border-gray-300 px-3 py-2">
                                                                     <input
@@ -660,7 +660,7 @@ export default function ApprovalDocsPage() {
                                             <h3 className="text-lg font-semibold text-gray-900 mb-4">Approval of District Presidents of Joining Leo Clubs</h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 {districtPresidents.map((president, index) => (
-                                                    <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                    <div key={index} className="border border-gray-300 rounded-lg p-4 bg-sky-mist">
                                                         <h4 className="text-sm font-semibold text-gray-700 mb-3">District President {index + 1}</h4>
                                                         <div className="space-y-3">
                                                             <div>
@@ -751,7 +751,7 @@ export default function ApprovalDocsPage() {
                                             <p className="text-sm text-gray-600 mb-4">If organizing jointly with other Intra-District Leo Clubs, provide their details below (up to 4 clubs)</p>
                                             <div className="space-y-4">
                                                 {[0, 1, 2, 3].map((index) => (
-                                                    <div key={index} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                    <div key={index} className="p-4 bg-sky-mist rounded-lg border border-gray-200">
                                                         <h4 className="text-sm font-medium text-gray-700 mb-3">Leo Club {index + 1}</h4>
                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                             <div>

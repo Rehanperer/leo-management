@@ -58,9 +58,9 @@ export default function AdminPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/20 to-purple-50/20">
+        <div className="min-h-screen">
             {/* Header */}
-            <header className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/dashboard" className="text-leo-600 hover:text-leo-700 font-semibold flex items-center gap-2 transition-all hover:gap-3 duration-300">
@@ -189,15 +189,15 @@ export default function AdminPage() {
                                 <div className="bg-white rounded-xl p-5 border-2 border-green-200 shadow-inner">
                                     <p className="text-sm text-gray-600 mb-3 font-medium">Share these credentials with the club:</p>
                                     <div className="space-y-3 font-mono text-sm">
-                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div className="flex items-center justify-between p-3 bg-sky-mist rounded-lg">
                                             <span className="text-gray-600 font-semibold">Club:</span>
                                             <span className="font-bold text-gray-900">{credentials.clubName}</span>
                                         </div>
-                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div className="flex items-center justify-between p-3 bg-sky-mist rounded-lg">
                                             <span className="text-gray-600 font-semibold">Username:</span>
                                             <span className="font-bold text-gray-900">{credentials.username}</span>
                                         </div>
-                                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                        <div className="flex items-center justify-between p-3 bg-sky-mist rounded-lg">
                                             <span className="text-gray-600 font-semibold">Password:</span>
                                             <span className="font-bold text-red-600">{credentials.password}</span>
                                         </div>

@@ -229,19 +229,19 @@ export default function FinancialPage() {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="card bg-white border-l-4 border-green-500">
+                <div className="card border-l-4 border-green-500">
                     <p className="text-sm font-medium text-gray-600">Total Income</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">${totalIncome.toLocaleString()}</p>
                 </div>
-                <div className="card bg-white border-l-4 border-red-500">
+                <div className="card border-l-4 border-red-500">
                     <p className="text-sm font-medium text-gray-600">Total Expenses</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">${totalExpenses.toLocaleString()}</p>
                 </div>
-                <div className="card bg-white border-l-4 border-blue-500">
+                <div className="card border-l-4 border-blue-500">
                     <p className="text-sm font-medium text-gray-600">Current Balance</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">${currentBalance.toLocaleString()}</p>
                 </div>
-                <div className="card bg-white border-l-4 border-yellow-500">
+                <div className="card border-l-4 border-yellow-500">
                     <p className="text-sm font-medium text-gray-600">Pending Payments</p>
                     <p className="text-2xl font-bold text-gray-900 mt-1">${pendingPayments.toLocaleString()}</p>
                 </div>
@@ -274,7 +274,7 @@ export default function FinancialPage() {
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                                <thead className="bg-sky-mist">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
@@ -336,7 +336,7 @@ export default function FinancialPage() {
 
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                            <thead className="bg-sky-mist">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
@@ -541,7 +541,7 @@ export default function FinancialPage() {
 
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full divide-y divide-gray-200">
-                                            <thead className="bg-gray-50">
+                                            <thead className="bg-sky-mist">
                                                 <tr>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
                                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>

@@ -222,9 +222,9 @@ export default function MeetingDetailsPage({ params }: { params: Promise<{ id: s
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12 print:bg-white">
+        <div className="min-h-screen pb-12 print:bg-white">
             {/* Header */}
-            <header className="bg-white border-b border-gray-200 sticky top-0 z-10 print:hidden">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow sticky top-0 z-10 print:hidden">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <Link href="/dashboard/meetings" className="text-leo-600 hover:text-leo-700 font-medium flex items-center gap-2">
@@ -346,7 +346,7 @@ export default function MeetingDetailsPage({ params }: { params: Promise<{ id: s
                             </div>
 
                             {!isEditing && meeting.summary && (
-                                <div className="mt-6 bg-gray-50 p-4 rounded-lg">
+                                <div className="mt-6 bg-sky-mist p-4 rounded-lg">
                                     <h3 className="text-sm font-semibold text-gray-900 mb-2">Summary</h3>
                                     <p className="text-gray-600 text-sm leading-relaxed">{meeting.summary}</p>
                                 </div>

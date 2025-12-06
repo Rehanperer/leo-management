@@ -294,9 +294,9 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 pb-12">
+        <div className="min-h-screen pb-12">
             {/* Header */}
-            <div className="bg-white border-b border-gray-200">
+            <div className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div>
@@ -468,7 +468,7 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                                     {collaborators.length > 0 ? (
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {collaborators.map((collab, i) => (
-                                                <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                                <div key={i} className="flex items-center gap-3 p-3 bg-sky-mist rounded-lg border border-gray-100">
                                                     <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-lg shadow-sm">
                                                         {collab.type === 'Leo Club' ? '🦁' :
                                                             collab.type === 'School' ? '🏫' :
@@ -491,8 +491,8 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                         {activeTab === 'impact' && (
                             <div className="space-y-8 animate-fade-in">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="card bg-gradient-to-br from-blue-50 to-white border-blue-100">
-                                        <h4 className="text-sm font-medium text-blue-800 uppercase tracking-wide mb-1">Beneficiaries</h4>
+                                    <div className="card bg-sky-mist border-sky-shadow">
+                                        <h4 className="text-sm font-medium text-sky-800 uppercase tracking-wide mb-1">Beneficiaries</h4>
                                         {isEditing ? (
                                             <input
                                                 type="number"
@@ -508,8 +508,8 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                                             </>
                                         )}
                                     </div>
-                                    <div className="card bg-gradient-to-br from-green-50 to-white border-green-100">
-                                        <h4 className="text-sm font-medium text-green-800 uppercase tracking-wide mb-1">Funds Raised</h4>
+                                    <div className="card bg-sky-mist border-sky-shadow">
+                                        <h4 className="text-sm font-medium text-sky-800 uppercase tracking-wide mb-1">Funds Raised</h4>
                                         {isEditing ? (
                                             <input
                                                 type="number"
@@ -589,9 +589,9 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
                             <div className="space-y-6 animate-fade-in">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     {documents.map((doc, index) => (
-                                        <div key={index} className="flex items-center justify-between p-3 bg-white border border-gray-200 rounded-lg group hover:border-leo-300 transition-colors">
+                                        <div key={index} className="flex items-center justify-between p-3 bg-sky-mist border border-sky-shadow rounded-lg group hover:border-leo-300 transition-colors">
                                             <div className="flex items-center gap-3 overflow-hidden">
-                                                <div className="p-2 bg-gray-100 rounded text-gray-500">
+                                                <div className="p-2 bg-white/50 rounded text-gray-500">
                                                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                                                 </div>
                                                 <div className="min-w-0">
@@ -636,7 +636,7 @@ export default function EventDetailsPage({ params }: { params: Promise<{ id: str
 
                     {/* Sidebar */}
                     <div className="space-y-6">
-                        <div className="card bg-leo-50 border-leo-100">
+                        <div className="card bg-sky-mist border-sky-shadow">
                             <h3 className="font-semibold text-leo-900 mb-4">Next Steps</h3>
                             <ul className="space-y-3 text-sm">
                                 <li className="flex items-start gap-2">

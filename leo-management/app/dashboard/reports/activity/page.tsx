@@ -210,7 +210,7 @@ export default function ActivityReportPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 animate-fade-in pb-12">
+        <div className="min-h-screen animate-fade-in pb-12">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
                     <Link
@@ -226,7 +226,7 @@ export default function ActivityReportPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Basic Info Card */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                             <FileText className="w-5 h-5 mr-2 text-leo-600" />
                             Report Details
@@ -256,7 +256,7 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Membership Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Membership</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div><label className="label">Previous Month</label><input type="number" value={membership.previous} onChange={e => setMembership({ ...membership, previous: e.target.value })} className="input" /></div>
@@ -268,7 +268,7 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Meetings Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Meetings</h2>
 
                         <h3 className="text-lg font-medium text-gray-800 mb-4">General Meeting</h3>
@@ -339,7 +339,7 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Finances Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Finances</h2>
                         <div className="space-y-4">
                             <div><label className="label">Total Surplus/Deficit</label><input type="text" value={finances.surplusDeficit} onChange={e => setFinances({ ...finances, surplusDeficit: e.target.value })} className="input" /></div>
@@ -349,7 +349,7 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Projects Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Projects</h2>
                         <div>
                             <label className="label">Number of Projects Conducted for this Month</label>
@@ -358,7 +358,7 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Participation Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Participation</h2>
 
                         {Object.entries({
@@ -374,7 +374,7 @@ export default function ActivityReportPage() {
                                 </div>
                                 <div className="overflow-x-auto">
                                     <table className="w-full text-sm text-left">
-                                        <thead className="bg-gray-50 text-gray-600 font-medium">
+                                        <thead className="bg-sky-mist text-gray-600 font-medium">
                                             <tr>
                                                 <th className="p-2">Event</th>
                                                 <th className="p-2 w-32">Date</th>
@@ -401,14 +401,14 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Monthly Project Summary */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-semibold text-gray-900">Monthly Project Summary</h2>
                             <button type="button" onClick={addProjectSummary} className="btn-secondary text-sm"><Plus className="w-4 h-4 mr-1" /> Add Project</button>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm text-left">
-                                <thead className="bg-gray-50 text-gray-600 font-medium">
+                                <thead className="bg-sky-mist text-gray-600 font-medium">
                                     <tr>
                                         <th className="p-2 w-40">Date</th>
                                         <th className="p-2">Project Name</th>
@@ -431,7 +431,7 @@ export default function ActivityReportPage() {
                     </div>
 
                     {/* Images Section */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                             <Upload className="w-5 h-5 mr-2 text-leo-600" />
                             Photos & Documents
@@ -450,7 +450,7 @@ export default function ActivityReportPage() {
                                     />
                                     <label
                                         htmlFor="gmPhoto"
-                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${gmPhoto ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${gmPhoto ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-soft-sky'}`}
                                     >
                                         <Upload className="w-5 h-5 mr-2" />
                                         {gmPhoto ? gmPhoto.name : 'Upload Photo'}
@@ -467,7 +467,7 @@ export default function ActivityReportPage() {
                                     />
                                     <label
                                         htmlFor="boardMeetingPhoto"
-                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${boardMeetingPhoto ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${boardMeetingPhoto ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-soft-sky'}`}
                                     >
                                         <Upload className="w-5 h-5 mr-2" />
                                         {boardMeetingPhoto ? boardMeetingPhoto.name : 'Upload Photo'}
@@ -494,7 +494,7 @@ export default function ActivityReportPage() {
                                             />
                                             <label
                                                 htmlFor={`attendance_${index}`}
-                                                className={`flex-1 flex items-center justify-center px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${file ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                                className={`flex-1 flex items-center justify-center px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${file ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-soft-sky'}`}
                                             >
                                                 <Upload className="w-4 h-4 mr-2" />
                                                 {file ? file.name : `Attendance List ${index + 1}`}
@@ -535,7 +535,7 @@ export default function ActivityReportPage() {
                                     />
                                     <label
                                         htmlFor="myleoUpdate"
-                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${myleoUpdate ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${myleoUpdate ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-soft-sky'}`}
                                     >
                                         <Upload className="w-5 h-5 mr-2" />
                                         {myleoUpdate ? myleoUpdate.name : 'Upload Screenshot'}
@@ -552,7 +552,7 @@ export default function ActivityReportPage() {
                                     />
                                     <label
                                         htmlFor="mylciUpdate"
-                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${mylciUpdate ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                        className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${mylciUpdate ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-soft-sky'}`}
                                     >
                                         <Upload className="w-5 h-5 mr-2" />
                                         {mylciUpdate ? mylciUpdate.name : 'Upload Screenshot'}
@@ -575,7 +575,7 @@ export default function ActivityReportPage() {
                                         />
                                         <label
                                             htmlFor="newsletter"
-                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${newsletter ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${newsletter ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-soft-sky'}`}
                                         >
                                             <Upload className="w-5 h-5 mr-2" />
                                             {newsletter ? newsletter.name : 'Upload'}
@@ -592,7 +592,7 @@ export default function ActivityReportPage() {
                                         />
                                         <label
                                             htmlFor="blog"
-                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${blog ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${blog ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
                                         >
                                             <Upload className="w-5 h-5 mr-2" />
                                             {blog ? blog.name : 'Upload'}
@@ -609,7 +609,7 @@ export default function ActivityReportPage() {
                                         />
                                         <label
                                             htmlFor="website"
-                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${website ? 'bg-green-50 border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
+                                            className={`flex items-center justify-center px-4 py-3 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${website ? 'bg-sky-mist border-green-300 text-green-700' : 'border-gray-300 hover:border-leo-400 hover:bg-leo-50'}`}
                                         >
                                             <Upload className="w-5 h-5 mr-2" />
                                             {website ? website.name : 'Upload'}

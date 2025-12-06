@@ -5,7 +5,7 @@ import { ArrowLeft, FileText, Clock, DollarSign } from 'lucide-react';
 
 export default function ReportsPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 animate-fade-in">
+        <div className="min-h-screen animate-fade-in">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
                     <Link

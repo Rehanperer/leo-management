@@ -7,13 +7,23 @@ export async function GET(request: NextRequest) {
         try {
             const where = auth.role === 'admin' ? {} : { clubId: auth.clubId! };
 
-            const [projectCount, meetingCount, eventCount, financialRecords] = await Promise.all([
+            const [
+                projectCount,
+                meetingCount,
+                eventCount,
+                financialRecords,
+                completedProjects
+            ] = await Promise.all([
                 prisma.project.count({ where }),
                 prisma.meeting.count({ where }),
                 prisma.event.count({ where }),
                 prisma.financialRecord.findMany({
                     where,
                     select: { type: true, amount: true }
+                }),
+                prisma.project.findMany({
+                    where: { ...where, status: 'completed' },
+                    select: { serviceHours: true, beneficiaries: true }
                 })
             ]);
 
@@ -23,12 +33,19 @@ export async function GET(request: NextRequest) {
                     : acc - record.amount;
             }, 0);
 
+            const totalServiceHours = completedProjects.reduce((acc, project) => acc + (project.serviceHours || 0), 0);
+            const totalBeneficiaries = completedProjects.reduce((acc, project) => acc + (project.beneficiaries || 0), 0);
+            const totalProjectsCompleted = completedProjects.length;
+
             return NextResponse.json({
                 stats: {
                     projects: projectCount,
                     meetings: meetingCount,
                     events: eventCount,
-                    budget: budgetBalance
+                    budget: budgetBalance,
+                    totalProjectsCompleted,
+                    totalServiceHours,
+                    totalBeneficiaries
                 }
             });
         } catch (error) {

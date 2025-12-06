@@ -154,7 +154,7 @@ export default function AgendaReportPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-leo-50/30 to-purple-50/30 animate-fade-in pb-12">
+        <div className="min-h-screen animate-fade-in pb-12">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
                     <Link href="/dashboard/reports" className="inline-flex items-center text-gray-600 hover:text-leo-600 transition-colors mb-4">
@@ -167,7 +167,7 @@ export default function AgendaReportPage() {
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Meeting Details */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                             <Clock className="w-5 h-5 mr-2 text-leo-600" />
                             Meeting Details
@@ -187,10 +187,10 @@ export default function AgendaReportPage() {
                             <div className="md:col-span-2">
                                 <label className="label">Meeting Type</label>
                                 <div className="flex space-x-4 mb-4">
-                                    <button type="button" onClick={() => setMeetingType('Physical')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Physical' ? 'bg-leo-50 border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                                    <button type="button" onClick={() => setMeetingType('Physical')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Physical' ? 'bg-sky-mist border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-sky-mist'}`}>
                                         <MapPin className="w-4 h-4 inline mr-2" /> Physical
                                     </button>
-                                    <button type="button" onClick={() => setMeetingType('Online')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Online' ? 'bg-leo-50 border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-gray-50'}`}>
+                                    <button type="button" onClick={() => setMeetingType('Online')} className={`px-4 py-2 rounded-lg border ${meetingType === 'Online' ? 'bg-sky-mist border-leo-500 text-leo-700' : 'border-gray-200 hover:bg-sky-mist'}`}>
                                         <Video className="w-4 h-4 inline mr-2" /> Online
                                     </button>
                                 </div>
@@ -207,7 +207,7 @@ export default function AgendaReportPage() {
                     </div>
 
                     {/* Guests */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Guests</h2>
                         <div className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -232,11 +232,11 @@ export default function AgendaReportPage() {
                     </div>
 
                     {/* Agenda Preview */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <div className="card p-6">
                         <h2 className="text-xl font-semibold text-gray-900 mb-6">Agenda Preview</h2>
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                                <thead className="bg-sky-mist">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>

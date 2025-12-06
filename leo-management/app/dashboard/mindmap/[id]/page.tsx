@@ -136,7 +136,7 @@ export default function MindmapEditorPage({ params }: { params: Promise<{ id: st
 
     if (isLoading || loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="min-h-screen flex items-center justify-center">
                 <LoadingSpinner size="lg" />
             </div>
         );
@@ -145,7 +145,7 @@ export default function MindmapEditorPage({ params }: { params: Promise<{ id: st
     return (
         <div className="h-screen flex flex-col bg-white">
             {/* Header */}
-            <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+            <header className="bg-[rgba(240,247,255,0.8)] backdrop-blur-lg border-b border-sky-shadow px-4 py-3 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Link
                         href="/dashboard/mindmap"
@@ -197,7 +197,7 @@ export default function MindmapEditorPage({ params }: { params: Promise<{ id: st
 
             {/* Editor */}
             <main className="p-4 flex-1">
-                <div className="relative bg-gray-50 rounded-lg border border-gray-200 shadow-inner w-full h-full">
+                <div className="relative bg-sky-mist rounded-lg border border-sky-shadow shadow-inner w-full h-full">
                     <iframe
                         ref={iframeRef}
                         src="/mind-elixir-renderer.html"
@@ -258,9 +258,9 @@ export default function MindmapEditorPage({ params }: { params: Promise<{ id: st
                                 </div>
                             </div>
 
-                            <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                                <h3 className="font-semibold text-blue-800 mb-2">💡 Pro Tips</h3>
-                                <ul className="list-disc list-inside text-sm text-blue-700 space-y-1">
+                            <div className="bg-sky-mist p-4 rounded-lg border border-sky-shadow">
+                                <h3 className="font-semibold text-sky-900 mb-2">💡 Pro Tips</h3>
+                                <ul className="list-disc list-inside text-sm text-sky-800 space-y-1">
                                     <li>Right-click a node and select <strong>Link</strong> to draw connection arrows between nodes.</li>
                                     <li>Use the toolbar at the top to center the map or change layout.</li>
                                     <li>Changes are auto-saved, but use the Save button to be sure!</li>
