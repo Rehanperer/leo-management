@@ -12,7 +12,12 @@ export async function GET(request: NextRequest) {
                 meetingCount,
                 eventCount,
                 financialRecords,
-                completedProjects
+                completedProjects,
+                upcomingEvents,
+                upcomingMeetings,
+                recentFinancial,
+                recentProjects,
+                recentMeetings
             ] = await Promise.all([
                 prisma.project.count({ where }),
                 prisma.meeting.count({ where }),
@@ -24,6 +29,61 @@ export async function GET(request: NextRequest) {
                 prisma.project.findMany({
                     where: { ...where, status: 'completed' },
                     select: { serviceHours: true, beneficiaries: true }
+                }),
+                // Fetch upcoming events
+                prisma.event.findMany({
+                    where: {
+                        ...where,
+                        startDate: {
+                            gte: new Date()
+                        }
+                    },
+                    orderBy: {
+                        startDate: 'asc'
+                    },
+                    take: 3,
+                    select: {
+                        id: true,
+                        title: true,
+                        startDate: true,
+                        venue: true
+                    }
+                }),
+                // Fetch upcoming meetings
+                prisma.meeting.findMany({
+                    where: {
+                        ...where,
+                        date: {
+                            gte: new Date()
+                        }
+                    },
+                    orderBy: {
+                        date: 'asc'
+                    },
+                    take: 3,
+                    select: {
+                        id: true,
+                        title: true,
+                        date: true,
+                        venue: true,
+                        type: true
+                    }
+                }),
+                // Fetch recent activity sources
+                prisma.financialRecord.findMany({
+                    where,
+                    orderBy: { date: 'desc' },
+                    take: 5
+                }),
+                prisma.project.findMany({
+                    where,
+                    orderBy: { updatedAt: 'desc' },
+                    take: 5
+                }),
+                prisma.meeting.findMany({
+                    where,
+                    orderBy: { createdAt: 'desc' },
+                    take: 5
                 })
             ]);
 
@@ -37,6 +97,57 @@ export async function GET(request: NextRequest) {
             const totalBeneficiaries = completedProjects.reduce((acc, project) => acc + (project.beneficiaries || 0), 0);
             const totalProjectsCompleted = completedProjects.length;
 
+            // Combine and sort upcoming items (events + meetings)
+            const upcomingItems = [
+                ...upcomingEvents.map(e => ({
+                    type: 'event',
+                    id: e.id,
+                    title: e.title,
+                    date: e.startDate,
+                    location: e.venue
+                })),
+                ...upcomingMeetings.map(m => ({
+                    type: 'meeting',
+                    id: m.id,
+                    title: m.title,
+                    date: m.date,
+                    location: m.venue,
+                    meetingType: m.type
+                }))
+            ]
+                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                .slice(0, 3);
+
+            // Combine and sort recent activity
+            const recentActivity = [
+                ...recentFinancial.map(r => ({
+                    type: 'finance',
+                    id: r.id,
+                    title: r.description || 'Financial Record',
+                    subtitle: `${r.type === 'income' ? '+' : '-'}$${r.amount} • ${r.category}`,
+                    date: r.date,
+                    status: 'completed'
+                })),
+                ...recentProjects.map(p => ({
+                    type: 'project',
+                    id: p.id,
+                    title: p.title,
+                    subtitle: `${p.status.charAt(0).toUpperCase() + p.status.slice(1)} Project`,
+                    date: p.updatedAt,
+                    status: p.status
+                })),
+                ...recentMeetings.map(m => ({
+                    type: 'meeting',
+                    id: m.id,
+                    title: m.title,
+                    subtitle: `${m.type} Meeting`,
+                    date: m.createdAt,
+                    status: m.status
+                }))
+            ]
+                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                .slice(0, 5);
+
             return NextResponse.json({
                 stats: {
                     projects: projectCount,
@@ -45,7 +156,9 @@ export async function GET(request: NextRequest) {
                     budget: budgetBalance,
                     totalProjectsCompleted,
                     totalServiceHours,
-                    totalBeneficiaries
+                    totalBeneficiaries,
+                    upcomingItems,
+                    recentActivity
                 }
             });
         } catch (error) {

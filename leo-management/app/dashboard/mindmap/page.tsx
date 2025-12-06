@@ -8,13 +8,14 @@ import Link from 'next/link';
 import {
     Plus,
     Search,
+    Filter,
     FileText,
+    MoreVertical,
     Calendar,
     Users,
     TrendingUp,
-    CheckCircle,
-    Circle,
     StickyNote,
+    ArrowRight
 } from 'lucide-react';
 
 interface Mindmap {
@@ -164,9 +165,14 @@ export default function MindmapListPage() {
                         {filteredMindmaps.filter(m => m.entityType === 'project').length > 0 && (
                             <section>
                                 <div className="flex items-center gap-3 mb-6">
-                                    <FileText className="w-6 h-6 text-leo-600" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Project Mindmaps</h2>
-                                    <span className="px-3 py-1 bg-leo-100 text-leo-700 rounded-full text-sm font-medium">
+                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                        <FileText className="w-6 h-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900">Project Mindmaps</h2>
+                                        <p className="text-sm text-gray-500">Visualizations for your ongoing projects</p>
+                                    </div>
+                                    <span className="ml-auto px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold">
                                         {filteredMindmaps.filter(m => m.entityType === 'project').length}
                                     </span>
                                 </div>
@@ -175,30 +181,37 @@ export default function MindmapListPage() {
                                         <Link
                                             key={mindmap.id}
                                             href={`/dashboard/mindmap/${mindmap.id}`}
-                                            className="card card-hover group"
+                                            className="group relative bg-gradient-to-br from-white to-blue-50/50 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-100/50 hover:border-blue-200 overflow-hidden"
                                         >
-                                            <div className="flex items-start justify-between mb-4">
-                                                <div className="flex items-center gap-3">
-                                                    {getEntityIcon(mindmap.entityType)}
-                                                    <div>
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-leo-600 transition-colors">
-                                                            {mindmap.title}
-                                                        </h3>
-                                                        {mindmap.description && (
-                                                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                                                                {mindmap.description}
-                                                            </p>
-                                                        )}
+                                            <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                                <FileText size={120} className="transform rotate-12 text-blue-600" />
+                                            </div>
+                                            <div className="relative z-10">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="w-12 h-12 rounded-xl bg-white shadow-sm text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-blue-50">
+                                                        {getEntityIcon(mindmap.entityType)}
+                                                    </div>
+                                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="p-2 bg-white rounded-full shadow-sm text-blue-600">
+                                                            <ArrowRight className="w-4 h-4" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                                                <div className="flex items-center gap-2">
-                                                    <FileText className="w-4 h-4 text-gray-400" />
-                                                    <span className="text-sm text-gray-600">Markdown</span>
-                                                </div>
-                                                <div className="text-xs text-gray-500">
-                                                    {new Date(mindmap.updatedAt).toLocaleDateString()}
+
+                                                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-700 transition-colors line-clamp-1">
+                                                    {mindmap.title}
+                                                </h3>
+                                                <p className="text-sm text-gray-500 mb-6 line-clamp-2 h-10">
+                                                    {mindmap.description || 'No description provided'}
+                                                </p>
+                                                <div className="flex items-center justify-between pt-4 border-t border-blue-100/50">
+                                                    <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-md border border-blue-100">
+                                                        Project
+                                                    </span>
+                                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                        <Calendar className="w-3 h-3" />
+                                                        {new Date(mindmap.updatedAt).toLocaleDateString()}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </Link>
@@ -211,9 +224,14 @@ export default function MindmapListPage() {
                         {filteredMindmaps.filter(m => m.entityType === 'meeting').length > 0 && (
                             <section>
                                 <div className="flex items-center gap-3 mb-6">
-                                    <Users className="w-6 h-6 text-purple-600" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Meeting Mindmaps</h2>
-                                    <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                                    <div className="p-2 bg-purple-100 rounded-lg">
+                                        <Users className="w-6 h-6 text-purple-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900">Meeting Mindmaps</h2>
+                                        <p className="text-sm text-gray-500">Brainstorms and notes from meetings</p>
+                                    </div>
+                                    <span className="ml-auto px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-bold">
                                         {filteredMindmaps.filter(m => m.entityType === 'meeting').length}
                                     </span>
                                 </div>
@@ -222,30 +240,37 @@ export default function MindmapListPage() {
                                         <Link
                                             key={mindmap.id}
                                             href={`/dashboard/mindmap/${mindmap.id}`}
-                                            className="card card-hover group"
+                                            className="group relative bg-gradient-to-br from-white to-purple-50/50 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-purple-100/50 hover:border-purple-200 overflow-hidden"
                                         >
-                                            <div className="flex items-start justify-between mb-4">
-                                                <div className="flex items-center gap-3">
-                                                    {getEntityIcon(mindmap.entityType)}
-                                                    <div>
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-leo-600 transition-colors">
-                                                            {mindmap.title}
-                                                        </h3>
-                                                        {mindmap.description && (
-                                                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                                                                {mindmap.description}
-                                                            </p>
-                                                        )}
+                                            <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                                <Users size={120} className="transform rotate-12 text-purple-600" />
+                                            </div>
+                                            <div className="relative z-10">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="w-12 h-12 rounded-xl bg-white shadow-sm text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-purple-50">
+                                                        {getEntityIcon(mindmap.entityType)}
+                                                    </div>
+                                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="p-2 bg-white rounded-full shadow-sm text-purple-600">
+                                                            <ArrowRight className="w-4 h-4" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                                                <div className="flex items-center gap-2">
-                                                    <FileText className="w-4 h-4 text-gray-400" />
-                                                    <span className="text-sm text-gray-600">Markdown</span>
-                                                </div>
-                                                <div className="text-xs text-gray-500">
-                                                    {new Date(mindmap.updatedAt).toLocaleDateString()}
+
+                                                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-purple-700 transition-colors line-clamp-1">
+                                                    {mindmap.title}
+                                                </h3>
+                                                <p className="text-sm text-gray-500 mb-6 line-clamp-2 h-10">
+                                                    {mindmap.description || 'No description provided'}
+                                                </p>
+                                                <div className="flex items-center justify-between pt-4 border-t border-purple-100/50">
+                                                    <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2 py-1 rounded-md border border-purple-100">
+                                                        Meeting
+                                                    </span>
+                                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                        <Calendar className="w-3 h-3" />
+                                                        {new Date(mindmap.updatedAt).toLocaleDateString()}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </Link>
@@ -258,9 +283,14 @@ export default function MindmapListPage() {
                         {filteredMindmaps.filter(m => m.entityType === 'event').length > 0 && (
                             <section>
                                 <div className="flex items-center gap-3 mb-6">
-                                    <Calendar className="w-6 h-6 text-green-600" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Event Mindmaps</h2>
-                                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                                    <div className="p-2 bg-green-100 rounded-lg">
+                                        <Calendar className="w-6 h-6 text-green-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900">Event Mindmaps</h2>
+                                        <p className="text-sm text-gray-500">Planning and layouts for events</p>
+                                    </div>
+                                    <span className="ml-auto px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold">
                                         {filteredMindmaps.filter(m => m.entityType === 'event').length}
                                     </span>
                                 </div>
@@ -269,30 +299,37 @@ export default function MindmapListPage() {
                                         <Link
                                             key={mindmap.id}
                                             href={`/dashboard/mindmap/${mindmap.id}`}
-                                            className="card card-hover group"
+                                            className="group relative bg-gradient-to-br from-white to-green-50/50 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-green-100/50 hover:border-green-200 overflow-hidden"
                                         >
-                                            <div className="flex items-start justify-between mb-4">
-                                                <div className="flex items-center gap-3">
-                                                    {getEntityIcon(mindmap.entityType)}
-                                                    <div>
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-leo-600 transition-colors">
-                                                            {mindmap.title}
-                                                        </h3>
-                                                        {mindmap.description && (
-                                                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                                                                {mindmap.description}
-                                                            </p>
-                                                        )}
+                                            <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                                <Calendar size={120} className="transform rotate-12 text-green-600" />
+                                            </div>
+                                            <div className="relative z-10">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="w-12 h-12 rounded-xl bg-white shadow-sm text-green-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-green-50">
+                                                        {getEntityIcon(mindmap.entityType)}
+                                                    </div>
+                                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="p-2 bg-white rounded-full shadow-sm text-green-600">
+                                                            <ArrowRight className="w-4 h-4" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                                                <div className="flex items-center gap-2">
-                                                    <FileText className="w-4 h-4 text-gray-400" />
-                                                    <span className="text-sm text-gray-600">Markdown</span>
-                                                </div>
-                                                <div className="text-xs text-gray-500">
-                                                    {new Date(mindmap.updatedAt).toLocaleDateString()}
+
+                                                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-700 transition-colors line-clamp-1">
+                                                    {mindmap.title}
+                                                </h3>
+                                                <p className="text-sm text-gray-500 mb-6 line-clamp-2 h-10">
+                                                    {mindmap.description || 'No description provided'}
+                                                </p>
+                                                <div className="flex items-center justify-between pt-4 border-t border-green-100/50">
+                                                    <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-md border border-green-100">
+                                                        Event
+                                                    </span>
+                                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                        <Calendar className="w-3 h-3" />
+                                                        {new Date(mindmap.updatedAt).toLocaleDateString()}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </Link>
@@ -305,9 +342,14 @@ export default function MindmapListPage() {
                         {filteredMindmaps.filter(m => !m.entityType || (m.entityType !== 'project' && m.entityType !== 'meeting' && m.entityType !== 'event')).length > 0 && (
                             <section>
                                 <div className="flex items-center gap-3 mb-6">
-                                    <StickyNote className="w-6 h-6 text-gray-600" />
-                                    <h2 className="text-2xl font-bold text-gray-900">Other Mindmaps</h2>
-                                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                                    <div className="p-2 bg-gray-100 rounded-lg">
+                                        <StickyNote className="w-6 h-6 text-gray-600" />
+                                    </div>
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900">Other Mindmaps</h2>
+                                        <p className="text-sm text-gray-500">General ideas and uncategorized maps</p>
+                                    </div>
+                                    <span className="ml-auto px-3 py-1 bg-gray-50 text-gray-700 rounded-full text-xs font-bold">
                                         {filteredMindmaps.filter(m => !m.entityType || (m.entityType !== 'project' && m.entityType !== 'meeting' && m.entityType !== 'event')).length}
                                     </span>
                                 </div>
@@ -316,30 +358,37 @@ export default function MindmapListPage() {
                                         <Link
                                             key={mindmap.id}
                                             href={`/dashboard/mindmap/${mindmap.id}`}
-                                            className="card card-hover group"
+                                            className="group relative bg-gradient-to-br from-white to-gray-50/50 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100/50 hover:border-gray-200 overflow-hidden"
                                         >
-                                            <div className="flex items-start justify-between mb-4">
-                                                <div className="flex items-center gap-3">
-                                                    {getEntityIcon(mindmap.entityType)}
-                                                    <div>
-                                                        <h3 className="font-semibold text-gray-900 group-hover:text-leo-600 transition-colors">
-                                                            {mindmap.title}
-                                                        </h3>
-                                                        {mindmap.description && (
-                                                            <p className="text-sm text-gray-600 mt-1 line-clamp-2">
-                                                                {mindmap.description}
-                                                            </p>
-                                                        )}
+                                            <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                                                <StickyNote size={120} className="transform rotate-12 text-gray-600" />
+                                            </div>
+                                            <div className="relative z-10">
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="w-12 h-12 rounded-xl bg-white shadow-sm text-gray-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-gray-50">
+                                                        {getEntityIcon(mindmap.entityType)}
+                                                    </div>
+                                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        <div className="p-2 bg-white rounded-full shadow-sm text-gray-600">
+                                                            <ArrowRight className="w-4 h-4" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-                                                <div className="flex items-center gap-2">
-                                                    <FileText className="w-4 h-4 text-gray-400" />
-                                                    <span className="text-sm text-gray-600">Markdown</span>
-                                                </div>
-                                                <div className="text-xs text-gray-500">
-                                                    {new Date(mindmap.updatedAt).toLocaleDateString()}
+
+                                                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors line-clamp-1">
+                                                    {mindmap.title}
+                                                </h3>
+                                                <p className="text-sm text-gray-500 mb-6 line-clamp-2 h-10">
+                                                    {mindmap.description || 'No description provided'}
+                                                </p>
+                                                <div className="flex items-center justify-between pt-4 border-t border-gray-100/50">
+                                                    <span className="text-xs font-medium text-gray-600 bg-gray-50 px-2 py-1 rounded-md border border-gray-100">
+                                                        Note
+                                                    </span>
+                                                    <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                        <Calendar className="w-3 h-3" />
+                                                        {new Date(mindmap.updatedAt).toLocaleDateString()}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </Link>
