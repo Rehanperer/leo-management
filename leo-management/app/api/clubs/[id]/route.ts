@@ -61,7 +61,6 @@ export async function DELETE(
         }
 
         // 2. Verify Admin Password
-        // Need to import comparePassword (or verifyPassword) and get admin user
         const { verifyPassword } = await import('@/lib/auth');
 
         const adminUser = await prisma.user.findUnique({
@@ -69,6 +68,7 @@ export async function DELETE(
         });
 
         if (!adminUser) {
+            console.error('Admin user not found for ID:', auth.userId);
             return NextResponse.json({ error: 'Admin user not found' }, { status: 404 });
         }
 
@@ -77,18 +77,33 @@ export async function DELETE(
             return NextResponse.json({ error: 'Invalid password' }, { status: 403 });
         }
 
-        // 3. Delete Club
-        // Prisma transaction to ensure clean delete if needed, but cascade delete in DB usually handles relations.
-        // If relations are not set to cascade in schema, we might need to delete related records first.
-        // Assuming schema handles cascade or we force it:
+        // 3. Delete Club & All Related Data
+        // Since we don't have onDelete: Cascade in the schema for all types, we must delete manually in order.
 
-        // Delete all users associated with this club first to be safe (if not cascaded)
-        await prisma.user.deleteMany({
-            where: { clubId: id }
-        });
+        await prisma.$transaction(async (tx) => {
+            // 1. Delete items that rely on Project/Club/User
+            await tx.financialRecord.deleteMany({ where: { clubId: id } });
+            await tx.meeting.deleteMany({ where: { clubId: id } });
+            await tx.event.deleteMany({ where: { clubId: id } });
+            await tx.document.deleteMany({ where: { clubId: id } });
+            await tx.mindmap.deleteMany({ where: { clubId: id } });
 
-        await prisma.club.delete({
-            where: { id }
+            // 2. Delete Projects (must be done after Finance/Meetings as they might reference projects)
+            await tx.project.deleteMany({ where: { clubId: id } });
+
+            // 3. Delete Chat History (attached to Users)
+            const clubUsers = await tx.user.findMany({ where: { clubId: id }, select: { id: true } });
+            const userIds = clubUsers.map(u => u.id);
+            if (userIds.length > 0) {
+                await tx.aIChatHistory.deleteMany({ where: { userId: { in: userIds } } });
+            }
+
+            // 4. Delete Users (must be done after everything else createdBy them is gone? 
+            // Actually, if we delete the records above (Project, Event, etc), the createdBy reference is gone with the record)
+            await tx.user.deleteMany({ where: { clubId: id } });
+
+            // 5. Delete Club
+            await tx.club.delete({ where: { id } });
         });
 
         return NextResponse.json({ message: 'Club account deleted successfully' });
