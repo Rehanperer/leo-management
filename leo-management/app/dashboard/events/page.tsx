@@ -114,7 +114,7 @@ export default function EventsPage() {
                 {/* Highlight Box */}
                 {highlightEvent && (
                     <div className="relative overflow-hidden rounded-2xl bg-gray-900 text-white shadow-xl">
-                        <div className="absolute inset-0 bg-gradient-to-r from-leo-600 to-purple-600 opacity-90"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-90"></div>
                         <div className="relative p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
                             <div className="space-y-4 text-center md:text-left">
                                 <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-sm font-medium backdrop-blur-sm">
@@ -137,7 +137,7 @@ export default function EventsPage() {
                                 </div>
                             </div>
                             <div className="flex-shrink-0">
-                                <Link href={`/dashboard/events/${highlightEvent.id}`} className="btn bg-white text-leo-600 hover:bg-gray-100 border-none px-8 py-3 text-lg shadow-lg">
+                                <Link href={`/dashboard/events/${highlightEvent.id}`} className="btn bg-white text-blue-600 hover:bg-gray-100 border-none px-8 py-3 text-lg shadow-lg">
                                     View Details
                                 </Link>
                             </div>
@@ -195,7 +195,7 @@ export default function EventsPage() {
                         {filteredEvents.map((event, index) => (
                             <div key={event.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                                 {/* Timeline Dot */}
-                                <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-leo-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute left-0 md:left-1/2 transform -translate-x-1/2 md:translate-x-0 z-10">
+                                <div className="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white bg-blue-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 absolute left-0 md:left-1/2 transform -translate-x-1/2 md:translate-x-0 z-10">
                                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -212,7 +212,7 @@ export default function EventsPage() {
                                         </span>
                                         <span className="text-sm text-gray-500 font-medium">{event.type}</span>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-leo-600 transition-colors">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                                         {event.title}
                                     </h3>
                                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{event.description}</p>

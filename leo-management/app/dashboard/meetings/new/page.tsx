@@ -112,7 +112,8 @@ export default function NewMeetingPage() {
             if (response.ok) {
                 router.push('/dashboard/meetings');
             } else {
-                alert('Failed to create meeting');
+                const data = await response.json();
+                alert(data.error || 'Failed to create meeting');
             }
         } catch (error) {
             console.error('Error creating meeting:', error);

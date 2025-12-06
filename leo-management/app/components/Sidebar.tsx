@@ -98,6 +98,7 @@ export default function Sidebar() {
     const pathname = usePathname();
     const { user, logout } = useAuth();
     const [logoClicks, setLogoClicks] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
     const mouseX = useMotionValue(Infinity);
 
@@ -110,62 +111,92 @@ export default function Sidebar() {
         }
     };
 
+    // Close sidebar when route changes on mobile
+    useEffect(() => {
+        setIsOpen(false);
+    }, [pathname]);
+
     return (
-        <aside
-            className={`
-                relative flex flex-col h-screen transition-all duration-300 ease-in-out w-24
-                bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(15,23,42,0.85)]
-                backdrop-blur-2xl saturate-150 border-r border-white/40 shadow-2xl
-                z-50 items-center py-6
-            `}
-            onMouseMove={(e) => mouseX.set(e.clientY)}
-            onMouseLeave={() => mouseX.set(Infinity)}
-        >
-            {/* Logo Section */}
-            <div className="mb-8 flex flex-col items-center">
-                <div
-                    className="w-10 h-10 relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform mb-2"
-                    onClick={handleLogoClick}
-                >
-                    <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
-                </div>
-            </div>
+        <>
+            {/* Mobile Hamburger Button */}
+            <button
+                className="md:hidden fixed top-4 left-4 z-[60] p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-lg border border-white/20 text-gray-700 dark:text-gray-200"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                {isOpen ? <LogOut size={24} className="rotate-180" /> : <LayoutDashboard size={24} />}
+            </button>
 
-            {/* Navigation Items */}
-            <div className="flex-1 flex flex-col items-center w-full gap-2 px-2">
-                {menuItems.map((item) => (
-                    <DockItem
-                        key={item.href}
-                        mouseX={mouseX}
-                        item={item}
-                        isActive={pathname === item.href}
+            {/* Mobile Backdrop */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsOpen(false)}
+                        className="md:hidden fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
                     />
-                ))}
-            </div>
+                )}
+            </AnimatePresence>
 
-            {/* User Profile & Logout */}
-            <div className="mt-auto flex flex-col items-center gap-4 mb-4 w-full">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg">
-                    {user?.username?.[0]?.toUpperCase() || 'U'}
+            <aside
+                className={`
+                    fixed md:relative inset-y-0 left-0 z-50
+                    flex flex-col h-screen transition-all duration-300 ease-in-out
+                    ${isOpen ? 'translate-x-0 w-24' : '-translate-x-full md:translate-x-0 w-24'}
+                    bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(15,23,42,0.85)]
+                    backdrop-blur-2xl saturate-150 border-r border-white/40 shadow-2xl
+                    items-center py-6
+                `}
+                onMouseMove={(e) => mouseX.set(e.clientY)}
+                onMouseLeave={() => mouseX.set(Infinity)}
+            >
+                {/* Logo Section */}
+                <div className="mb-8 flex flex-col items-center mt-12 md:mt-0">
+                    <div
+                        className="w-10 h-10 relative flex-shrink-0 cursor-pointer active:scale-95 transition-transform mb-2"
+                        onClick={handleLogoClick}
+                    >
+                        <img src="/logo.png" alt="LeoLynk" className="w-full h-full object-contain" />
+                    </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                    <Link
-                        href="/dashboard/settings"
-                        className="p-2 rounded-full text-gray-500 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-blue-600 transition-colors"
-                        title="Settings"
-                    >
-                        <Settings size={20} />
-                    </Link>
-                    <button
-                        onClick={logout}
-                        className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-                        title="Logout"
-                    >
-                        <LogOut size={20} />
-                    </button>
+                {/* Navigation Items */}
+                <div className="flex-1 flex flex-col items-center w-full gap-2 px-2 overflow-y-auto no-scrollbar">
+                    {menuItems.map((item) => (
+                        <DockItem
+                            key={item.href}
+                            mouseX={mouseX}
+                            item={item}
+                            isActive={pathname === item.href}
+                        />
+                    ))}
                 </div>
-            </div>
-        </aside>
+
+                {/* User Profile & Logout */}
+                <div className="mt-auto flex flex-col items-center gap-4 mb-4 w-full">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg">
+                        {user?.username?.[0]?.toUpperCase() || 'U'}
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <Link
+                            href="/dashboard/settings"
+                            className="p-2 rounded-full text-gray-500 hover:bg-white/50 dark:hover:bg-slate-800/50 hover:text-blue-600 transition-colors"
+                            title="Settings"
+                        >
+                            <Settings size={20} />
+                        </Link>
+                        <button
+                            onClick={logout}
+                            className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                            title="Logout"
+                        >
+                            <LogOut size={20} />
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </>
     );
 }

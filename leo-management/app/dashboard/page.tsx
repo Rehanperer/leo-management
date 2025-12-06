@@ -131,14 +131,14 @@ export default function DashboardPage() {
     const leoisticYear = `${currentMonth === 'July' || new Date().getMonth() > 6 ? currentYear : currentYear - 1}-${currentMonth === 'July' || new Date().getMonth() > 6 ? currentYear + 1 : currentYear}`;
 
     return (
-        <div className={`min-h-screen relative p-8 ${justLoggedIn ? 'animate-zoom-in' : 'animate-fade-in'}`}>
+        <div className={`min-h-screen relative p-4 md:p-8 ${justLoggedIn ? 'animate-zoom-in' : 'animate-fade-in'}`}>
             <ParticleBackground />
 
             {/* Welcome Section */}
             <div className="mb-8 animate-slide-up relative z-10">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                    <div>
-                        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                    <div className="mt-12 md:mt-0">
+                        <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
                             Welcome back, {user?.username}! 👋
                         </h1>
                         <p className="text-gray-600 text-lg">

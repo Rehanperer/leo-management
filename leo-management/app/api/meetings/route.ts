@@ -48,6 +48,10 @@ export async function POST(request: NextRequest) {
 
             const clubId = auth.role === 'admin' ? body.clubId : auth.clubId;
 
+            if (!clubId) {
+                return NextResponse.json({ error: 'Club ID is required' }, { status: 400 });
+            }
+
             const meeting = await prisma.meeting.create({
                 data: {
                     clubId: clubId!,
@@ -70,9 +74,9 @@ export async function POST(request: NextRequest) {
             });
 
             return NextResponse.json({ meeting });
-        } catch (error) {
+        } catch (error: any) {
             console.error('Create meeting error:', error);
-            return NextResponse.json({ error: 'Failed to create meeting' }, { status: 500 });
+            return NextResponse.json({ error: error.message || 'Failed to create meeting' }, { status: 500 });
         }
     });
 }
