@@ -153,8 +153,9 @@ export default function Sidebar() {
         <>
             {/* Mobile Hamburger Button */}
             <button
-                className="md:hidden fixed top-4 left-4 z-[60] p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-lg border border-white/20 text-gray-700 dark:text-gray-200"
+                className="md:hidden fixed top-4 left-4 z-[100] p-3 min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-md shadow-xl border border-white/20 text-gray-700 dark:text-gray-200 active:scale-95 transition-all"
                 onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle Sidebar"
             >
                 {isOpen ? <LogOut size={24} className="rotate-180" /> : <LayoutDashboard size={24} />}
             </button>
